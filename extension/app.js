@@ -272,6 +272,85 @@ const TOPICS = [
       ['weather / season', 'موسم', 'mausam']
     ]
   },
+  {
+    id: 'animals', kind: 'word', name: 'Animals', gloss: 'جانور',
+    blurb: 'Pets, farm animals and a few from the jungle.',
+    items: [
+      ['dog', 'کتا', 'kuttā'],
+      ['cat', 'بلی', 'billī'],
+      ['cow', 'گائے', 'gāy'],
+      ['horse', 'گھوڑا', 'ghoṛā'],
+      ['goat', 'بکری', 'bakrī'],
+      ['sheep', 'بھیڑ', 'bheṛ'],
+      ['donkey', 'گدھا', 'gadhā'],
+      ['hen', 'مرغی', 'murghī'],
+      ['bird', 'پرندہ', 'parinda'],
+      ['lion', 'شیر', 'sher', 'The same word is used for “tiger” in everyday speech.'],
+      ['elephant', 'ہاتھی', 'hāthī'],
+      ['monkey', 'بندر', 'bandar'],
+      ['rabbit', 'خرگوش', 'khargosh'],
+      ['mouse', 'چوہا', 'chūhā'],
+      ['snake', 'سانپ', 'sāṅp'],
+      ['fish', 'مچھلی', 'machhlī']
+    ]
+  },
+  {
+    id: 'school', kind: 'word', name: 'At School', gloss: 'اسکول',
+    blurb: 'Everything in the classroom and the school bag.',
+    items: [
+      ['school', 'اسکول', 'skūl'],
+      ['student', 'طالب علم', 'tālib-e-ilm'],
+      ['teacher', 'استاد', 'ustād'],
+      ['book', 'کتاب', 'kitāb'],
+      ['notebook', 'کاپی', 'kāpī'],
+      ['pen', 'قلم', 'qalam'],
+      ['pencil', 'پنسل', 'pinsil'],
+      ['paper', 'کاغذ', 'kāghaz'],
+      ['school bag', 'بستہ', 'basta'],
+      ['lesson', 'سبق', 'sabaq'],
+      ['question', 'سوال', 'sawāl'],
+      ['answer', 'جواب', 'jawāb'],
+      ['word', 'لفظ', 'lafz'],
+      ['language', 'زبان', 'zabān', 'Also means “tongue”.']
+    ]
+  },
+  {
+    id: 'feelings', kind: 'word', name: 'Feelings', gloss: 'جذبات',
+    blurb: 'How you feel today — good for talking about the day.',
+    items: [
+      ['happy', 'خوش', 'khush'],
+      ['sad', 'اداس', 'udās'],
+      ['angry / upset', 'ناراض', 'nārāz'],
+      ['afraid', 'ڈرا ہوا', 'ḍarā huā', 'A girl says ڈری ہوئی ḍarī huī.'],
+      ['tired', 'تھکا ہوا', 'thakā huā'],
+      ['hungry', 'بھوکا', 'bhūkā'],
+      ['thirsty', 'پیاسا', 'pyāsā'],
+      ['surprised', 'حیران', 'hairān'],
+      ['bored', 'بور', 'bor'],
+      ['love', 'محبت', 'muhabbat'],
+      ['to laugh', 'ہنسنا', 'haṅsnā'],
+      ['to cry', 'رونا', 'ronā']
+    ]
+  },
+  {
+    id: 'play', kind: 'word', name: 'Play & Sports', gloss: 'کھیل',
+    blurb: 'Games, toys and things to do outside.',
+    items: [
+      ['to play', 'کھیلنا', 'khelnā'],
+      ['game', 'کھیل', 'khel'],
+      ['toy', 'کھلونا', 'khilaunā'],
+      ['ball', 'گیند', 'gend'],
+      ['kite', 'پتنگ', 'patang'],
+      ['cricket', 'کرکٹ', 'kriket'],
+      ['football', 'فٹبال', 'fuṭbāl'],
+      ['swimming', 'تیراکی', 'terākī'],
+      ['park', 'پارک', 'pārk'],
+      ['to run', 'دوڑنا', 'dauṛnā'],
+      ['to jump', 'کودنا', 'kūdnā'],
+      ['to win', 'جیتنا', 'jītnā'],
+      ['to lose', 'ہارنا', 'hārnā']
+    ]
+  },
 
   /* ---- phrase sets ---- */
   {
@@ -685,6 +764,7 @@ function spkBtn(text){
 }
 var TOPIC_EMOJI={greet:'👋',people:'👨‍👩‍👧',numbers:'🔢',time:'📅',food:'🍎',
   colors:'🎨',body:'🖐️',home:'🏠',travel:'✈️',verbs:'🏃',adj:'🌈',nature:'🌤️',
+  animals:'🐾',school:'🏫',feelings:'😊',play:'⚽',
   intro:'🙋',outabout:'🛍️',smalltalk:'💬'};
 function topicEmoji(id){return TOPIC_EMOJI[id]||'📚';}
 function topicRow(t,attr){
