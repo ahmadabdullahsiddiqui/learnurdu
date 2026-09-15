@@ -5,7 +5,7 @@
  * and point app.html at it. index.html stays the one source of truth — re-run
  * `node build-extension.mjs` after any change to it.
  */
-import { readFileSync, writeFileSync, copyFileSync, mkdirSync, readdirSync } from "fs";
+import { readFileSync, writeFileSync, copyFileSync, mkdirSync, readdirSync, existsSync } from "fs";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
 
@@ -51,4 +51,16 @@ for (const f of readdirSync(fontsSrc)) {
   n++;
 }
 
-console.log(`Built extension/ → app.html, app.js, icons, fonts.css, ${n} font files`);
+// Bundled pronunciation audio so the extension speaks offline too.
+const audioSrc = join(root, "audio");
+const audioDst = join(ext, "audio");
+let a = 0;
+if (existsSync(audioSrc)) {
+  mkdirSync(audioDst, { recursive: true });
+  for (const f of readdirSync(audioSrc)) {
+    copyFileSync(join(audioSrc, f), join(audioDst, f));
+    a++;
+  }
+}
+
+console.log(`Built extension/ → app.html, app.js, icons, fonts.css, ${n} font files, ${a} audio clips`);

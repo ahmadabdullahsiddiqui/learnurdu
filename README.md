@@ -3,8 +3,8 @@
 A colourful, kid-friendly English → Urdu learning app: vocabulary, phrases, the
 nastaliq script and grammar, with spaced‑repetition flashcards and quizzes. It's
 a single‑file PWA that runs from disk, installs to a phone or desktop, and works
-fully offline. Pronunciation uses the device voice where available and falls
-back to an online voice (great for iPhone/iPad, which have no built-in Urdu voice).
+fully offline. **Every word has built-in spoken audio** that plays offline on
+any device — including iPhone/iPad, which have no built-in Urdu voice.
 
 ## ▶ Try it
 

@@ -725,45 +725,51 @@ function chosenVoice(){
   }
   return urduVoice();
 }
-/* Shown only when there is no device voice AND online voice is turned off. */
-var NOVOICE_TIP='No Urdu voice on this device and the online voice is off. '+
-  'Turn on “Online voice” below (needs internet), or install a device voice — '+
-  'iPhone/iPad: it has no Urdu voice, so keep the online voice on; '+
-  'Android: Settings › System › Languages & input › Text-to-speech; '+
-  'Windows: open the app in Microsoft Edge for built-in Urdu voices.';
+var NOVOICE_TIP='Could not play the audio here. If you picked a device voice, switch back to “Built-in audio”.';
 
-/* ---- online voice library (fallback so iPhone etc. get audio) ----
-   Streams spoken Urdu as MP3 from Google Translate's TTS. Needs internet;
-   plays via an <audio> element so it works even where no voice is installed. */
-var onlineAudio=null;
-function onlineAvailable(){return S.online!==false;}
-function speakOnline(text){
-  try{
-    if(onlineAudio){try{onlineAudio.pause();}catch(e){}}
-    var url='https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=ur&q='+encodeURIComponent(text);
-    onlineAudio=new Audio(url);
-    onlineAudio.playbackRate=S.slow?0.7:1;
-    onlineAudio.onerror=function(){toast('Could not load the online voice — check your internet connection.');};
-    var p=onlineAudio.play();
-    if(p&&p.catch)p.catch(function(){toast('Tap the speaker again to play the audio.');});
-    return true;
-  }catch(e){return false;}
+/* cyrb53 hash — MUST match cyrb53() in build-audio.mjs so we find the file. */
+function audioHash(str){
+  var h1=0xdeadbeef,h2=0x41c6ce57;
+  for(var i=0;i<str.length;i++){var ch=str.charCodeAt(i);
+    h1=Math.imul(h1^ch,2654435761);h2=Math.imul(h2^ch,1597334677);}
+  h1=Math.imul(h1^(h1>>>16),2246822507);h1^=Math.imul(h2^(h2>>>13),3266489909);
+  h2=Math.imul(h2^(h2>>>16),2246822507);h2^=Math.imul(h1^(h1>>>13),3266489909);
+  return (h2>>>0).toString(16).padStart(8,'0')+(h1>>>0).toString(16).padStart(8,'0');
 }
-function speak(text){
+
+/* Speak a device voice via the Web Speech API (used only if the user picks one). */
+function speakNative(v,text){
+  try{
+    if(!VOICES.length)refreshVoices();
+    speechSynthesis.cancel();speechSynthesis.resume();
+    var u=new SpeechSynthesisUtterance(text);
+    u.lang=v.lang;u.voice=v;u.rate=S.slow?0.55:0.8;u.pitch=1;
+    speechSynthesis.speak(u);
+  }catch(e){toast('Speech is unavailable here.');}
+}
+/* If the bundled clip is missing, fall back to a device voice, else explain. */
+function fallbackSpeak(text){
   var v=window.speechSynthesis?chosenVoice():null;
-  if(v){                                  /* a real device Urdu voice — best, offline */
-    try{
-      if(!VOICES.length)refreshVoices();
-      speechSynthesis.cancel();
-      speechSynthesis.resume();           /* Chrome can leave the queue paused */
-      var u=new SpeechSynthesisUtterance(text);
-      u.lang=v.lang;u.voice=v;u.rate=S.slow?0.55:0.8;u.pitch=1;
-      speechSynthesis.speak(u);
-    }catch(e){toast('Speech is unavailable here.');}
-    return;
-  }
-  if(onlineAvailable()){speakOnline(text);return;}   /* no device voice → online (iPhone) */
+  if(v){speakNative(v,text);return;}
   toast(NOVOICE_TIP);
+}
+/* Primary: play the bundled offline MP3 — works on every device, no internet. */
+var localAudio=null;
+function speak(text){
+  /* Honour an explicitly chosen device voice, if any. */
+  if(S.voiceURI&&window.speechSynthesis){
+    var chosen=chosenVoice();
+    if(chosen){speakNative(chosen,text);return;}
+  }
+  try{
+    if(localAudio){try{localAudio.pause();}catch(e){}}
+    localAudio=new Audio('audio/'+audioHash(text)+'.mp3');
+    localAudio.playbackRate=S.slow?0.7:1;
+    var done=false;
+    localAudio.onerror=function(){if(!done){done=true;fallbackSpeak(text);}};
+    var p=localAudio.play();
+    if(p&&p.catch)p.catch(function(){/* autoplay/gesture issue — onerror covers missing files */});
+  }catch(e){fallbackSpeak(text);}
 }
 var toastTimer;
 function toast(msg){
@@ -862,27 +868,24 @@ function viewHome(){
   return h+'</div>';
 }
 function pronCard(){
-  if(!hasSpeech())
-    return '<div class="card pad"><p class="muted" style="margin:0">This browser has no speech engine, so spoken pronunciation is unavailable. The transliteration under every word shows how to say it.</p></div>';
-  var vs=pronVoices();
-  var opts='<option value=""'+(S.voiceURI?'':' selected')+'>System default (Urdu)</option>';
-  vs.forEach(function(v){
-    opts+='<option value="'+esc(v.voiceURI)+'"'+(S.voiceURI===v.voiceURI?' selected':'')+'>'+esc(v.name)+' — '+esc(v.lang)+'</option>';
-  });
-  var v=chosenVoice();
-  var online=onlineAvailable();
-  var status;
-  if(v) status='<div class="pstat ok">Ready — using <b>'+esc(v.name)+'</b> ('+esc(v.lang)+')</div>';
-  else if(online) status='<div class="pstat ok">Ready — using the <b>online voice</b> (needs internet). Works on iPhone &amp; iPad. 🌐</div>';
-  else status='<div class="pstat warn">No voice available — turn on the online voice below, or install a device voice.</div>';
+  var vs=hasSpeech()?pronVoices():[];
+  var usingDevice=!!(S.voiceURI&&hasSpeech()&&chosenVoice());
+  var status=usingDevice
+    ? '<div class="pstat ok">Ready — using your device voice <b>'+esc(chosenVoice().name)+'</b> ✓</div>'
+    : '<div class="pstat ok">Ready — built-in offline audio ✓ Works on every device, including iPhone &amp; iPad. No internet needed.</div>';
   var h='<div class="card pad stack" style="gap:12px">';
   h+=status;
-  h+='<div><div class="eyebrow">Device voice</div><select id="voiceSel" class="sel" aria-label="Pronunciation voice" style="margin-top:6px">'+opts+'</select></div>';
   h+='<div class="split">'+
-     '<button class="toggle" data-online="1" aria-pressed="'+(online?'true':'false')+'">'+(online?'Online voice · on 🌐':'Online voice · off')+'</button>'+
+     '<button class="btn" data-speak="شکریہ">Test — <span class="ur" style="font-size:1.15rem">شکریہ</span></button>'+
      '<button class="toggle" data-slow="1" aria-pressed="'+(S.slow?'true':'false')+'">'+(S.slow?'Slow speed · on':'Slow speed')+'</button></div>';
-  h+='<button class="btn" data-speak="شکریہ">Test — <span class="ur" style="font-size:1.15rem">شکریہ</span></button>';
-  h+='<p class="tiny" style="margin:0">A device voice (if you have one) is used first and works offline. Otherwise the <b>online voice</b> plays over the internet — the best option on iPhone/iPad, which have no built-in Urdu voice.</p>';
+  if(vs.length){
+    var opts='<option value=""'+(S.voiceURI?'':' selected')+'>Built-in audio (recommended)</option>';
+    vs.forEach(function(v){
+      opts+='<option value="'+esc(v.voiceURI)+'"'+(S.voiceURI===v.voiceURI?' selected':'')+'>'+esc(v.name)+' — '+esc(v.lang)+'</option>';
+    });
+    h+='<div><div class="eyebrow">Voice (optional)</div><select id="voiceSel" class="sel" aria-label="Pronunciation voice" style="margin-top:6px">'+opts+'</select></div>';
+  }
+  h+='<p class="tiny" style="margin:0">Every word has built-in audio that plays offline on any device. If your device has its own Urdu voice you can pick it above.</p>';
   return h+'</div>';
 }
 function spkBtn(text){
@@ -1145,7 +1148,6 @@ function onClick(e){
   var el;
   if((el=t.closest('[data-speak]'))){speak(el.dataset.speak);return;}
   if((el=t.closest('[data-slow]'))){S.slow=!S.slow;save();render();if(S.slow)speak('شکریہ');return;}
-  if((el=t.closest('[data-online]'))){S.online=!onlineAvailable();save();render();if(onlineAvailable())speak('شکریہ');return;}
   if((el=t.closest('[data-go]'))){go(el.dataset.go);return;}
   if((el=t.closest('[data-topic]'))){go('learn','topic',el.dataset.topic);return;}
   if((el=t.closest('[data-grammar]'))){go('learn','grammar');return;}
