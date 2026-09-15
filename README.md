@@ -8,7 +8,7 @@ any device — including iPhone/iPad, which have no built-in Urdu voice.
 
 ## ▶ Try it
 
-**[ahmadabdullahsiddiqui.github.io/learnurdu](https://ahmadabdullahsiddiqui.github.io/learnurdu/)**
+**[ahmadabdullahsiddiqui.github.io/ustad](https://ahmadabdullahsiddiqui.github.io/ustad/)**
 
 Scan to open on your phone, then *Add to Home Screen* to install it as an
 offline app:
