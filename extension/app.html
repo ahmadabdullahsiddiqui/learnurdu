@@ -141,8 +141,8 @@ nav.tabs{
 .btn{
   display:inline-flex;align-items:center;justify-content:center;gap:8px;
   padding:13px 18px;border-radius:16px;font-weight:600;font-size:.96rem;
-  background:linear-gradient(135deg,#4c6ef5,#9b5de5);color:#fff;border:1px solid transparent;width:100%;
-  box-shadow:0 8px 18px -10px rgba(76,110,245,.9)
+  background:linear-gradient(135deg,#0e7d3e,#01411C);color:#fff;border:1px solid transparent;width:100%;
+  box-shadow:0 8px 18px -10px rgba(1,65,28,.9)
 }
 .btn.ghost{background:var(--surface);color:var(--ink);border-color:var(--line)}
 .btn.slim{width:auto;padding:8px 13px;font-size:.84rem}
@@ -237,6 +237,11 @@ nav.tabs{
 .mcard .men{font-weight:600;font-size:.82rem;line-height:1.1;word-break:break-word}
 .mcard:active{transform:scale(.95)}
 @media (max-width:380px){.mcard .men{font-size:.72rem}}
+.flagwave{display:flex;justify-content:center;padding:2px 0 4px}
+.flagwave svg{width:min(300px,74%);height:auto;overflow:visible}
+.wg{transform-box:fill-box;transform-origin:left center;animation:flagwave 3.4s ease-in-out infinite}
+@keyframes flagwave{0%,100%{transform:skewY(-1.6deg) scaleY(1)}50%{transform:skewY(1.6deg) scaleY(.985)}}
+@media (prefers-reduced-motion:reduce){.wg{animation:none}}
 .forms{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;text-align:center}
 .form{background:var(--sunk);border:1px solid var(--line);border-radius:10px;padding:6px 2px}
 .form .ur{font-size:1.6rem;line-height:2}
