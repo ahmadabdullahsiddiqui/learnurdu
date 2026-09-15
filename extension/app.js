@@ -827,24 +827,11 @@ function ringSvg(frac){
     '<circle cx="43" cy="43" r="'+r+'" stroke="#0e7d3e" stroke-width="7" fill="none" stroke-linecap="round"'+
     ' stroke-dasharray="'+c.toFixed(1)+'" stroke-dashoffset="'+(c*(1-frac)).toFixed(1)+'"/></svg>';
 }
-function flagWave(){
-  return '<div class="flagwave"><svg viewBox="0 0 140 84" aria-label="Pakistan flag" role="img">'+
-    '<circle cx="12" cy="8" r="3.4" fill="#ffd43b"/>'+
-    '<rect x="10" y="8" width="4" height="72" rx="2" fill="#7a4a1f"/>'+
-    '<g class="wg">'+
-      '<rect x="14" y="14" width="112" height="52" fill="#0e7d3e"/>'+
-      '<rect x="14" y="14" width="24" height="52" fill="#fff"/>'+
-      '<circle cx="80" cy="40" r="14" fill="#fff"/>'+
-      '<circle cx="85" cy="37" r="11.5" fill="#0e7d3e"/>'+
-      '<path d="M94 34 L95.47 37.98 L99.7 38.15 L96.38 40.77 L97.53 44.85 L94 42.5 L90.47 44.85 L91.19 40.77 L88.3 38.15 L92.53 37.98 Z" fill="#fff"/>'+
-    '</g></svg></div>';
-}
 function viewHome(){
   var done=Math.min(S.todayCount,GOAL),frac=done/GOAL;
   var d=dueNow(),wordOfDay=WORDS[(new Date().getDate()*7+new Date().getMonth()*31)%WORDS.length];
   var learned=learnedCount();
   var h='<div class="stack">';
-  h+=flagWave();
   h+='<div class="hero"><div class="ring">'+ringSvg(frac)+
      '<div class="val"><div><b>'+done+'</b><span>of '+GOAL+'</span></div></div></div>'+
      '<div class="grow"><div class="eyebrow">Today</div>'+
@@ -881,6 +868,7 @@ function viewHome(){
   h+=pronCard();
 
   h+='<p class="tiny" style="text-align:center;margin:6px 0 0">Progress is saved on this device only.</p>';
+  h+='<p class="credit">Made and Designed with <span class="hh">❤</span> for your kid(s)<br>by Ahmad Abdullah</p>';
   return h+'</div>';
 }
 function pronCard(){
