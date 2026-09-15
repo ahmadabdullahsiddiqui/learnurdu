@@ -60,7 +60,7 @@ img{max-width:100%}
 body{
   background:
     radial-gradient(1100px 560px at 100% -6%, color-mix(in srgb,var(--gulnar) 26%,transparent) 0%, transparent 60%),
-    radial-gradient(1000px 520px at -12% 8%, color-mix(in srgb,var(--lapis) 24%,transparent) 0%, transparent 58%),
+in th    radial-gradient(1000px 520px at -12% 8%, color-mix(in srgb,var(--lapis) 24%,transparent) 0%, transparent 58%),
     radial-gradient(1000px 560px at 50% 116%, color-mix(in srgb,var(--jade) 26%,transparent) 0%, transparent 62%),
     var(--ground);
   background-attachment:fixed; color:var(--ink);
@@ -1161,15 +1161,15 @@ function viewHome(){
   var learned=learnedCount();
   var h='<div class="stack">';
   h+='<div class="hero"><div class="ring">'+ringSvg(frac)+
-     '<div class="val"><div><b>'+done+'</b><span>of '+GOAL+'</span></div></div></div>'+
+     '<div class="val"><div><b>'+done+'</b><span>'+(S.lang==='de'?'von ':'of ')+GOAL+'</span></div></div></div>'+
      '<div class="grow"><div class="eyebrow">Today</div>'+
      '<h2 style="font-size:1.25rem;margin:2px 0 4px">'+
        (done>=GOAL?'Goal met':(done>0?'Keep going':'Ready when you are'))+'</h2>'+
      '<p class="muted" style="margin:0">'+
-       (d>0? d+' card'+(d===1?'':'s')+' waiting for review.' : 'Nothing is due — new words are queued up.')+
+       (d>0? (S.lang==='de'?(d+' '+(d===1?'Karte wartet':'Karten warten')+' auf Wiederholung.'):(d+' card'+(d===1?'':'s')+' waiting for review.')) : t('Nothing is due — new words are queued up.'))+
      '</p></div></div>';
 
-  h+='<button class="btn" data-start="all">'+(d>0?'Review '+d+' card'+(d===1?'':'s'):'Start a session')+'</button>';
+  h+='<button class="btn" data-start="all">'+(d>0?(S.lang==='de'?(d+' '+(d===1?'Karte':'Karten')+' wiederholen'):('Review '+d+' card'+(d===1?'':'s'))):t('Start a session'))+'</button>';
 
   h+='<div class="split">'+
      '<div class="card pad"><div class="eyebrow">Words known</div><div style="font-family:Newsreader,Georgia,serif;font-size:1.6rem;font-weight:600;font-variant-numeric:tabular-nums">'+learned+' <span style="font-size:.9rem;color:var(--ink3);font-family:\'IBM Plex Sans\',sans-serif">/ '+WORDS.length+'</span></div></div>'+
@@ -1187,7 +1187,7 @@ function viewHome(){
   h+='<div class="sec"><h2>Your topics</h2></div><div class="card rowlist">';
   TOPICS.slice(0,6).forEach(function(t){h+=topicRow(t);});
   h+='</div>';
-  h+='<button class="btn ghost" data-go="learn">See all '+TOPICS.length+' topics</button>';
+  h+='<button class="btn ghost" data-go="learn">'+(S.lang==='de'?('Alle '+TOPICS.length+' Themen'):('See all '+TOPICS.length+' topics'))+'</button>';
 
   h+='<div class="sec"><h2>Play a game</h2><span class="ur">کھیل</span></div>';
   h+='<button class="btn" data-go="game" style="background:linear-gradient(135deg,#12b886,#4c6ef5)">🎮 Memory Match — match the words</button>';
@@ -1241,7 +1241,7 @@ function topicRow(t,attr){
   return '<button class="row" '+(attr||'data-topic')+'="'+t.id+'">'+
     '<span class="temoji" aria-hidden="true">'+topicEmoji(t.id)+'</span>'+
     '<div class="grow"><div class="name">'+esc(t.name)+'</div>'+
-    '<div class="sub">'+t.items.length+(t.kind==='phrase'?' phrases':' words')+'</div>'+
+    '<div class="sub">'+t.items.length+' '+(S.lang==='de'?(t.kind==='phrase'?'Sätze':'Wörter'):(t.kind==='phrase'?'phrases':'words'))+'</div>'+
     '<div class="meter"><i style="width:'+(m*100).toFixed(0)+'%"></i></div></div>'+
     '<span class="pct">'+Math.round(m*100)+'%</span></button>';
 }
@@ -1258,7 +1258,7 @@ function viewLearn(){
   TOPICS.filter(function(t){return t.kind==='phrase';}).forEach(function(t){h+=topicRow(t);});
   h+='</div>';
   h+='<div class="sec"><h2>Grammar</h2><span class="ur">قواعد</span></div>'+
-     '<button class="row card" data-grammar="1"><div class="grow"><div class="name">'+GRAMMAR.length+' short notes</div>'+
+     '<button class="row card" data-grammar="1"><div class="grow"><div class="name">'+GRAMMAR.length+' '+(S.lang==='de'?'kurze Notizen':'short notes')+'</div>'+
      '<div class="sub">Word order, gender, postpositions, politeness</div></div><span class="arrow">→</span></button>';
   return h+'</div>';
 }
@@ -1314,7 +1314,7 @@ function viewCards(){
       '<div class="sec"><h2 style="font-size:1.35rem">Flashcards</h2><span class="ur">کارڈ</span></div>'+
       '<p class="muted" style="margin:0 2px">Cards you find hard come back sooner; cards you know drift out to 35 days. '+
       (d>0?'<b>'+d+'</b> are due right now.':'Nothing is due — a session will bring in new words.')+'</p>'+
-      '<button class="btn" data-start="all">Start a session of '+GOAL+'</button>'+
+      '<button class="btn" data-start="all">'+(S.lang==='de'?('Sitzung mit '+GOAL+' starten'):('Start a session of '+GOAL))+'</button>'+
       '<div class="sec"><h2>Or drill one topic</h2></div><div class="card rowlist">'+
       TOPICS.map(function(t){return topicRow(t,'data-start');}).join('')+'</div></div>';
   }
@@ -1322,8 +1322,8 @@ function viewCards(){
     var n=session.done;
     return '<div class="stack" style="text-align:center;padding-top:20px">'+
       '<div class="ur" style="font-size:2.4rem;color:var(--gold)">شاباش</div>'+
-      '<h2 style="font-size:1.5rem">'+n+' card'+(n===1?'':'s')+' reviewed</h2>'+
-      '<p class="muted" style="margin:0">Today: '+S.todayCount+' of '+GOAL+' · Streak: '+shownStreak()+' day'+(shownStreak()===1?'':'s')+'</p>'+
+      '<h2 style="font-size:1.5rem">'+(S.lang==='de'?(n+' '+(n===1?'Karte':'Karten')+' gelernt'):(n+' card'+(n===1?'':'s')+' reviewed'))+'</h2>'+
+      '<p class="muted" style="margin:0">'+(S.lang==='de'?('Heute: '+S.todayCount+' von '+GOAL+' · Serie: '+shownStreak()+' Tag'+(shownStreak()===1?'':'e')):('Today: '+S.todayCount+' of '+GOAL+' · Streak: '+shownStreak()+' day'+(shownStreak()===1?'':'s')))+'</p>'+
       '<button class="btn" data-start="'+(session.topic||'all')+'">Another session</button>'+
       '<button class="btn ghost" data-go="home">Back to home</button></div>';
   }
@@ -1381,7 +1381,7 @@ function viewQuiz(){
     TOPICS.forEach(function(t){
       var best=S.quiz[t.id];
       h+='<button class="row" data-quiz="'+t.id+'"><div class="grow"><div class="name">'+esc(t.name)+'</div>'+
-         '<div class="sub">'+(best!=null?'best '+best+'%':'not attempted')+'</div></div><span class="arrow">→</span></button>';
+         '<div class="sub">'+(best!=null?(S.lang==='de'?'beste ':'best ')+best+'%':t('not attempted'))+'</div></div><span class="arrow">→</span></button>';
     });
     return h+'</div></div>';
   }
@@ -1396,7 +1396,7 @@ function viewQuiz(){
       '<div class="eyebrow">Result</div>'+
       '<h2 style="font-size:1.6rem">'+headline+'</h2>'+
       '<div class="'+(aced?'pop ':'')+'" style="font-family:\'Fredoka\',sans-serif;font-size:3.4rem;font-weight:700;line-height:1;color:'+(aced?'var(--jade)':'var(--ink)')+'">'+pct+'%</div>'+
-      '<p class="muted" style="margin:0">'+quiz.score+' of '+quiz.qs.length+' correct'+
+      '<p class="muted" style="margin:0">'+quiz.score+(S.lang==='de'?' von ':' of ')+quiz.qs.length+(S.lang==='de'?' richtig':' correct')+
         (quiz.topic?' · '+esc(topicById(quiz.topic).name):' · mixed')+'</p>'+
       '<button class="btn" data-quiz="'+(quiz.topic||'all')+'">Try again</button>'+
       '<button class="btn ghost" data-quizmenu="1">Pick another topic</button></div>';
@@ -1408,7 +1408,7 @@ function viewQuiz(){
   var h='<div class="stack">'+
     '<div class="qhead"><span>'+(quiz.i+1)+' / '+quiz.qs.length+'</span>'+
       '<div class="progressbar" style="flex:1"><i style="width:'+(quiz.i/quiz.qs.length*100).toFixed(0)+'%"></i></div>'+
-      '<span>'+quiz.score+' right</span><button class="back-link" data-quizmenu="1">End</button></div>'+
+      '<span>'+quiz.score+' '+(S.lang==='de'?'richtig':'right')+'</span><button class="back-link" data-quizmenu="1">End</button></div>'+
     '<div class="card pad" style="text-align:center">'+
       '<div class="eyebrow">'+(q.dir==='en2ur'?'Which is the Urdu?':'What does this mean?')+'</div>'+
       '<div style="margin-top:8px">'+prompt+'</div></div>'+
@@ -1526,12 +1526,12 @@ function viewGame(){
     return '<div class="stack" style="text-align:center;padding-top:20px">'+
       '<div class="ur" style="font-size:2.4rem;color:var(--gold)">شاباش</div>'+
       '<h2 style="font-size:1.5rem">You matched them all! 🎉</h2>'+
-      '<p class="muted" style="margin:0">'+game.total+' pairs in '+moves+' moves</p>'+
+      '<p class="muted" style="margin:0">'+(S.lang==='de'?(game.total+' Paare in '+moves+' Zügen'):(game.total+' pairs in '+moves+' moves'))+'</p>'+
       '<button class="btn" data-play="'+(game.topic||'all')+'">Play again</button>'+
       '<button class="btn ghost" data-go="home">Back to home</button></div>';
   }
   var h='<div class="stack">'+
-    '<div class="qhead"><span>'+game.done+' / '+game.total+' pairs</span>'+
+    '<div class="qhead"><span>'+game.done+' / '+game.total+' '+(S.lang==='de'?'Paare':'pairs')+'</span>'+
       '<div class="progressbar grow" style="flex:1"><i style="width:'+(game.done/game.total*100).toFixed(0)+'%"></i></div>'+
       '<span>'+game.moves+' moves</span><button class="back-link" data-gamemenu="1">End</button></div>'+
     '<div class="mgrid">';
