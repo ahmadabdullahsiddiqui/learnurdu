@@ -224,6 +224,16 @@ nav.tabs{
 .fb-no{background:var(--gulnar-wash);color:var(--gulnar);border-color:color-mix(in srgb,var(--gulnar) 40%,var(--line));animation:shake .45s both}
 @keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-7px)}40%{transform:translateX(7px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
 @media (prefers-reduced-motion:reduce){.fb-ok,.fb-no{animation:none}}
+.mgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.mcard{aspect-ratio:1;border:2px solid var(--line);border-radius:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:4px;text-align:center;background:var(--surface);box-shadow:var(--shadow);transition:transform .12s;overflow:hidden}
+.mcard:not(.up):not(.done){background:linear-gradient(135deg,#4c6ef5,#9b5de5);border-color:transparent}
+.mcard .mback{color:#fff;font-size:1.7rem;font-family:'Noto Nastaliq Urdu',serif}
+.mcard.up{border-color:var(--gold);animation:pop .3s both}
+.mcard.done{background:var(--jade-wash);border-color:color-mix(in srgb,var(--jade) 40%,var(--line));opacity:.7}
+.mcard .ur{font-size:1.25rem;line-height:1.5}
+.mcard .men{font-weight:600;font-size:.82rem;line-height:1.1;word-break:break-word}
+.mcard:active{transform:scale(.95)}
+@media (max-width:380px){.mcard .men{font-size:.72rem}}
 .forms{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;text-align:center}
 .form{background:var(--sunk);border:1px solid var(--line);border-radius:10px;padding:6px 2px}
 .form .ur{font-size:1.6rem;line-height:2}
@@ -1118,7 +1128,7 @@ function paintChrome(){
 function render(){
   rollDay();paintChrome();
   var v=document.getElementById('view');
-  var html=({home:viewHome,learn:viewLearn,cards:viewCards,quiz:viewQuiz,script:viewScript})[route.tab]();
+  var html=({home:viewHome,learn:viewLearn,cards:viewCards,quiz:viewQuiz,script:viewScript,game:viewGame})[route.tab]();
   v.innerHTML=html;
 }
 
@@ -1163,6 +1173,9 @@ function viewHome(){
   TOPICS.slice(0,6).forEach(function(t){h+=topicRow(t);});
   h+='</div>';
   h+='<button class="btn ghost" data-go="learn">See all '+TOPICS.length+' topics</button>';
+
+  h+='<div class="sec"><h2>Play a game</h2><span class="ur">کھیل</span></div>';
+  h+='<button class="btn" data-go="game" style="background:linear-gradient(135deg,#12b886,#4c6ef5)">🎮 Memory Match — match the words</button>';
 
   h+='<div class="sec"><h2>Pronunciation</h2><span class="ur">تلفظ</span></div>';
   h+=pronCard();
@@ -1458,6 +1471,79 @@ function viewScript0(){
   return h+'</div>';
 }
 
+/* ---- Memory Match game ---- */
+var game=null, gameLock=false;
+function startGame(topicId){
+  var pool=topicId?topicWords(topicId):WORDS.filter(function(w){return w.kind==='word';});
+  var neat=pool.filter(function(w){return w.en.length<=14;});   /* keep cards tidy */
+  if(neat.length>=4)pool=neat;
+  var picks=shuffle(pool.slice()).slice(0,Math.min(6,pool.length));
+  var cards=[];
+  picks.forEach(function(w,i){
+    cards.push({pair:i,type:'ur',w:w});
+    cards.push({pair:i,type:'en',w:w});
+  });
+  shuffle(cards);
+  game={cards:cards,up:[],matched:{},moves:0,done:0,total:picks.length,topic:topicId||null};
+  gameLock=false;
+  go('game');
+}
+function viewGame(){
+  if(!game){
+    var h='<div class="stack"><div class="sec"><h2 style="font-size:1.35rem">Memory Match</h2><span class="ur">جوڑ ملاؤ</span></div>'+
+      '<p class="muted" style="margin:0 2px">Flip two cards and match each Urdu word to its English meaning. Tap a card to hear it!</p>'+
+      '<button class="btn" data-play="all">Mixed — random words</button>'+
+      '<div class="sec"><h2>Or pick a topic</h2></div><div class="card rowlist">'+
+      TOPICS.filter(function(t){return t.kind==='word';}).map(function(t){return topicRow(t,'data-play');}).join('')+'</div></div>';
+    return h;
+  }
+  if(game.done>=game.total){
+    var moves=game.moves;
+    return '<div class="stack" style="text-align:center;padding-top:20px">'+
+      '<div class="ur" style="font-size:2.4rem;color:var(--gold)">شاباش</div>'+
+      '<h2 style="font-size:1.5rem">You matched them all! 🎉</h2>'+
+      '<p class="muted" style="margin:0">'+game.total+' pairs in '+moves+' moves</p>'+
+      '<button class="btn" data-play="'+(game.topic||'all')+'">Play again</button>'+
+      '<button class="btn ghost" data-go="home">Back to home</button></div>';
+  }
+  var h='<div class="stack">'+
+    '<div class="qhead"><span>'+game.done+' / '+game.total+' pairs</span>'+
+      '<div class="progressbar grow" style="flex:1"><i style="width:'+(game.done/game.total*100).toFixed(0)+'%"></i></div>'+
+      '<span>'+game.moves+' moves</span><button class="back-link" data-gamemenu="1">End</button></div>'+
+    '<div class="mgrid">';
+  game.cards.forEach(function(c,i){
+    var isUp=game.up.indexOf(i)>=0, isDone=game.matched[i];
+    var cls='mcard'+(isUp?' up':'')+(isDone?' done':'');
+    var face=isDone||isUp
+      ? (c.type==='ur'?'<span class="ur">'+esc(c.w.ur)+'</span>':'<span class="men">'+esc(c.w.en)+'</span>')
+      : '<span class="mback">؟</span>';
+    h+='<button class="'+cls+'" data-mcard="'+i+'"'+(isDone?' disabled':'')+'>'+face+'</button>';
+  });
+  h+='</div></div>';
+  return h;
+}
+function flipCard(i){
+  if(!game||gameLock)return;
+  if(game.matched[i]||game.up.indexOf(i)>=0)return;
+  game.up.push(i);
+  if(game.cards[i].type==='ur')speak(game.cards[i].w.ur);   /* hear the word */
+  if(game.up.length===2){
+    game.moves++;
+    var a=game.up[0],b=game.up[1];
+    if(game.cards[a].pair===game.cards[b].pair){
+      game.matched[a]=game.matched[b]=true;
+      game.up=[];game.done++;
+      render();
+      if(game.done>=game.total)celebrate();
+      return;
+    }
+    gameLock=true;render();                 /* show both, then flip back */
+    setTimeout(function(){game.up=[];gameLock=false;render();},900);
+    return;
+  }
+  render();
+}
+
 /* ============================ events ============================ */
 function onClick(e){
   var t=e.target;
@@ -1471,6 +1557,9 @@ function onClick(e){
   if((el=t.closest('[data-drill]'))){startSession(el.dataset.drill);return;}
   if((el=t.closest('[data-start]'))){startSession(el.dataset.start==='all'?null:el.dataset.start);return;}
   if((el=t.closest('[data-endsession]'))){session=null;render();return;}
+  if((el=t.closest('[data-play]'))){startGame(el.dataset.play==='all'?null:el.dataset.play);return;}
+  if((el=t.closest('[data-mcard]'))){flipCard(parseInt(el.dataset.mcard,10));return;}
+  if((el=t.closest('[data-gamemenu]'))){game=null;render();return;}
   if((el=t.closest('[data-flip]'))){
     if(!session)return;
     if(!session.flipped){session.flipped=true;render();}

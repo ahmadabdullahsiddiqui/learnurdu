@@ -224,6 +224,16 @@ nav.tabs{
 .fb-no{background:var(--gulnar-wash);color:var(--gulnar);border-color:color-mix(in srgb,var(--gulnar) 40%,var(--line));animation:shake .45s both}
 @keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-7px)}40%{transform:translateX(7px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
 @media (prefers-reduced-motion:reduce){.fb-ok,.fb-no{animation:none}}
+.mgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.mcard{aspect-ratio:1;border:2px solid var(--line);border-radius:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:4px;text-align:center;background:var(--surface);box-shadow:var(--shadow);transition:transform .12s;overflow:hidden}
+.mcard:not(.up):not(.done){background:linear-gradient(135deg,#4c6ef5,#9b5de5);border-color:transparent}
+.mcard .mback{color:#fff;font-size:1.7rem;font-family:'Noto Nastaliq Urdu',serif}
+.mcard.up{border-color:var(--gold);animation:pop .3s both}
+.mcard.done{background:var(--jade-wash);border-color:color-mix(in srgb,var(--jade) 40%,var(--line));opacity:.7}
+.mcard .ur{font-size:1.25rem;line-height:1.5}
+.mcard .men{font-weight:600;font-size:.82rem;line-height:1.1;word-break:break-word}
+.mcard:active{transform:scale(.95)}
+@media (max-width:380px){.mcard .men{font-size:.72rem}}
 .forms{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;text-align:center}
 .form{background:var(--sunk);border:1px solid var(--line);border-radius:10px;padding:6px 2px}
 .form .ur{font-size:1.6rem;line-height:2}
