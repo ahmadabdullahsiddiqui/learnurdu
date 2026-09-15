@@ -3,10 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Roshni Urdu</title>
-<meta name="description" content="Learn Urdu from English - vocabulary, phrases, the nastaliq script and grammar, with flashcards and quizzes that work offline.">
+<title>Ustad - The Urdu Teacher</title>
+<meta name="description" content="Ustad - The Urdu Teacher. Learn Urdu from English - vocabulary, phrases, the nastaliq script and grammar, with flashcards and quizzes that work offline.">
+<meta name="apple-mobile-web-app-title" content="Ustad">
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#1d326c">
+<meta name="theme-color" content="#4c6ef5">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -273,7 +274,7 @@ nav.tabs{
 <header class="bar">
   <div class="bar-in">
     <div class="brand">
-      <h1>Roshni</h1><span class="ur">روشنی</span>
+      <h1>Ustad</h1><span class="ur">استاد</span>
     </div>
     <div class="spacer"></div>
     <span class="chip" id="streakChip">0 day streak</span>
@@ -353,6 +354,112 @@ const TOPICS = [
       ['nineteen', 'انیس', 'unnīs'], ['twenty', 'بیس', 'bīs'],
       ['hundred', 'سو', 'sau'], ['thousand', 'ہزار', 'hazār'],
       ['how many / how much', 'کتنا', 'kitnā']
+    ]
+  },
+  {
+    id: 'numbers100', kind: 'word', name: 'Numbers 1–100', gloss: 'گنتی',
+    blurb: 'Every number from one to a hundred. Each has its own name — there is no shortcut, so practise a few at a time.',
+    items: [
+      ['1', 'ایک', 'ek', 'Urdu numeral: ۱'],
+      ['2', 'دو', 'do', 'Urdu numeral: ۲'],
+      ['3', 'تین', 'tīn', 'Urdu numeral: ۳'],
+      ['4', 'چار', 'chār', 'Urdu numeral: ۴'],
+      ['5', 'پانچ', 'pānch', 'Urdu numeral: ۵'],
+      ['6', 'چھ', 'chhe', 'Urdu numeral: ۶'],
+      ['7', 'سات', 'sāt', 'Urdu numeral: ۷'],
+      ['8', 'آٹھ', 'āṭh', 'Urdu numeral: ۸'],
+      ['9', 'نو', 'nau', 'Urdu numeral: ۹'],
+      ['10', 'دس', 'das', 'Urdu numeral: ۱۰'],
+      ['11', 'گیارہ', 'gyārah', 'Urdu numeral: ۱۱'],
+      ['12', 'بارہ', 'bārah', 'Urdu numeral: ۱۲'],
+      ['13', 'تیرہ', 'terah', 'Urdu numeral: ۱۳'],
+      ['14', 'چودہ', 'chaudah', 'Urdu numeral: ۱۴'],
+      ['15', 'پندرہ', 'pandrah', 'Urdu numeral: ۱۵'],
+      ['16', 'سولہ', 'solah', 'Urdu numeral: ۱۶'],
+      ['17', 'سترہ', 'satrah', 'Urdu numeral: ۱۷'],
+      ['18', 'اٹھارہ', 'aṭhārah', 'Urdu numeral: ۱۸'],
+      ['19', 'انیس', 'unnīs', 'Urdu numeral: ۱۹'],
+      ['20', 'بیس', 'bīs', 'Urdu numeral: ۲۰'],
+      ['21', 'اکیس', 'ikkīs', 'Urdu numeral: ۲۱'],
+      ['22', 'بائیس', 'bāīs', 'Urdu numeral: ۲۲'],
+      ['23', 'تئیس', 'teīs', 'Urdu numeral: ۲۳'],
+      ['24', 'چوبیس', 'chaubīs', 'Urdu numeral: ۲۴'],
+      ['25', 'پچیس', 'pachchīs', 'Urdu numeral: ۲۵'],
+      ['26', 'چھببیس', 'chhabbīs', 'Urdu numeral: ۲۶'],
+      ['27', 'ستائیس', 'sattāīs', 'Urdu numeral: ۲۷'],
+      ['28', 'اٹھائیس', 'aṭhāīs', 'Urdu numeral: ۲۸'],
+      ['29', 'انتیس', 'untīs', 'Urdu numeral: ۲۹'],
+      ['30', 'تیس', 'tīs', 'Urdu numeral: ۳۰'],
+      ['31', 'اکتیس', 'iktīs', 'Urdu numeral: ۳۱'],
+      ['32', 'بتیس', 'battīs', 'Urdu numeral: ۳۲'],
+      ['33', 'تینتیس', 'taiṅtīs', 'Urdu numeral: ۳۳'],
+      ['34', 'چونتیس', 'chauṅtīs', 'Urdu numeral: ۳۴'],
+      ['35', 'پینتیس', 'paiṅtīs', 'Urdu numeral: ۳۵'],
+      ['36', 'چھتیس', 'chhattīs', 'Urdu numeral: ۳۶'],
+      ['37', 'سینتیس', 'saiṅtīs', 'Urdu numeral: ۳۷'],
+      ['38', 'اڑتیس', 'aṛtīs', 'Urdu numeral: ۳۸'],
+      ['39', 'انتالیس', 'untālīs', 'Urdu numeral: ۳۹'],
+      ['40', 'چالیس', 'chālīs', 'Urdu numeral: ۴۰'],
+      ['41', 'اکتالیس', 'iktālīs', 'Urdu numeral: ۴۱'],
+      ['42', 'بیالیس', 'bayālīs', 'Urdu numeral: ۴۲'],
+      ['43', 'تینتالیس', 'taiṅtālīs', 'Urdu numeral: ۴۳'],
+      ['44', 'چوالیس', 'chawālīs', 'Urdu numeral: ۴۴'],
+      ['45', 'پینتالیس', 'paiṅtālīs', 'Urdu numeral: ۴۵'],
+      ['46', 'چھیالیس', 'chhiyālīs', 'Urdu numeral: ۴۶'],
+      ['47', 'سینتالیس', 'saiṅtālīs', 'Urdu numeral: ۴۷'],
+      ['48', 'اڑتالیس', 'aṛtālīs', 'Urdu numeral: ۴۸'],
+      ['49', 'انچاس', 'unchās', 'Urdu numeral: ۴۹'],
+      ['50', 'پچاس', 'pachās', 'Urdu numeral: ۵۰'],
+      ['51', 'اکاون', 'ikāwan', 'Urdu numeral: ۵۱'],
+      ['52', 'باون', 'bāwan', 'Urdu numeral: ۵۲'],
+      ['53', 'ترپن', 'tirpan', 'Urdu numeral: ۵۳'],
+      ['54', 'چون', 'chauwan', 'Urdu numeral: ۵۴'],
+      ['55', 'پچپن', 'pachpan', 'Urdu numeral: ۵۵'],
+      ['56', 'چھپن', 'chhappan', 'Urdu numeral: ۵۶'],
+      ['57', 'ستاون', 'sattāwan', 'Urdu numeral: ۵۷'],
+      ['58', 'اٹھاون', 'aṭhāwan', 'Urdu numeral: ۵۸'],
+      ['59', 'انسٹھ', 'unsaṭh', 'Urdu numeral: ۵۹'],
+      ['60', 'ساٹھ', 'sāṭh', 'Urdu numeral: ۶۰'],
+      ['61', 'اکسٹھ', 'iksaṭh', 'Urdu numeral: ۶۱'],
+      ['62', 'باسٹھ', 'bāsaṭh', 'Urdu numeral: ۶۲'],
+      ['63', 'ترسٹھ', 'tirsaṭh', 'Urdu numeral: ۶۳'],
+      ['64', 'چوسٹھ', 'chauṅsaṭh', 'Urdu numeral: ۶۴'],
+      ['65', 'پینسٹھ', 'paiṅsaṭh', 'Urdu numeral: ۶۵'],
+      ['66', 'چھیاسٹھ', 'chhiyāsaṭh', 'Urdu numeral: ۶۶'],
+      ['67', 'سترسٹھ', 'satsaṭh', 'Urdu numeral: ۶۷'],
+      ['68', 'اڑسٹھ', 'aṛsaṭh', 'Urdu numeral: ۶۸'],
+      ['69', 'انہتر', 'unhattar', 'Urdu numeral: ۶۹'],
+      ['70', 'ستر', 'sattar', 'Urdu numeral: ۷۰'],
+      ['71', 'اکہتر', 'ikhattar', 'Urdu numeral: ۷۱'],
+      ['72', 'بہتر', 'bahattar', 'Urdu numeral: ۷۲'],
+      ['73', 'تہتر', 'tihattar', 'Urdu numeral: ۷۳'],
+      ['74', 'چوہتر', 'chauhattar', 'Urdu numeral: ۷۴'],
+      ['75', 'پچہتر', 'pachhattar', 'Urdu numeral: ۷۵'],
+      ['76', 'چھہتر', 'chhihattar', 'Urdu numeral: ۷۶'],
+      ['77', 'ستہتر', 'sathattar', 'Urdu numeral: ۷۷'],
+      ['78', 'اٹھہتر', 'aṭhhattar', 'Urdu numeral: ۷۸'],
+      ['79', 'اناسی', 'unāsī', 'Urdu numeral: ۷۹'],
+      ['80', 'اسی', 'assī', 'Urdu numeral: ۸۰'],
+      ['81', 'اکیاسی', 'ikyāsī', 'Urdu numeral: ۸۱'],
+      ['82', 'بیاسی', 'bayāsī', 'Urdu numeral: ۸۲'],
+      ['83', 'تراسی', 'tirāsī', 'Urdu numeral: ۸۳'],
+      ['84', 'چوراسی', 'chaurāsī', 'Urdu numeral: ۸۴'],
+      ['85', 'پچاسی', 'pachāsī', 'Urdu numeral: ۸۵'],
+      ['86', 'چھیاسی', 'chhiyāsī', 'Urdu numeral: ۸۶'],
+      ['87', 'ستاسی', 'satāsī', 'Urdu numeral: ۸۷'],
+      ['88', 'اٹھاسی', 'aṭhāsī', 'Urdu numeral: ۸۸'],
+      ['89', 'نواسی', 'nawāsī', 'Urdu numeral: ۸۹'],
+      ['90', 'نوے', 'nawwe', 'Urdu numeral: ۹۰'],
+      ['91', 'اکانوے', 'ikānwe', 'Urdu numeral: ۹۱'],
+      ['92', 'بانوے', 'bānwe', 'Urdu numeral: ۹۲'],
+      ['93', 'ترانوے', 'tirānwe', 'Urdu numeral: ۹۳'],
+      ['94', 'چورانوے', 'chaurānwe', 'Urdu numeral: ۹۴'],
+      ['95', 'پچانوے', 'pachānwe', 'Urdu numeral: ۹۵'],
+      ['96', 'چھیانوے', 'chhiyānwe', 'Urdu numeral: ۹۶'],
+      ['97', 'ستانوے', 'satānwe', 'Urdu numeral: ۹۷'],
+      ['98', 'اٹھانوے', 'aṭhānwe', 'Urdu numeral: ۹۸'],
+      ['99', 'ننانوے', 'ninānwe', 'Urdu numeral: ۹۹'],
+      ['100', 'سو', 'sau', 'Urdu numeral: ۱۰۰']
     ]
   },
   {
@@ -465,7 +572,7 @@ const TOPICS = [
       ['money', 'پیسے', 'paise'],
       ['clothes', 'کپڑے', 'kapṛe'],
       ['shoes', 'جوتے', 'jūte'],
-      ['light', 'روشنی', 'roshnī', 'The app is named for this word.']
+      ['light', 'روشنی', 'roshnī', 'A bright, poetic word.']
     ]
   },
   {
@@ -911,26 +1018,45 @@ function chosenVoice(){
   }
   return urduVoice();
 }
-/* How to enable a spoken voice, shown when none is installed. */
-var NOVOICE_TIP='No Urdu voice is installed on this device, so there is no sound. '+
-  'On Windows the quickest fix is to open this page in Microsoft Edge, which has built-in online Urdu voices. '+
-  'Or install a voice — Windows: Settings › Time & language › Language & region › add Urdu (with the speech option); '+
+/* Shown only when there is no device voice AND online voice is turned off. */
+var NOVOICE_TIP='No Urdu voice on this device and the online voice is off. '+
+  'Turn on “Online voice” below (needs internet), or install a device voice — '+
+  'iPhone/iPad: it has no Urdu voice, so keep the online voice on; '+
   'Android: Settings › System › Languages & input › Text-to-speech; '+
-  'iPhone: Settings › Accessibility › Spoken Content › Voices.';
-function speak(text){
-  if(!window.speechSynthesis){toast('This browser has no speech engine.');return;}
+  'Windows: open the app in Microsoft Edge for built-in Urdu voices.';
+
+/* ---- online voice library (fallback so iPhone etc. get audio) ----
+   Streams spoken Urdu as MP3 from Google Translate's TTS. Needs internet;
+   plays via an <audio> element so it works even where no voice is installed. */
+var onlineAudio=null;
+function onlineAvailable(){return S.online!==false;}
+function speakOnline(text){
   try{
-    if(!VOICES.length)refreshVoices();
-    speechSynthesis.cancel();
-    speechSynthesis.resume(); /* Chrome can leave the queue paused; nudge it */
-    var u=new SpeechSynthesisUtterance(text);
-    var v=chosenVoice();
-    u.lang=v?v.lang:'ur-PK';
-    u.rate=S.slow?0.55:0.8;u.pitch=1;
-    if(v)u.voice=v;
-    speechSynthesis.speak(u);
-    if(!v)toast(NOVOICE_TIP);          /* no usable voice — explain the silence */
-  }catch(e){toast('Speech is unavailable here.');}
+    if(onlineAudio){try{onlineAudio.pause();}catch(e){}}
+    var url='https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=ur&q='+encodeURIComponent(text);
+    onlineAudio=new Audio(url);
+    onlineAudio.playbackRate=S.slow?0.7:1;
+    onlineAudio.onerror=function(){toast('Could not load the online voice — check your internet connection.');};
+    var p=onlineAudio.play();
+    if(p&&p.catch)p.catch(function(){toast('Tap the speaker again to play the audio.');});
+    return true;
+  }catch(e){return false;}
+}
+function speak(text){
+  var v=window.speechSynthesis?chosenVoice():null;
+  if(v){                                  /* a real device Urdu voice — best, offline */
+    try{
+      if(!VOICES.length)refreshVoices();
+      speechSynthesis.cancel();
+      speechSynthesis.resume();           /* Chrome can leave the queue paused */
+      var u=new SpeechSynthesisUtterance(text);
+      u.lang=v.lang;u.voice=v;u.rate=S.slow?0.55:0.8;u.pitch=1;
+      speechSynthesis.speak(u);
+    }catch(e){toast('Speech is unavailable here.');}
+    return;
+  }
+  if(onlineAvailable()){speakOnline(text);return;}   /* no device voice → online (iPhone) */
+  toast(NOVOICE_TIP);
 }
 var toastTimer;
 function toast(msg){
@@ -1037,17 +1163,19 @@ function pronCard(){
     opts+='<option value="'+esc(v.voiceURI)+'"'+(S.voiceURI===v.voiceURI?' selected':'')+'>'+esc(v.name)+' — '+esc(v.lang)+'</option>';
   });
   var v=chosenVoice();
-  var status=v
-    ? '<div class="pstat ok">Ready — using <b>'+esc(v.name)+'</b> ('+esc(v.lang)+')</div>'
-    : '<div class="pstat warn">No Urdu voice found on this device — pronunciation will be silent until you add one.</div>';
+  var online=onlineAvailable();
+  var status;
+  if(v) status='<div class="pstat ok">Ready — using <b>'+esc(v.name)+'</b> ('+esc(v.lang)+')</div>';
+  else if(online) status='<div class="pstat ok">Ready — using the <b>online voice</b> (needs internet). Works on iPhone &amp; iPad. 🌐</div>';
+  else status='<div class="pstat warn">No voice available — turn on the online voice below, or install a device voice.</div>';
   var h='<div class="card pad stack" style="gap:12px">';
   h+=status;
-  h+='<div><div class="eyebrow">Voice</div><select id="voiceSel" class="sel" aria-label="Pronunciation voice" style="margin-top:6px">'+opts+'</select></div>';
+  h+='<div><div class="eyebrow">Device voice</div><select id="voiceSel" class="sel" aria-label="Pronunciation voice" style="margin-top:6px">'+opts+'</select></div>';
   h+='<div class="split">'+
-     '<button class="toggle" data-slow="1" aria-pressed="'+(S.slow?'true':'false')+'">'+(S.slow?'Slow speed · on':'Slow speed')+'</button>'+
-     '<button class="btn slim" data-speak="شکریہ">Test — <span class="ur" style="font-size:1.1rem">شکریہ</span></button></div>';
-  if(!v)
-    h+='<p class="tiny" style="margin:0">On Windows the quickest fix is to open the app in <b>Microsoft Edge</b> — it has built-in online Urdu voices. To install a voice instead — Windows: Settings › Time &amp; language › Language &amp; region › add <b>Urdu</b> (with the speech option); Android: Settings › System › Languages &amp; input › Text-to-speech; iPhone: Settings › Accessibility › Spoken Content › Voices.</p>';
+     '<button class="toggle" data-online="1" aria-pressed="'+(online?'true':'false')+'">'+(online?'Online voice · on 🌐':'Online voice · off')+'</button>'+
+     '<button class="toggle" data-slow="1" aria-pressed="'+(S.slow?'true':'false')+'">'+(S.slow?'Slow speed · on':'Slow speed')+'</button></div>';
+  h+='<button class="btn" data-speak="شکریہ">Test — <span class="ur" style="font-size:1.15rem">شکریہ</span></button>';
+  h+='<p class="tiny" style="margin:0">A device voice (if you have one) is used first and works offline. Otherwise the <b>online voice</b> plays over the internet — the best option on iPhone/iPad, which have no built-in Urdu voice.</p>';
   return h+'</div>';
 }
 function spkBtn(text){
@@ -1056,7 +1184,7 @@ function spkBtn(text){
 }
 var TOPIC_EMOJI={greet:'👋',people:'👨‍👩‍👧',numbers:'🔢',time:'📅',food:'🍎',
   colors:'🎨',body:'🖐️',home:'🏠',travel:'✈️',verbs:'🏃',adj:'🌈',nature:'🌤️',
-  animals:'🐾',school:'🏫',feelings:'😊',play:'⚽',
+  numbers100:'💯',animals:'🐾',school:'🏫',feelings:'😊',play:'⚽',
   intro:'🙋',outabout:'🛍️',smalltalk:'💬'};
 function topicEmoji(id){return TOPIC_EMOJI[id]||'📚';}
 function topicRow(t,attr){
@@ -1310,6 +1438,7 @@ function onClick(e){
   var el;
   if((el=t.closest('[data-speak]'))){speak(el.dataset.speak);return;}
   if((el=t.closest('[data-slow]'))){S.slow=!S.slow;save();render();if(S.slow)speak('شکریہ');return;}
+  if((el=t.closest('[data-online]'))){S.online=!onlineAvailable();save();render();if(onlineAvailable())speak('شکریہ');return;}
   if((el=t.closest('[data-go]'))){go(el.dataset.go);return;}
   if((el=t.closest('[data-topic]'))){go('learn','topic',el.dataset.topic);return;}
   if((el=t.closest('[data-grammar]'))){go('learn','grammar');return;}

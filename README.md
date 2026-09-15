@@ -1,8 +1,10 @@
-# Roshni Urdu — روشنی
+# Ustad — The Urdu Teacher · استاد
 
-An English → Urdu learning app: vocabulary, phrases, the nastaliq script and
-grammar, with spaced‑repetition flashcards and quizzes. It's a single‑file PWA
-that runs from disk, installs to a phone or desktop, and works fully offline.
+A colourful, kid-friendly English → Urdu learning app: vocabulary, phrases, the
+nastaliq script and grammar, with spaced‑repetition flashcards and quizzes. It's
+a single‑file PWA that runs from disk, installs to a phone or desktop, and works
+fully offline. Pronunciation uses the device voice where available and falls
+back to an online voice (great for iPhone/iPad, which have no built-in Urdu voice).
 
 ## ▶ Try it
 
@@ -68,7 +70,7 @@ After editing, rebuild the extension and bump the service‑worker cache:
 
 ```
 node build-extension.mjs          # regenerate extension/
-# then bump CACHE in sw.js (e.g. 'roshni-v3') so installed copies update
+# then bump CACHE in sw.js (e.g. 'ustad-v2') so installed copies update
 ```
 
 Pushing to `main` redeploys the live site automatically via GitHub Pages.

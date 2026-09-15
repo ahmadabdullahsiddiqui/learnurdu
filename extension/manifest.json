@@ -1,11 +1,11 @@
 {
   "manifest_version": 3,
-  "name": "Roshni Urdu — Learn Urdu",
-  "version": "1.0.0",
+  "name": "Ustad - The Urdu Teacher",
+  "version": "1.1.0",
   "description": "Learn Urdu from English — vocabulary, phrases, the script and grammar, with flashcards and quizzes. Works offline.",
   "default_locale": "en",
   "action": {
-    "default_title": "Open Roshni Urdu",
+    "default_title": "Open Ustad - The Urdu Teacher",
     "default_popup": "app.html",
     "default_icon": {
       "192": "icon-192.png",
