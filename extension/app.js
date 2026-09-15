@@ -839,9 +839,13 @@ function viewQuiz(){
     var pct=Math.round(quiz.score/quiz.qs.length*100);
     var key=quiz.topic||'all';
     if(S.quiz[key]==null||pct>S.quiz[key]){S.quiz[key]=pct;save();}
+    var aced=pct===100;
+    var headline=aced?'Perfect! 🎉':(pct>=80?'Great job! 🌟':(pct>=50?'Well done! 👍':'Keep practising! 💪'));
     return '<div class="stack" style="text-align:center;padding-top:20px">'+
+      (aced?'<div class="ur" style="font-size:2.6rem;color:var(--gold);line-height:1.4">شاباش</div>':'')+
       '<div class="eyebrow">Result</div>'+
-      '<div style="font-family:Newsreader,Georgia,serif;font-size:3rem;font-weight:600;line-height:1">'+pct+'%</div>'+
+      '<h2 style="font-size:1.6rem">'+headline+'</h2>'+
+      '<div class="'+(aced?'pop ':'')+'" style="font-family:\'Fredoka\',sans-serif;font-size:3.4rem;font-weight:700;line-height:1;color:'+(aced?'var(--jade)':'var(--ink)')+'">'+pct+'%</div>'+
       '<p class="muted" style="margin:0">'+quiz.score+' of '+quiz.qs.length+' correct'+
         (quiz.topic?' · '+esc(topicById(quiz.topic).name):' · mixed')+'</p>'+
       '<button class="btn" data-quiz="'+(quiz.topic||'all')+'">Try again</button>'+
@@ -969,8 +973,30 @@ function onClick(e){
   }
   if((el=t.closest('[data-next]'))){
     if(!quiz)return;
-    quiz.i++;quiz.picked=null;render();return;
+    quiz.i++;quiz.picked=null;render();
+    if(quiz.i>=quiz.qs.length&&quiz.score===quiz.qs.length)celebrate();
+    return;
   }
+}
+/* Confetti burst for a perfect score. Pure CSS/JS, cleans itself up. */
+function celebrate(){
+  try{
+    var colors=['#ff5d8f','#4c6ef5','#12b886','#f9820b','#9b5de5','#00b8d4','#ffd43b'];
+    var wrap=document.createElement('div');wrap.className='confetti';
+    var html='';
+    for(var i=0;i<110;i++){
+      var c=colors[i%colors.length];
+      var left=Math.round(Math.random()*100);
+      var delay=(Math.random()*0.5).toFixed(2);
+      var dur=(2.6+Math.random()*2).toFixed(2);
+      var x=Math.round(Math.random()*200-100);
+      var r=Math.round(Math.random()*360);
+      var w=6+Math.round(Math.random()*7);
+      html+='<i style="left:'+left+'%;--c:'+c+';--d:'+dur+'s;--delay:'+delay+'s;--x:'+x+'px;--r:'+r+'deg;width:'+w+'px;height:'+Math.round(w*0.6)+'px"></i>';
+    }
+    wrap.innerHTML=html;document.body.appendChild(wrap);
+    setTimeout(function(){wrap.remove();},5200);
+  }catch(e){}
 }
 
 /* ============================ boot ============================ */

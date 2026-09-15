@@ -258,6 +258,16 @@ nav.tabs{
 .card,.hero,.face,.opt,.glyph,.form,.gex{border-width:2px}
 .spk{background:var(--gold-wash);color:var(--gold);border-color:transparent}
 .spk:active{background:var(--gold);color:#fff}
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:80;overflow:hidden}
+.confetti i{position:absolute;top:-16px;display:block;background:var(--c);border-radius:2px;
+  animation:confetti-fall var(--d) var(--delay) linear forwards}
+@keyframes confetti-fall{
+  0%{transform:translate(0,-16px) rotate(0deg);opacity:1}
+  100%{transform:translate(var(--x),105vh) rotate(calc(var(--r) + 900deg));opacity:1}
+}
+.pop{animation:pop .6s cubic-bezier(.2,1.4,.4,1) both}
+@keyframes pop{0%{transform:scale(.3);opacity:0}60%{transform:scale(1.15)}100%{transform:scale(1);opacity:1}}
+@media (prefers-reduced-motion:reduce){.confetti{display:none}.pop{animation:none}}
 </style>
 
 <style>html,body{min-width:390px;min-height:540px}</style>
