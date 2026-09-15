@@ -824,7 +824,7 @@ function ringSvg(frac){
   var r=38,c=2*Math.PI*r;
   return '<svg width="86" height="86" viewBox="0 0 86 86">'+
     '<circle cx="43" cy="43" r="'+r+'" stroke="var(--raise)" stroke-width="7" fill="none"/>'+
-    '<circle cx="43" cy="43" r="'+r+'" stroke="var(--gold)" stroke-width="7" fill="none" stroke-linecap="round"'+
+    '<circle cx="43" cy="43" r="'+r+'" stroke="#0e7d3e" stroke-width="7" fill="none" stroke-linecap="round"'+
     ' stroke-dasharray="'+c.toFixed(1)+'" stroke-dashoffset="'+(c*(1-frac)).toFixed(1)+'"/></svg>';
 }
 function viewHome(){
