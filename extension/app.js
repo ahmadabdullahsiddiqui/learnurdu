@@ -683,9 +683,14 @@ function spkBtn(text){
   return '<button class="spk" data-speak="'+esc(text)+'" aria-label="Play pronunciation">'+
     '<svg viewBox="0 0 24 24"><path d="M11 5 6.5 9H3v6h3.5L11 19z"/><path d="M15.5 9.2a4 4 0 0 1 0 5.6"/><path d="M18.2 6.5a8 8 0 0 1 0 11"/></svg></button>';
 }
+var TOPIC_EMOJI={greet:'👋',people:'👨‍👩‍👧',numbers:'🔢',time:'📅',food:'🍎',
+  colors:'🎨',body:'🖐️',home:'🏠',travel:'✈️',verbs:'🏃',adj:'🌈',nature:'🌤️',
+  intro:'🙋',outabout:'🛍️',smalltalk:'💬'};
+function topicEmoji(id){return TOPIC_EMOJI[id]||'📚';}
 function topicRow(t,attr){
   var m=mastery(t.id);
   return '<button class="row" '+(attr||'data-topic')+'="'+t.id+'">'+
+    '<span class="temoji" aria-hidden="true">'+topicEmoji(t.id)+'</span>'+
     '<div class="grow"><div class="name">'+esc(t.name)+'</div>'+
     '<div class="sub">'+t.items.length+(t.kind==='phrase'?' phrases':' words')+'</div>'+
     '<div class="meter"><i style="width:'+(m*100).toFixed(0)+'%"></i></div></div>'+
@@ -712,7 +717,7 @@ function viewTopic(id){
   var t=topicById(id);if(!t)return viewLearn();
   var m=mastery(id);
   var h='<div class="stack"><button class="back-link" data-go="learn">← All topics</button>';
-  h+='<div><div class="sec"><h2 style="font-size:1.35rem">'+esc(t.name)+'</h2><span class="ur">'+esc(t.gloss)+'</span></div>'+
+  h+='<div><div class="sec"><span style="font-size:1.6rem">'+topicEmoji(id)+'</span><h2 style="font-size:1.35rem">'+esc(t.name)+'</h2><span class="ur">'+esc(t.gloss)+'</span></div>'+
      '<p class="muted" style="margin:6px 2px 0">'+esc(t.blurb)+'</p></div>';
   h+='<div class="card pad" style="display:flex;align-items:center;gap:12px">'+
      '<div class="grow"><div class="eyebrow">Mastery</div><div class="meter" style="margin-top:6px"><i style="width:'+(m*100).toFixed(0)+'%"></i></div></div>'+

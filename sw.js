@@ -1,7 +1,7 @@
 /* Roshni Urdu — offline service worker.
    HTML is network-first so a new version lands on the next online visit;
    everything else is cache-first so the app opens with no connection.     */
-const CACHE = 'roshni-v2';
+const CACHE = 'roshni-v3';
 const ASSETS = [
   "./",
   "./index.html",
@@ -10,6 +10,12 @@ const ASSETS = [
   "./icon-192.png",
   "./icon-512.png",
   "./icon-maskable.png",
+  "./fonts/fredoka-500-latin-ext.woff2",
+  "./fonts/fredoka-500-latin.woff2",
+  "./fonts/fredoka-600-latin-ext.woff2",
+  "./fonts/fredoka-600-latin.woff2",
+  "./fonts/fredoka-700-latin-ext.woff2",
+  "./fonts/fredoka-700-latin.woff2",
   "./fonts/ibm-plex-mono-400-italic-latin-ext.woff2",
   "./fonts/ibm-plex-mono-400-italic-latin.woff2",
   "./fonts/ibm-plex-mono-400-latin-ext.woff2",
