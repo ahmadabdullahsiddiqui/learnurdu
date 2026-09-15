@@ -217,6 +217,13 @@ nav.tabs{
 .glyph small{font-size:.66rem;color:var(--ink3);font-family:'IBM Plex Mono',monospace}
 .spk-sm{width:28px;height:28px}
 .spk-sm svg{width:14px;height:14px}
+.topicart{border-radius:18px;overflow:hidden;border:2px solid var(--line);background:var(--sunk);box-shadow:var(--shadow)}
+.topicart svg{display:block;width:100%;height:auto}
+.fb{font-family:'Fredoka',sans-serif;font-weight:600;font-size:1.15rem;text-align:center;padding:12px;border-radius:14px;border:2px solid var(--line)}
+.fb-ok{background:var(--jade-wash);color:var(--jade);border-color:color-mix(in srgb,var(--jade) 40%,var(--line));animation:pop .5s cubic-bezier(.2,1.4,.4,1) both}
+.fb-no{background:var(--gulnar-wash);color:var(--gulnar);border-color:color-mix(in srgb,var(--gulnar) 40%,var(--line));animation:shake .45s both}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-7px)}40%{transform:translateX(7px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
+@media (prefers-reduced-motion:reduce){.fb-ok,.fb-no{animation:none}}
 .forms{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;text-align:center}
 .form{background:var(--sunk);border:1px solid var(--line);border-radius:10px;padding:6px 2px}
 .form .ur{font-size:1.6rem;line-height:2}
