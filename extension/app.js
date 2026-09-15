@@ -1055,7 +1055,7 @@ function buildQuiz(topicId){
 function viewQuiz(){
   if(!quiz){
     var h='<div class="stack"><div class="sec"><h2 style="font-size:1.35rem">Quiz</h2><span class="ur">امتحان</span></div>'+
-      '<p class="muted" style="margin:0 2px">Ten multiple-choice questions, mixed in both directions.</p>'+
+      '<p class="muted" style="margin:0 2px">'+(S.lang==='de'?'Zehn Multiple-Choice-Fragen, in beide Richtungen gemischt.':'Ten multiple-choice questions, mixed in both directions.')+'</p>'+
       '<button class="btn" data-quiz="all">Mixed quiz — everything</button>'+
       '<div class="sec"><h2>By topic</h2></div><div class="card rowlist">';
     TOPICS.forEach(function(t){
@@ -1159,8 +1159,9 @@ function viewScript(){
 function viewScript0(){
   var h='<div class="stack">'+
     '<div class="sec"><h2 style="font-size:1.35rem">The alphabet</h2><span class="ur">حروفِ تہجی</span></div>'+
-    '<p class="muted" style="margin:0 2px">'+ALPHABET.length+' letters, written right to left in the sloping nastaliq hand. '+
-    'Tap any letter to see how it changes shape at the start, middle and end of a word.</p>'+
+    '<p class="muted" style="margin:0 2px">'+(S.lang==='de'
+      ? ALPHABET.length+' Buchstaben, von rechts nach links im schrägen Nastaliq-Stil geschrieben. Tippe einen Buchstaben an, um zu sehen, wie er am Anfang, in der Mitte und am Ende eines Wortes seine Form ändert.'
+      : ALPHABET.length+' letters, written right to left in the sloping nastaliq hand. Tap any letter to see how it changes shape at the start, middle and end of a word.')+'</p>'+
     '<div class="glyphgrid">';
   ALPHABET.forEach(function(L,i){
     h+='<div class="glyph"><button class="glyphbtn" data-letter="'+i+'"><span class="ur">'+esc(L[0])+'</span><small>'+esc(L[1])+'</small></button>'+
