@@ -38,7 +38,12 @@ const re = /\[\s*'((?:[^'\\]|\\.)*)'\s*,\s*'((?:[^'\\]|\\.)*)'/g;
 const hasArabic = (s) => /[؀-ۿ]/.test(s);
 const set = new Set();
 let m;
-while ((m = re.exec(html))) { if (hasArabic(m[2])) set.add(m[2]); }
+while ((m = re.exec(html))) {
+  // vocab item: ['english', 'اردو', ...] → 2nd string is Urdu
+  if (hasArabic(m[2])) set.add(m[2]);
+  // alphabet item: ['ا', 'alif', ...] → 1st string is a single Urdu letter
+  else if (hasArabic(m[1]) && Array.from(m[1]).length <= 2) set.add(m[1]);
+}
 const words = [...set];
 console.log(`${words.length} unique Urdu strings to voice`);
 

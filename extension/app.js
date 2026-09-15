@@ -1106,7 +1106,8 @@ function viewScript(){
       '<div class="card pad" style="text-align:center">'+
       '<div class="ur" style="font-size:3.2rem;color:var(--lapis-ink);line-height:1.6">'+esc(ch)+'</div>'+
       '<h2 style="font-size:1.3rem">'+esc(L[1])+'</h2>'+
-      '<div class="tl" style="font-size:.95rem">sounds like <b>'+esc(L[2])+'</b></div></div>';
+      '<div class="tl" style="font-size:.95rem">sounds like <b>'+esc(L[2])+'</b></div>'+
+      '<button class="btn slim" data-speak="'+esc(ch)+'" style="margin-top:12px;width:auto">🔊 Hear the letter</button></div>';
     h+='<div class="sec"><h2>How it joins</h2></div><div class="forms">';
     forms.forEach(function(f){h+='<div class="form"><div class="ur">'+esc(f[1])+'</div><small>'+f[0]+'</small></div>';});
     h+='</div>';
@@ -1134,7 +1135,8 @@ function viewScript0(){
     'Tap any letter to see how it changes shape at the start, middle and end of a word.</p>'+
     '<div class="glyphgrid">';
   ALPHABET.forEach(function(L,i){
-    h+='<button class="glyph" data-letter="'+i+'"><span class="ur">'+esc(L[0])+'</span><small>'+esc(L[1])+'</small></button>';
+    h+='<div class="glyph"><button class="glyphbtn" data-letter="'+i+'"><span class="ur">'+esc(L[0])+'</span><small>'+esc(L[1])+'</small></button>'+
+       '<button class="spk spk-sm" data-speak="'+esc(L[0])+'" aria-label="Hear '+esc(L[1])+'"><svg viewBox="0 0 24 24"><path d="M11 5 6.5 9H3v6h3.5L11 19z"/><path d="M15.5 9.2a4 4 0 0 1 0 5.6"/></svg></button></div>';
   });
   h+='</div>';
   h+='<div class="card pad"><div class="eyebrow">Reading tip</div><p class="muted" style="margin:6px 0 0">'+
