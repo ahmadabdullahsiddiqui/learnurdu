@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Roshni Urdu</title>
+<meta name="description" content="Learn Urdu from English - vocabulary, phrases, the nastaliq script and grammar, with flashcards and quizzes that work offline.">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1d326c">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+html{color-scheme:light dark}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html,body{margin:0}
+img{max-width:100%}
+[hidden]{display:none!important}
+</style>
+<link rel="stylesheet" href="fonts.css">
+<style>
+:root{
+  --ground:#edf0f5; --surface:#fff; --raise:#e3e8f1; --sunk:#f6f8fb;
+  --ink:#121826; --ink2:#4d586f; --ink3:#8590a4; --line:#d5dbe5;
+  --lapis:#2c4b99; --lapis-ink:#2c4b99; --lapis-wash:#e0e7fa;
+  --gold:#9d6d15; --gold-wash:#f6ecd6;
+  --jade:#1c6b55; --jade-wash:#dcf0e9;
+  --gulnar:#a52e42; --gulnar-wash:#fae1e5;
+  --on-accent:#fff;
+  --shadow:0 1px 1px rgba(18,24,38,.05),0 10px 24px -16px rgba(18,24,38,.35);
+  --r:14px;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#0d121e; --surface:#161d2c; --raise:#1f2838; --sunk:#111825;
+    --ink:#e8ecf4; --ink2:#a3aec3; --ink3:#727f97; --line:#283245;
+    --lapis:#8aa5ef; --lapis-ink:#b6c6f7; --lapis-wash:#1b2742;
+    --gold:#ddb35e; --gold-wash:#2f2614;
+    --jade:#57c3a1; --jade-wash:#122d28;
+    --gulnar:#ec8394; --gulnar-wash:#33161e;
+    --on-accent:#0d121e;
+    --shadow:0 1px 1px rgba(0,0,0,.4),0 10px 24px -16px rgba(0,0,0,.8);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0d121e; --surface:#161d2c; --raise:#1f2838; --sunk:#111825;
+  --ink:#e8ecf4; --ink2:#a3aec3; --ink3:#727f97; --line:#283245;
+  --lapis:#8aa5ef; --lapis-ink:#b6c6f7; --lapis-wash:#1b2742;
+  --gold:#ddb35e; --gold-wash:#2f2614;
+  --jade:#57c3a1; --jade-wash:#122d28;
+  --gulnar:#ec8394; --gulnar-wash:#33161e;
+  --on-accent:#0d121e;
+  --shadow:0 1px 1px rgba(0,0,0,.4),0 10px 24px -16px rgba(0,0,0,.8);
+}
+
+*{box-sizing:border-box}
+body{
+  background:var(--ground); color:var(--ink);
+  font-family:'IBM Plex Sans',ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+  font-size:15px; line-height:1.5; -webkit-text-size-adjust:100%;
+}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+:focus-visible{outline:2px solid var(--lapis);outline-offset:2px;border-radius:6px}
+h1,h2,h3{margin:0;font-family:Newsreader,Georgia,serif;font-weight:600;text-wrap:balance;letter-spacing:-.01em}
+
+/* ---------- typography roles ---------- */
+.ur{
+  font-family:'Noto Nastaliq Urdu',serif; direction:rtl; unicode-bidi:isolate;
+  line-height:2.45; font-size:1.45rem;
+}
+.tl{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:.82rem;color:var(--ink2);letter-spacing:-.01em}
+.eyebrow{font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3);font-weight:600}
+
+/* ---------- chrome ---------- */
+.bar{
+  position:sticky; top:env(safe-area-inset-top,0px); z-index:20;
+  background:color-mix(in srgb,var(--ground) 88%,transparent);
+  backdrop-filter:blur(12px); border-bottom:1px solid var(--line);
+}
+.bar-in{max-width:760px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:10px}
+.brand{display:flex;align-items:baseline;gap:8px;min-width:0}
+.brand h1{font-size:1.12rem;white-space:nowrap}
+.brand .ur{font-size:1rem;line-height:1;color:var(--gold);opacity:.9}
+.spacer{flex:1}
+.chip{
+  display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border-radius:999px;
+  background:var(--gold-wash);color:var(--gold);font-size:.76rem;font-weight:600;white-space:nowrap;
+}
+.chip.quiet{background:var(--raise);color:var(--ink2)}
+
+main{max-width:760px;margin:0 auto;padding:18px 16px 96px}
+.stack{display:flex;flex-direction:column;gap:14px}
+
+nav.tabs{
+  position:fixed;left:0;right:0;bottom:0;z-index:30;
+  background:color-mix(in srgb,var(--surface) 92%,transparent);
+  backdrop-filter:blur(14px);
+  border-top:1px solid var(--line);
+  padding:6px 8px calc(6px + env(safe-area-inset-bottom,0px));
+}
+.tabs-in{max-width:760px;margin:0 auto;display:grid;grid-template-columns:repeat(5,1fr)}
+.tab{display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 2px;border-radius:10px;color:var(--ink3);font-size:.66rem;font-weight:500}
+.tab svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.tab[aria-current="page"]{color:var(--lapis-ink)}
+.tab[aria-current="page"] svg{stroke-width:2}
+
+/* ---------- surfaces ---------- */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
+.pad{padding:16px}
+.hero{
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
+  box-shadow:var(--shadow);padding:18px;display:flex;gap:18px;align-items:center
+}
+.ring{flex:0 0 auto;position:relative;width:86px;height:86px}
+.ring svg{transform:rotate(-90deg)}
+.ring .val{position:absolute;inset:0;display:grid;place-items:center;text-align:center}
+.ring .val b{font-family:Newsreader,Georgia,serif;font-size:1.5rem;font-weight:600;font-variant-numeric:tabular-nums;display:block;line-height:1}
+.ring .val span{font-size:.6rem;color:var(--ink3);letter-spacing:.1em;text-transform:uppercase}
+
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:11px 16px;border-radius:11px;font-weight:600;font-size:.92rem;
+  background:var(--lapis);color:var(--on-accent);border:1px solid transparent;width:100%
+}
+.btn.ghost{background:var(--surface);color:var(--ink);border-color:var(--line)}
+.btn.slim{width:auto;padding:8px 13px;font-size:.84rem}
+.btn[disabled]{opacity:.45;cursor:default}
+
+.rowlist{display:flex;flex-direction:column}
+.row{
+  display:flex;align-items:center;gap:12px;width:100%;text-align:left;
+  padding:13px 16px;border-bottom:1px solid var(--line)
+}
+.row:last-child{border-bottom:0}
+.row .grow{flex:1;min-width:0}
+.row .name{font-weight:600;font-size:.95rem}
+.row .sub{font-size:.78rem;color:var(--ink3)}
+.row .arrow{color:var(--ink3);flex:0 0 auto}
+.meter{height:4px;border-radius:2px;background:var(--raise);overflow:hidden;margin-top:7px}
+.meter i{display:block;height:100%;background:var(--lapis);border-radius:2px}
+.pct{font-family:'IBM Plex Mono',monospace;font-size:.74rem;color:var(--ink3);font-variant-numeric:tabular-nums;flex:0 0 auto}
+
+.sec{display:flex;align-items:baseline;gap:8px;padding:2px 2px 0}
+.sec h2{font-size:1.02rem}
+.sec .ur{font-size:.92rem;line-height:1;color:var(--gold)}
+
+/* ---------- vocabulary entries ---------- */
+.entry{display:flex;align-items:flex-start;gap:12px;padding:12px 16px;border-bottom:1px solid var(--line)}
+.entry:last-child{border-bottom:0}
+.entry .grow{flex:1;min-width:0}
+.entry .en{font-weight:600;font-size:.93rem}
+.entry .ur{font-size:1.35rem;margin-top:-2px;text-align:right}
+.entry .note{font-size:.76rem;color:var(--ink3);margin-top:4px;border-left:2px solid var(--gold);padding-left:8px}
+.spk{flex:0 0 auto;margin-top:2px;width:36px;height:36px;border-radius:50%;background:var(--sunk);border:1px solid var(--line);display:grid;place-items:center;color:var(--ink2)}
+.spk svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.spk:active{background:var(--lapis-wash)}
+
+/* ---------- flashcard ---------- */
+.deck{perspective:1400px;margin-top:4px}
+.flip{position:relative;width:100%;min-height:290px;transform-style:preserve-3d;transition:transform .45s cubic-bezier(.2,.8,.25,1)}
+.flip.is-back{transform:rotateY(180deg)}
+.face{
+  position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  background:var(--surface);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:24px;text-align:center
+}
+.face.back{transform:rotateY(180deg)}
+.face .prompt{font-family:Newsreader,Georgia,serif;font-size:1.7rem;line-height:1.25}
+.face .ur{font-size:2.1rem}
+.face .hint{font-size:.74rem;color:var(--ink3)}
+@media (prefers-reduced-motion:reduce){.flip{transition:none}}
+.grades{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
+.grade{padding:12px 6px;border-radius:12px;border:1px solid var(--line);background:var(--surface);font-weight:600;font-size:.86rem;display:flex;flex-direction:column;gap:2px;align-items:center}
+.grade small{font-weight:400;font-size:.68rem;color:var(--ink3);font-family:'IBM Plex Mono',monospace}
+.grade.again{color:var(--gulnar);border-color:color-mix(in srgb,var(--gulnar) 35%,var(--line))}
+.grade.good{color:var(--lapis-ink);border-color:color-mix(in srgb,var(--lapis) 35%,var(--line))}
+.grade.easy{color:var(--jade);border-color:color-mix(in srgb,var(--jade) 35%,var(--line))}
+
+.progressbar{height:3px;background:var(--raise);border-radius:2px;overflow:hidden}
+.progressbar i{display:block;height:100%;background:var(--gold);transition:width .3s}
+
+/* ---------- quiz ---------- */
+.opt{
+  display:flex;align-items:center;gap:12px;width:100%;text-align:left;
+  padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--surface)
+}
+.opt .ur{font-size:1.4rem}
+.opt.correct{border-color:var(--jade);background:var(--jade-wash)}
+.opt.wrong{border-color:var(--gulnar);background:var(--gulnar-wash)}
+.opt .mark{margin-left:auto;font-weight:600;font-size:.8rem}
+.qhead{display:flex;align-items:center;gap:10px;font-size:.78rem;color:var(--ink3)}
+
+/* ---------- script ---------- */
+.glyphgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(74px,1fr));gap:8px}
+.glyph{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:8px 4px 6px;display:flex;flex-direction:column;align-items:center;gap:2px}
+.glyph .ur{font-size:1.7rem;line-height:1.9;color:var(--lapis-ink)}
+.glyph small{font-size:.66rem;color:var(--ink3);font-family:'IBM Plex Mono',monospace}
+.forms{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;text-align:center}
+.form{background:var(--sunk);border:1px solid var(--line);border-radius:10px;padding:6px 2px}
+.form .ur{font-size:1.6rem;line-height:2}
+.form small{display:block;font-size:.62rem;color:var(--ink3);letter-spacing:.06em;text-transform:uppercase}
+
+/* ---------- grammar ---------- */
+.gex{display:flex;flex-direction:column;gap:2px;padding:10px 12px;background:var(--sunk);border-radius:10px;border:1px solid var(--line)}
+.gex .ur{font-size:1.3rem}
+.gex .en{font-size:.82rem;color:var(--ink2)}
+
+.toast{
+  position:fixed;left:50%;transform:translateX(-50%);
+  bottom:calc(80px + env(safe-area-inset-bottom,0px));z-index:60;
+  max-width:min(92vw,420px);padding:11px 15px;border-radius:12px;
+  background:var(--ink);color:var(--ground);font-size:.82rem;box-shadow:var(--shadow);
+  opacity:0;pointer-events:none;transition:opacity .25s
+}
+.toast.show{opacity:.97}
+.muted{color:var(--ink2);font-size:.86rem}
+.back-link{display:inline-flex;align-items:center;gap:6px;color:var(--ink3);font-size:.8rem;font-weight:500;padding:2px 0}
+.tiny{font-size:.74rem;color:var(--ink3)}
+.split{display:flex;gap:10px;flex-wrap:wrap}
+.split>*{flex:1 1 150px}
+.sel{width:100%;padding:11px 12px;border-radius:11px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;-webkit-appearance:none;appearance:none}
+.toggle{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:11px 16px;border-radius:11px;font-weight:600;font-size:.92rem;background:var(--surface);color:var(--ink);border:1px solid var(--line);width:100%}
+.toggle[aria-pressed="true"]{background:var(--lapis-wash);color:var(--lapis-ink);border-color:color-mix(in srgb,var(--lapis) 35%,var(--line))}
+</style>
+
+<style>html,body{min-width:390px;min-height:540px}</style>
+<header class="bar">
+  <div class="bar-in">
+    <div class="brand">
+      <h1>Roshni</h1><span class="ur">روشنی</span>
+    </div>
+    <div class="spacer"></div>
+    <span class="chip" id="streakChip">0 day streak</span>
+    <span class="chip quiet" id="dueChip">0 due</span>
+  </div>
+</header>
+
+<main id="view"></main>
+
+<nav class="tabs">
+  <div class="tabs-in" id="tabs"></div>
+</nav>
+
+<div class="toast" id="toast"></div>
+
+<script src="app.js"></script>
+
+</body>
+</html>

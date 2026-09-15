@@ -1,0 +1,10 @@
+# IDE
+.idea/
+
+# Claude Code local settings
+.claude/settings.local.json
+
+# OS / editor cruft
+Thumbs.db
+.DS_Store
+*~
