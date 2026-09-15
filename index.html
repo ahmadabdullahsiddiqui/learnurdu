@@ -1488,7 +1488,10 @@ function viewScript0(){
   });
   h+='</div>';
   h+='<div class="card pad"><div class="eyebrow">Reading tip</div><p class="muted" style="margin:6px 0 0">'+
-     'Short vowels are normally left out. کتاب is written k-t-a-b and read <i>kitaab</i> — you supply the vowels from knowing the word, the way you read “Dr” as “doctor”.</p></div>';
+     (S.lang==='de'
+       ? 'Kurze Vokale werden meist weggelassen. کتاب wird k-t-a-b geschrieben und als <i>kitaab</i> gelesen — du ergänzt die Vokale aus deinem Wissen über das Wort, so wie du „Dr“ als „Doktor“ liest.'
+       : 'Short vowels are normally left out. کتاب is written k-t-a-b and read <i>kitaab</i> — you supply the vowels from knowing the word, the way you read “Dr” as “doctor”.')+
+     '</p></div>';
   return h+'</div>';
 }
 
