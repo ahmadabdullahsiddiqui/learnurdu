@@ -91,6 +91,9 @@ h1,h2,h3{margin:0;font-family:'Fredoka',ui-rounded,'Segoe UI',system-ui,sans-ser
 .bar .flag{display:inline-flex;color:#fff;margin-inline-start:2px}
 .bar .flag svg{width:22px;height:22px;display:block}
 .bar .chip{background:rgba(255,255,255,.92);color:#0a6b34;font-weight:700}
+.langbtn{display:inline-flex;gap:2px;align-items:center;padding:3px 6px;border-radius:999px;background:rgba(255,255,255,.18);line-height:1}
+.langbtn .fl{font-size:1rem;filter:grayscale(1) opacity(.55);transition:filter .15s;transform:scale(.9)}
+.langbtn .fl.on{filter:none;transform:scale(1.12)}
 .bar .chip.quiet{background:rgba(255,255,255,.28);color:#fff}
 .bar-in{max-width:760px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:10px}
 .brand{display:flex;align-items:baseline;gap:8px;min-width:0}
@@ -303,6 +306,7 @@ nav.tabs{
       <span class="flag" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M16 3.2a8.8 8.8 0 1 0 0 17.6 6.9 6.9 0 1 1 0-17.6z" fill="#fff"/><path d="M18.7 7.6l1.15 2.53 2.75.28-2.05 1.85.58 2.71-2.43-1.34-2.43 1.34.58-2.71-2.05-1.85 2.75-.28z" fill="#fff"/></svg></span>
     </div>
     <div class="spacer"></div>
+    <button class="langbtn" id="langBtn" data-lang="1" aria-label="Switch meaning language"></button>
     <span class="chip" id="streakChip">0 day streak</span>
     <span class="chip quiet" id="dueChip">0 due</span>
   </div>
@@ -325,61 +329,61 @@ const TOPICS = [
     id: 'greet', kind: 'word', name: 'Greetings & Courtesy', gloss: 'آداب',
     blurb: 'The first fifteen minutes of any conversation.',
     items: [
-      ['Peace be upon you (hello)', 'السلام علیکم', 'assalām-u-alaikum', 'The standard greeting.'],
-      ['And upon you peace (reply)', 'وعلیکم السلام', 'wa-alaikum assalām', 'The set reply to the greeting.'],
+      ['Peace be upon you (hello)', 'السلام علیکم', 'assalaam-u-alaikum', 'The standard greeting.'],
+      ['And upon you peace (reply)', 'وعلیکم السلام', 'wa-alaikum assalaam', 'The set reply to the greeting.'],
       ['Good morning', 'صبح بخیر', 'subah bakhair'],
       ['Good night', 'شب بخیر', 'shab bakhair'],
-      ['Welcome', 'خوش آمدید', 'khush āmdīd'],
+      ['Welcome', 'خوش آمدید', 'khush aamdeed'],
       ['Thank you', 'شکریہ', 'shukriya'],
       ['Many thanks', 'بہت شکریہ', 'bahut shukriya'],
-      ['Please', 'براہِ کرم', 'barā-e-karam'],
-      ['Sorry / excuse me', 'معاف کیجیے', 'muāf kījiye'],
-      ['Yes', 'جی ہاں', 'jī hāṅ', 'jī adds politeness; hāṅ alone is casual.'],
-      ['No', 'جی نہیں', 'jī nahīṅ'],
-      ['Goodbye', 'خدا حافظ', 'khudā hāfiz', 'Literally “God be your protector”.'],
-      ['How are you?', 'آپ کیسے ہیں؟', 'āp kaise haiṅ?'],
-      ['I am well', 'میں ٹھیک ہوں', 'maiṅ ṭhīk hūṅ'],
-      ['See you again', 'پھر ملیں گے', 'phir mileṅge'],
-      ['Congratulations', 'مبارک ہو', 'mubārak ho']
+      ['Please', 'براہِ کرم', 'bara-e-karam'],
+      ['Sorry / excuse me', 'معاف کیجیے', 'muaaf keejiye'],
+      ['Yes', 'جی ہاں', 'ji haan', 'ji adds politeness; haan alone is casual.'],
+      ['No', 'جی نہیں', 'ji naheen'],
+      ['Goodbye', 'خدا حافظ', 'khuda haafiz', 'Literally “God be your protector”.'],
+      ['How are you?', 'آپ کیسے ہیں؟', 'aap kaise hain?'],
+      ['I am well', 'میں ٹھیک ہوں', 'main theek hoon'],
+      ['See you again', 'پھر ملیں گے', 'phir milenge'],
+      ['Congratulations', 'مبارک ہو', 'mubaarak ho']
     ]
   },
   {
     id: 'people', kind: 'word', name: 'People & Family', gloss: 'خاندان',
     blurb: 'Who everyone is at the dinner table.',
     items: [
-      ['mother', 'ماں', 'māṅ'],
-      ['father', 'باپ', 'bāp'],
-      ['parents', 'والدین', 'wālidain'],
-      ['brother', 'بھائی', 'bhāī'],
+      ['mother', 'ماں', 'maan'],
+      ['father', 'باپ', 'baap'],
+      ['parents', 'والدین', 'waalidain'],
+      ['brother', 'بھائی', 'bhaai'],
       ['sister', 'بہن', 'bahan'],
-      ['son', 'بیٹا', 'beṭā'],
-      ['daughter', 'بیٹی', 'beṭī'],
+      ['son', 'بیٹا', 'beta'],
+      ['daughter', 'بیٹی', 'beti'],
       ['husband', 'شوہر', 'shauhar'],
-      ['wife', 'بیوی', 'bīwī'],
+      ['wife', 'بیوی', 'beewi'],
       ['friend', 'دوست', 'dost'],
       ['child', 'بچہ', 'bachcha'],
-      ['man', 'آدمی', 'ādmī'],
+      ['man', 'آدمی', 'aadmi'],
       ['woman', 'عورت', 'aurat'],
-      ['family', 'خاندان', 'khāndān'],
-      ['grandfather', 'دادا', 'dādā', "Father's father; mother's father is نانا nānā."],
-      ['grandmother', 'دادی', 'dādī', "Father's mother; mother's mother is نانی nānī."],
-      ['teacher', 'استاد', 'ustād'],
-      ['neighbour', 'پڑوسی', 'paṛosī']
+      ['family', 'خاندان', 'khaandaan'],
+      ['grandfather', 'دادا', 'daada', "Father's father; mother's father is نانا naana."],
+      ['grandmother', 'دادی', 'daadi', "Father's mother; mother's mother is نانی naani."],
+      ['teacher', 'استاد', 'ustaad'],
+      ['neighbour', 'پڑوسی', 'parosi']
     ]
   },
   {
     id: 'numbers', kind: 'word', name: 'Numbers', gloss: 'گنتی',
     blurb: 'One to twenty, plus hundred and thousand.',
     items: [
-      ['one', 'ایک', 'ek'], ['two', 'دو', 'do'], ['three', 'تین', 'tīn'],
-      ['four', 'چار', 'chār'], ['five', 'پانچ', 'pānch'], ['six', 'چھ', 'chhe'],
-      ['seven', 'سات', 'sāt'], ['eight', 'آٹھ', 'āṭh'], ['nine', 'نو', 'nau'],
-      ['ten', 'دس', 'das'], ['eleven', 'گیارہ', 'gyārah'], ['twelve', 'بارہ', 'bārah'],
+      ['one', 'ایک', 'ek'], ['two', 'دو', 'do'], ['three', 'تین', 'teen'],
+      ['four', 'چار', 'chaar'], ['five', 'پانچ', 'paanch'], ['six', 'چھ', 'chhe'],
+      ['seven', 'سات', 'saat'], ['eight', 'آٹھ', 'aath'], ['nine', 'نو', 'nau'],
+      ['ten', 'دس', 'das'], ['eleven', 'گیارہ', 'gyaarah'], ['twelve', 'بارہ', 'baarah'],
       ['thirteen', 'تیرہ', 'terah'], ['fourteen', 'چودہ', 'chaudah'], ['fifteen', 'پندرہ', 'pandrah'],
-      ['sixteen', 'سولہ', 'solah'], ['seventeen', 'سترہ', 'satrah'], ['eighteen', 'اٹھارہ', 'aṭhārah'],
-      ['nineteen', 'انیس', 'unnīs'], ['twenty', 'بیس', 'bīs'],
-      ['hundred', 'سو', 'sau'], ['thousand', 'ہزار', 'hazār'],
-      ['how many / how much', 'کتنا', 'kitnā']
+      ['sixteen', 'سولہ', 'solah'], ['seventeen', 'سترہ', 'satrah'], ['eighteen', 'اٹھارہ', 'athaarah'],
+      ['nineteen', 'انیس', 'unnees'], ['twenty', 'بیس', 'bees'],
+      ['hundred', 'سو', 'sau'], ['thousand', 'ہزار', 'hazaar'],
+      ['how many / how much', 'کتنا', 'kitna']
     ]
   },
   {
@@ -388,72 +392,72 @@ const TOPICS = [
     items: [
       ['1', 'ایک', 'ek', 'Urdu numeral: ۱'],
       ['2', 'دو', 'do', 'Urdu numeral: ۲'],
-      ['3', 'تین', 'tīn', 'Urdu numeral: ۳'],
-      ['4', 'چار', 'chār', 'Urdu numeral: ۴'],
-      ['5', 'پانچ', 'pānch', 'Urdu numeral: ۵'],
+      ['3', 'تین', 'teen', 'Urdu numeral: ۳'],
+      ['4', 'چار', 'chaar', 'Urdu numeral: ۴'],
+      ['5', 'پانچ', 'paanch', 'Urdu numeral: ۵'],
       ['6', 'چھ', 'chhe', 'Urdu numeral: ۶'],
-      ['7', 'سات', 'sāt', 'Urdu numeral: ۷'],
-      ['8', 'آٹھ', 'āṭh', 'Urdu numeral: ۸'],
+      ['7', 'سات', 'saat', 'Urdu numeral: ۷'],
+      ['8', 'آٹھ', 'aath', 'Urdu numeral: ۸'],
       ['9', 'نو', 'nau', 'Urdu numeral: ۹'],
       ['10', 'دس', 'das', 'Urdu numeral: ۱۰'],
-      ['11', 'گیارہ', 'gyārah', 'Urdu numeral: ۱۱'],
-      ['12', 'بارہ', 'bārah', 'Urdu numeral: ۱۲'],
+      ['11', 'گیارہ', 'gyaarah', 'Urdu numeral: ۱۱'],
+      ['12', 'بارہ', 'baarah', 'Urdu numeral: ۱۲'],
       ['13', 'تیرہ', 'terah', 'Urdu numeral: ۱۳'],
       ['14', 'چودہ', 'chaudah', 'Urdu numeral: ۱۴'],
       ['15', 'پندرہ', 'pandrah', 'Urdu numeral: ۱۵'],
       ['16', 'سولہ', 'solah', 'Urdu numeral: ۱۶'],
       ['17', 'سترہ', 'satrah', 'Urdu numeral: ۱۷'],
-      ['18', 'اٹھارہ', 'aṭhārah', 'Urdu numeral: ۱۸'],
-      ['19', 'انیس', 'unnīs', 'Urdu numeral: ۱۹'],
-      ['20', 'بیس', 'bīs', 'Urdu numeral: ۲۰'],
-      ['21', 'اکیس', 'ikkīs', 'Urdu numeral: ۲۱'],
-      ['22', 'بائیس', 'bāīs', 'Urdu numeral: ۲۲'],
-      ['23', 'تئیس', 'teīs', 'Urdu numeral: ۲۳'],
-      ['24', 'چوبیس', 'chaubīs', 'Urdu numeral: ۲۴'],
-      ['25', 'پچیس', 'pachchīs', 'Urdu numeral: ۲۵'],
-      ['26', 'چھببیس', 'chhabbīs', 'Urdu numeral: ۲۶'],
-      ['27', 'ستائیس', 'sattāīs', 'Urdu numeral: ۲۷'],
-      ['28', 'اٹھائیس', 'aṭhāīs', 'Urdu numeral: ۲۸'],
-      ['29', 'انتیس', 'untīs', 'Urdu numeral: ۲۹'],
-      ['30', 'تیس', 'tīs', 'Urdu numeral: ۳۰'],
-      ['31', 'اکتیس', 'iktīs', 'Urdu numeral: ۳۱'],
-      ['32', 'بتیس', 'battīs', 'Urdu numeral: ۳۲'],
-      ['33', 'تینتیس', 'taiṅtīs', 'Urdu numeral: ۳۳'],
-      ['34', 'چونتیس', 'chauṅtīs', 'Urdu numeral: ۳۴'],
-      ['35', 'پینتیس', 'paiṅtīs', 'Urdu numeral: ۳۵'],
-      ['36', 'چھتیس', 'chhattīs', 'Urdu numeral: ۳۶'],
-      ['37', 'سینتیس', 'saiṅtīs', 'Urdu numeral: ۳۷'],
-      ['38', 'اڑتیس', 'aṛtīs', 'Urdu numeral: ۳۸'],
-      ['39', 'انتالیس', 'untālīs', 'Urdu numeral: ۳۹'],
-      ['40', 'چالیس', 'chālīs', 'Urdu numeral: ۴۰'],
-      ['41', 'اکتالیس', 'iktālīs', 'Urdu numeral: ۴۱'],
-      ['42', 'بیالیس', 'bayālīs', 'Urdu numeral: ۴۲'],
-      ['43', 'تینتالیس', 'taiṅtālīs', 'Urdu numeral: ۴۳'],
-      ['44', 'چوالیس', 'chawālīs', 'Urdu numeral: ۴۴'],
-      ['45', 'پینتالیس', 'paiṅtālīs', 'Urdu numeral: ۴۵'],
-      ['46', 'چھیالیس', 'chhiyālīs', 'Urdu numeral: ۴۶'],
-      ['47', 'سینتالیس', 'saiṅtālīs', 'Urdu numeral: ۴۷'],
-      ['48', 'اڑتالیس', 'aṛtālīs', 'Urdu numeral: ۴۸'],
-      ['49', 'انچاس', 'unchās', 'Urdu numeral: ۴۹'],
-      ['50', 'پچاس', 'pachās', 'Urdu numeral: ۵۰'],
-      ['51', 'اکاون', 'ikāwan', 'Urdu numeral: ۵۱'],
-      ['52', 'باون', 'bāwan', 'Urdu numeral: ۵۲'],
+      ['18', 'اٹھارہ', 'athaarah', 'Urdu numeral: ۱۸'],
+      ['19', 'انیس', 'unnees', 'Urdu numeral: ۱۹'],
+      ['20', 'بیس', 'bees', 'Urdu numeral: ۲۰'],
+      ['21', 'اکیس', 'ikkees', 'Urdu numeral: ۲۱'],
+      ['22', 'بائیس', 'baaees', 'Urdu numeral: ۲۲'],
+      ['23', 'تئیس', 'teees', 'Urdu numeral: ۲۳'],
+      ['24', 'چوبیس', 'chaubees', 'Urdu numeral: ۲۴'],
+      ['25', 'پچیس', 'pachchees', 'Urdu numeral: ۲۵'],
+      ['26', 'چھببیس', 'chhabbees', 'Urdu numeral: ۲۶'],
+      ['27', 'ستائیس', 'sattaaees', 'Urdu numeral: ۲۷'],
+      ['28', 'اٹھائیس', 'athaaees', 'Urdu numeral: ۲۸'],
+      ['29', 'انتیس', 'untees', 'Urdu numeral: ۲۹'],
+      ['30', 'تیس', 'tees', 'Urdu numeral: ۳۰'],
+      ['31', 'اکتیس', 'iktees', 'Urdu numeral: ۳۱'],
+      ['32', 'بتیس', 'battees', 'Urdu numeral: ۳۲'],
+      ['33', 'تینتیس', 'taintees', 'Urdu numeral: ۳۳'],
+      ['34', 'چونتیس', 'chauntees', 'Urdu numeral: ۳۴'],
+      ['35', 'پینتیس', 'paintees', 'Urdu numeral: ۳۵'],
+      ['36', 'چھتیس', 'chhattees', 'Urdu numeral: ۳۶'],
+      ['37', 'سینتیس', 'saintees', 'Urdu numeral: ۳۷'],
+      ['38', 'اڑتیس', 'artees', 'Urdu numeral: ۳۸'],
+      ['39', 'انتالیس', 'untaalees', 'Urdu numeral: ۳۹'],
+      ['40', 'چالیس', 'chaalees', 'Urdu numeral: ۴۰'],
+      ['41', 'اکتالیس', 'iktaalees', 'Urdu numeral: ۴۱'],
+      ['42', 'بیالیس', 'bayaalees', 'Urdu numeral: ۴۲'],
+      ['43', 'تینتالیس', 'taintaalees', 'Urdu numeral: ۴۳'],
+      ['44', 'چوالیس', 'chawaalees', 'Urdu numeral: ۴۴'],
+      ['45', 'پینتالیس', 'paintaalees', 'Urdu numeral: ۴۵'],
+      ['46', 'چھیالیس', 'chhiyaalees', 'Urdu numeral: ۴۶'],
+      ['47', 'سینتالیس', 'saintaalees', 'Urdu numeral: ۴۷'],
+      ['48', 'اڑتالیس', 'artaalees', 'Urdu numeral: ۴۸'],
+      ['49', 'انچاس', 'unchaas', 'Urdu numeral: ۴۹'],
+      ['50', 'پچاس', 'pachaas', 'Urdu numeral: ۵۰'],
+      ['51', 'اکاون', 'ikaawan', 'Urdu numeral: ۵۱'],
+      ['52', 'باون', 'baawan', 'Urdu numeral: ۵۲'],
       ['53', 'ترپن', 'tirpan', 'Urdu numeral: ۵۳'],
       ['54', 'چون', 'chauwan', 'Urdu numeral: ۵۴'],
       ['55', 'پچپن', 'pachpan', 'Urdu numeral: ۵۵'],
       ['56', 'چھپن', 'chhappan', 'Urdu numeral: ۵۶'],
-      ['57', 'ستاون', 'sattāwan', 'Urdu numeral: ۵۷'],
-      ['58', 'اٹھاون', 'aṭhāwan', 'Urdu numeral: ۵۸'],
-      ['59', 'انسٹھ', 'unsaṭh', 'Urdu numeral: ۵۹'],
-      ['60', 'ساٹھ', 'sāṭh', 'Urdu numeral: ۶۰'],
-      ['61', 'اکسٹھ', 'iksaṭh', 'Urdu numeral: ۶۱'],
-      ['62', 'باسٹھ', 'bāsaṭh', 'Urdu numeral: ۶۲'],
-      ['63', 'ترسٹھ', 'tirsaṭh', 'Urdu numeral: ۶۳'],
-      ['64', 'چوسٹھ', 'chauṅsaṭh', 'Urdu numeral: ۶۴'],
-      ['65', 'پینسٹھ', 'paiṅsaṭh', 'Urdu numeral: ۶۵'],
-      ['66', 'چھیاسٹھ', 'chhiyāsaṭh', 'Urdu numeral: ۶۶'],
-      ['67', 'سترسٹھ', 'satsaṭh', 'Urdu numeral: ۶۷'],
-      ['68', 'اڑسٹھ', 'aṛsaṭh', 'Urdu numeral: ۶۸'],
+      ['57', 'ستاون', 'sattaawan', 'Urdu numeral: ۵۷'],
+      ['58', 'اٹھاون', 'athaawan', 'Urdu numeral: ۵۸'],
+      ['59', 'انسٹھ', 'unsath', 'Urdu numeral: ۵۹'],
+      ['60', 'ساٹھ', 'saath', 'Urdu numeral: ۶۰'],
+      ['61', 'اکسٹھ', 'iksath', 'Urdu numeral: ۶۱'],
+      ['62', 'باسٹھ', 'baasath', 'Urdu numeral: ۶۲'],
+      ['63', 'ترسٹھ', 'tirsath', 'Urdu numeral: ۶۳'],
+      ['64', 'چوسٹھ', 'chaunsath', 'Urdu numeral: ۶۴'],
+      ['65', 'پینسٹھ', 'painsath', 'Urdu numeral: ۶۵'],
+      ['66', 'چھیاسٹھ', 'chhiyaasath', 'Urdu numeral: ۶۶'],
+      ['67', 'سترسٹھ', 'satsath', 'Urdu numeral: ۶۷'],
+      ['68', 'اڑسٹھ', 'arsath', 'Urdu numeral: ۶۸'],
       ['69', 'انہتر', 'unhattar', 'Urdu numeral: ۶۹'],
       ['70', 'ستر', 'sattar', 'Urdu numeral: ۷۰'],
       ['71', 'اکہتر', 'ikhattar', 'Urdu numeral: ۷۱'],
@@ -463,28 +467,28 @@ const TOPICS = [
       ['75', 'پچہتر', 'pachhattar', 'Urdu numeral: ۷۵'],
       ['76', 'چھہتر', 'chhihattar', 'Urdu numeral: ۷۶'],
       ['77', 'ستہتر', 'sathattar', 'Urdu numeral: ۷۷'],
-      ['78', 'اٹھہتر', 'aṭhhattar', 'Urdu numeral: ۷۸'],
-      ['79', 'اناسی', 'unāsī', 'Urdu numeral: ۷۹'],
-      ['80', 'اسی', 'assī', 'Urdu numeral: ۸۰'],
-      ['81', 'اکیاسی', 'ikyāsī', 'Urdu numeral: ۸۱'],
-      ['82', 'بیاسی', 'bayāsī', 'Urdu numeral: ۸۲'],
-      ['83', 'تراسی', 'tirāsī', 'Urdu numeral: ۸۳'],
-      ['84', 'چوراسی', 'chaurāsī', 'Urdu numeral: ۸۴'],
-      ['85', 'پچاسی', 'pachāsī', 'Urdu numeral: ۸۵'],
-      ['86', 'چھیاسی', 'chhiyāsī', 'Urdu numeral: ۸۶'],
-      ['87', 'ستاسی', 'satāsī', 'Urdu numeral: ۸۷'],
-      ['88', 'اٹھاسی', 'aṭhāsī', 'Urdu numeral: ۸۸'],
-      ['89', 'نواسی', 'nawāsī', 'Urdu numeral: ۸۹'],
+      ['78', 'اٹھہتر', 'athhattar', 'Urdu numeral: ۷۸'],
+      ['79', 'اناسی', 'unaasi', 'Urdu numeral: ۷۹'],
+      ['80', 'اسی', 'assi', 'Urdu numeral: ۸۰'],
+      ['81', 'اکیاسی', 'ikyaasi', 'Urdu numeral: ۸۱'],
+      ['82', 'بیاسی', 'bayaasi', 'Urdu numeral: ۸۲'],
+      ['83', 'تراسی', 'tiraasi', 'Urdu numeral: ۸۳'],
+      ['84', 'چوراسی', 'chauraasi', 'Urdu numeral: ۸۴'],
+      ['85', 'پچاسی', 'pachaasi', 'Urdu numeral: ۸۵'],
+      ['86', 'چھیاسی', 'chhiyaasi', 'Urdu numeral: ۸۶'],
+      ['87', 'ستاسی', 'sataasi', 'Urdu numeral: ۸۷'],
+      ['88', 'اٹھاسی', 'athaasi', 'Urdu numeral: ۸۸'],
+      ['89', 'نواسی', 'nawaasi', 'Urdu numeral: ۸۹'],
       ['90', 'نوے', 'nawwe', 'Urdu numeral: ۹۰'],
-      ['91', 'اکانوے', 'ikānwe', 'Urdu numeral: ۹۱'],
-      ['92', 'بانوے', 'bānwe', 'Urdu numeral: ۹۲'],
-      ['93', 'ترانوے', 'tirānwe', 'Urdu numeral: ۹۳'],
-      ['94', 'چورانوے', 'chaurānwe', 'Urdu numeral: ۹۴'],
-      ['95', 'پچانوے', 'pachānwe', 'Urdu numeral: ۹۵'],
-      ['96', 'چھیانوے', 'chhiyānwe', 'Urdu numeral: ۹۶'],
-      ['97', 'ستانوے', 'satānwe', 'Urdu numeral: ۹۷'],
-      ['98', 'اٹھانوے', 'aṭhānwe', 'Urdu numeral: ۹۸'],
-      ['99', 'ننانوے', 'ninānwe', 'Urdu numeral: ۹۹'],
+      ['91', 'اکانوے', 'ikaanwe', 'Urdu numeral: ۹۱'],
+      ['92', 'بانوے', 'baanwe', 'Urdu numeral: ۹۲'],
+      ['93', 'ترانوے', 'tiraanwe', 'Urdu numeral: ۹۳'],
+      ['94', 'چورانوے', 'chauraanwe', 'Urdu numeral: ۹۴'],
+      ['95', 'پچانوے', 'pachaanwe', 'Urdu numeral: ۹۵'],
+      ['96', 'چھیانوے', 'chhiyaanwe', 'Urdu numeral: ۹۶'],
+      ['97', 'ستانوے', 'sataanwe', 'Urdu numeral: ۹۷'],
+      ['98', 'اٹھانوے', 'athaanwe', 'Urdu numeral: ۹۸'],
+      ['99', 'ننانوے', 'ninaanwe', 'Urdu numeral: ۹۹'],
       ['100', 'سو', 'sau', 'Urdu numeral: ۱۰۰']
     ]
   },
@@ -492,25 +496,25 @@ const TOPICS = [
     id: 'time', kind: 'word', name: 'Days & Time', gloss: 'وقت',
     blurb: 'The week runs Monday to Sunday — and کل means both yesterday and tomorrow.',
     items: [
-      ['Monday', 'پیر', 'pīr'],
+      ['Monday', 'پیر', 'peer'],
       ['Tuesday', 'منگل', 'mangal'],
       ['Wednesday', 'بدھ', 'budh'],
-      ['Thursday', 'جمعرات', 'jumerāt'],
+      ['Thursday', 'جمعرات', 'jumeraat'],
       ['Friday', 'جمعہ', 'juma'],
       ['Saturday', 'ہفتہ', 'hafta', 'The same word also means “week”.'],
-      ['Sunday', 'اتوار', 'itwār'],
-      ['today', 'آج', 'āj'],
+      ['Sunday', 'اتوار', 'itwaar'],
+      ['today', 'آج', 'aaj'],
       ['tomorrow', 'کل', 'kal', 'Context decides: kal is tomorrow *and* yesterday.'],
       ['yesterday', 'کل', 'kal', 'Same word as tomorrow — the verb tense tells you which.'],
-      ['now', 'ابھی', 'abhī'],
+      ['now', 'ابھی', 'abhi'],
       ['day', 'دن', 'din'],
-      ['night', 'رات', 'rāt'],
+      ['night', 'رات', 'raat'],
       ['morning', 'صبح', 'subah'],
-      ['evening', 'شام', 'shām'],
-      ['month', 'مہینہ', 'mahīna'],
-      ['year', 'سال', 'sāl'],
-      ['hour', 'گھنٹہ', 'ghanṭa'],
-      ['minute', 'منٹ', 'minaṭ'],
+      ['evening', 'شام', 'shaam'],
+      ['month', 'مہینہ', 'maheena'],
+      ['year', 'سال', 'saal'],
+      ['hour', 'گھنٹہ', 'ghanta'],
+      ['minute', 'منٹ', 'minat'],
       ['time', 'وقت', 'waqt']
     ]
   },
@@ -518,26 +522,26 @@ const TOPICS = [
     id: 'food', kind: 'word', name: 'Food & Drink', gloss: 'کھانا',
     blurb: 'Enough to order, refuse and compliment a meal.',
     items: [
-      ['water', 'پانی', 'pānī'],
-      ['bread (flatbread)', 'روٹی', 'roṭī'],
-      ['rice', 'چاول', 'chāwal'],
+      ['water', 'پانی', 'paani'],
+      ['bread (flatbread)', 'روٹی', 'roti'],
+      ['rice', 'چاول', 'chaawal'],
       ['meat', 'گوشت', 'gosht'],
-      ['chicken', 'مرغی', 'murghī'],
-      ['fish', 'مچھلی', 'machhlī'],
-      ['egg', 'انڈا', 'anḍā'],
-      ['milk', 'دودھ', 'dūdh'],
-      ['tea', 'چائے', 'chāy'],
-      ['vegetable', 'سبزی', 'sabzī'],
+      ['chicken', 'مرغی', 'murghi'],
+      ['fish', 'مچھلی', 'machhli'],
+      ['egg', 'انڈا', 'anda'],
+      ['milk', 'دودھ', 'doodh'],
+      ['tea', 'چائے', 'chaay'],
+      ['vegetable', 'سبزی', 'sabzi'],
       ['fruit', 'پھل', 'phal'],
       ['apple', 'سیب', 'seb'],
-      ['mango', 'آم', 'ām'],
+      ['mango', 'آم', 'aam'],
       ['salt', 'نمک', 'namak'],
-      ['sugar', 'چینی', 'chīnī', 'The same word means “Chinese”.'],
+      ['sugar', 'چینی', 'cheeni', 'The same word means “Chinese”.'],
       ['oil', 'تیل', 'tel'],
-      ['food / meal', 'کھانا', 'khānā', 'Also the verb “to eat”.'],
-      ['hungry', 'بھوکا', 'bhūkā'],
-      ['thirsty', 'پیاسا', 'pyāsā'],
-      ['delicious', 'مزیدار', 'mazedār']
+      ['food / meal', 'کھانا', 'khaana', 'Also the verb “to eat”.'],
+      ['hungry', 'بھوکا', 'bhooka'],
+      ['thirsty', 'پیاسا', 'pyaasa'],
+      ['delicious', 'مزیدار', 'mazedaar']
     ]
   },
   {
@@ -546,16 +550,16 @@ const TOPICS = [
     items: [
       ['colour', 'رنگ', 'rang'],
       ['red', 'سرخ', 'surkh'],
-      ['blue', 'نیلا', 'nīlā'],
+      ['blue', 'نیلا', 'neela'],
       ['green', 'سبز', 'sabz'],
-      ['yellow', 'پیلا', 'pīlā'],
-      ['black', 'کالا', 'kālā'],
+      ['yellow', 'پیلا', 'peela'],
+      ['black', 'کالا', 'kaala'],
       ['white', 'سفید', 'safed'],
-      ['brown', 'بھورا', 'bhūrā'],
-      ['orange', 'نارنجی', 'nāranjī'],
-      ['pink', 'گلابی', 'gulābī', 'From گلاب gulāb, “rose”.'],
-      ['grey', 'سرمئی', 'surmaī'],
-      ['purple', 'جامنی', 'jāmnī']
+      ['brown', 'بھورا', 'bhoora'],
+      ['orange', 'نارنجی', 'naaranji'],
+      ['pink', 'گلابی', 'gulaabi', 'From گلاب gulaab, “rose”.'],
+      ['grey', 'سرمئی', 'surmai'],
+      ['purple', 'جامنی', 'jaamni']
     ]
   },
   {
@@ -563,18 +567,18 @@ const TOPICS = [
     blurb: 'Head to foot — useful at the doctor and in idioms.',
     items: [
       ['head', 'سر', 'sar'],
-      ['hair', 'بال', 'bāl'],
-      ['eye', 'آنکھ', 'āṅkh'],
-      ['ear', 'کان', 'kān'],
-      ['nose', 'ناک', 'nāk'],
-      ['mouth', 'منہ', 'muṅh'],
-      ['tooth', 'دانت', 'dānt'],
-      ['hand / arm', 'ہاتھ', 'hāth'],
-      ['foot / leg', 'پاؤں', 'pāoṅ'],
+      ['hair', 'بال', 'baal'],
+      ['eye', 'آنکھ', 'aankh'],
+      ['ear', 'کان', 'kaan'],
+      ['nose', 'ناک', 'naak'],
+      ['mouth', 'منہ', 'munh'],
+      ['tooth', 'دانت', 'daant'],
+      ['hand / arm', 'ہاتھ', 'haath'],
+      ['foot / leg', 'پاؤں', 'paaon'],
       ['heart', 'دل', 'dil', 'Carries the sense of “mind, feeling” too.'],
-      ['stomach', 'پیٹ', 'peṭ'],
+      ['stomach', 'پیٹ', 'pet'],
       ['back', 'کمر', 'kamar'],
-      ['finger', 'انگلی', 'unglī'],
+      ['finger', 'انگلی', 'ungli'],
       ['face', 'چہرہ', 'chehra'],
       ['body', 'جسم', 'jism']
     ]
@@ -584,21 +588,21 @@ const TOPICS = [
     blurb: 'The objects within arm’s reach.',
     items: [
       ['house / home', 'گھر', 'ghar'],
-      ['door', 'دروازہ', 'darwāza'],
-      ['window', 'کھڑکی', 'khiṛkī'],
+      ['door', 'دروازہ', 'darwaaza'],
+      ['window', 'کھڑکی', 'khirki'],
       ['room', 'کمرہ', 'kamra'],
-      ['kitchen', 'باورچی خانہ', 'bāwarchī khāna'],
+      ['kitchen', 'باورچی خانہ', 'baawarchi khaana'],
       ['table', 'میز', 'mez'],
-      ['chair', 'کرسی', 'kursī'],
+      ['chair', 'کرسی', 'kursi'],
       ['bed', 'بستر', 'bistar'],
-      ['key', 'چابی', 'chābī'],
-      ['book', 'کتاب', 'kitāb'],
+      ['key', 'چابی', 'chaabi'],
+      ['book', 'کتاب', 'kitaab'],
       ['pen', 'قلم', 'qalam'],
       ['phone', 'فون', 'fon'],
       ['money', 'پیسے', 'paise'],
-      ['clothes', 'کپڑے', 'kapṛe'],
-      ['shoes', 'جوتے', 'jūte'],
-      ['light', 'روشنی', 'roshnī', 'A bright, poetic word.']
+      ['clothes', 'کپڑے', 'kapre'],
+      ['shoes', 'جوتے', 'joote'],
+      ['light', 'روشنی', 'roshni', 'A bright, poetic word.']
     ]
   },
   {
@@ -606,72 +610,72 @@ const TOPICS = [
     blurb: 'Getting from the airport to the right street.',
     items: [
       ['city', 'شہر', 'shahr'],
-      ['village', 'گاؤں', 'gāoṅ'],
-      ['road / street', 'سڑک', 'saṛak'],
-      ['station', 'اسٹیشن', 'sṭeshan'],
-      ['airport', 'ہوائی اڈا', 'hawāī aḍḍā', 'Literally “air stand”.'],
-      ['train', 'ٹرین', 'ṭren'],
+      ['village', 'گاؤں', 'gaaon'],
+      ['road / street', 'سڑک', 'sarak'],
+      ['station', 'اسٹیشن', 'steshan'],
+      ['airport', 'ہوائی اڈا', 'hawaai adda', 'Literally “air stand”.'],
+      ['train', 'ٹرین', 'tren'],
       ['bus', 'بس', 'bas'],
-      ['car', 'گاڑی', 'gāṛī'],
-      ['ticket', 'ٹکٹ', 'ṭikaṭ'],
-      ['left', 'بائیں', 'bāeṅ'],
-      ['right', 'دائیں', 'dāeṅ'],
-      ['straight ahead', 'سیدھا', 'sīdhā'],
-      ['near', 'قریب', 'qarīb'],
-      ['far', 'دور', 'dūr'],
-      ['here', 'یہاں', 'yahāṅ'],
-      ['there', 'وہاں', 'wahāṅ'],
-      ['market', 'بازار', 'bāzār'],
-      ['hotel', 'ہوٹل', 'hoṭal']
+      ['car', 'گاڑی', 'gaari'],
+      ['ticket', 'ٹکٹ', 'tikat'],
+      ['left', 'بائیں', 'baaen'],
+      ['right', 'دائیں', 'daaen'],
+      ['straight ahead', 'سیدھا', 'seedha'],
+      ['near', 'قریب', 'qareeb'],
+      ['far', 'دور', 'door'],
+      ['here', 'یہاں', 'yahaan'],
+      ['there', 'وہاں', 'wahaan'],
+      ['market', 'بازار', 'baazaar'],
+      ['hotel', 'ہوٹل', 'hotal']
     ]
   },
   {
     id: 'verbs', kind: 'word', name: 'Everyday Verbs', gloss: 'افعال',
-    blurb: 'Dictionary forms all end in ‑نا ‑nā.',
+    blurb: 'Dictionary forms all end in -نا -na.',
     items: [
-      ['to go', 'جانا', 'jānā'],
-      ['to come', 'آنا', 'ānā'],
-      ['to eat', 'کھانا', 'khānā'],
-      ['to drink', 'پینا', 'pīnā'],
-      ['to do / to make', 'کرنا', 'karnā'],
-      ['to see / to look', 'دیکھنا', 'dekhnā'],
-      ['to say', 'کہنا', 'kahnā'],
-      ['to listen / to hear', 'سننا', 'sunnā'],
-      ['to read / to study', 'پڑھنا', 'paṛhnā'],
-      ['to write', 'لکھنا', 'likhnā'],
-      ['to sleep', 'سونا', 'sonā'],
-      ['to sit', 'بیٹھنا', 'baiṭhnā'],
-      ['to buy', 'خریدنا', 'kharīdnā'],
-      ['to give', 'دینا', 'denā'],
-      ['to take', 'لینا', 'lenā'],
-      ['to understand', 'سمجھنا', 'samajhnā'],
-      ['to work', 'کام کرنا', 'kām karnā'],
-      ['to learn', 'سیکھنا', 'sīkhnā'],
-      ['to speak', 'بولنا', 'bolnā'],
-      ['to want / to need', 'چاہنا', 'chāhnā']
+      ['to go', 'جانا', 'jaana'],
+      ['to come', 'آنا', 'aana'],
+      ['to eat', 'کھانا', 'khaana'],
+      ['to drink', 'پینا', 'peena'],
+      ['to do / to make', 'کرنا', 'karna'],
+      ['to see / to look', 'دیکھنا', 'dekhna'],
+      ['to say', 'کہنا', 'kahna'],
+      ['to listen / to hear', 'سننا', 'sunna'],
+      ['to read / to study', 'پڑھنا', 'parhna'],
+      ['to write', 'لکھنا', 'likhna'],
+      ['to sleep', 'سونا', 'sona'],
+      ['to sit', 'بیٹھنا', 'baithna'],
+      ['to buy', 'خریدنا', 'khareedna'],
+      ['to give', 'دینا', 'dena'],
+      ['to take', 'لینا', 'lena'],
+      ['to understand', 'سمجھنا', 'samajhna'],
+      ['to work', 'کام کرنا', 'kaam karna'],
+      ['to learn', 'سیکھنا', 'seekhna'],
+      ['to speak', 'بولنا', 'bolna'],
+      ['to want / to need', 'چاہنا', 'chaahna']
     ]
   },
   {
     id: 'adj', kind: 'word', name: 'Describing Things', gloss: 'صفات',
     blurb: 'Mostly opposites, mostly in pairs.',
     items: [
-      ['big', 'بڑا', 'baṛā'],
-      ['small', 'چھوٹا', 'chhoṭā'],
-      ['good', 'اچھا', 'achchhā'],
-      ['bad', 'برا', 'burā'],
-      ['new', 'نیا', 'nayā'],
-      ['old', 'پرانا', 'purānā'],
+      ['big', 'بڑا', 'bara'],
+      ['small', 'چھوٹا', 'chhota'],
+      ['good', 'اچھا', 'achchha'],
+      ['bad', 'برا', 'bura'],
+      ['new', 'نیا', 'naya'],
+      ['old', 'پرانا', 'puraana'],
       ['hot', 'گرم', 'garam'],
-      ['cold', 'ٹھنڈا', 'ṭhanḍā'],
-      ['easy', 'آسان', 'āsān'],
+      ['cold', 'ٹھنڈا', 'thanda'],
+      ['easy', 'آسان', 'aasaan'],
       ['difficult', 'مشکل', 'mushkil'],
-      ['beautiful', 'خوبصورت', 'khūbsūrat'],
-      ['expensive', 'مہنگا', 'mahngā'],
-      ['cheap', 'سستا', 'sastā'],
+      ['beautiful', 'خوبصورت', 'khoobsoorat'],
+      ['expensive', 'مہنگا', 'mahnga'],
+      ['cheap', 'سستا', 'sasta'],
       ['fast', 'تیز', 'tez'],
-      ['slow', 'آہستہ', 'āhista'],
+      ['slow', 'آہستہ', 'aahista'],
       ['a lot / very', 'بہت', 'bahut'],
-      ['a little', 'تھوڑا', 'thoṛā'],
+      ['a little', 'تھوڑا', 'thora'],
       ['true', 'سچ', 'sach']
     ]
   },
@@ -679,20 +683,20 @@ const TOPICS = [
     id: 'nature', kind: 'word', name: 'Weather & Nature', gloss: 'موسم',
     blurb: 'The vocabulary of Urdu poetry, as it happens.',
     items: [
-      ['sun', 'سورج', 'sūraj'],
-      ['moon', 'چاند', 'chānd'],
-      ['star', 'ستارہ', 'sitāra'],
-      ['sky', 'آسمان', 'āsmān'],
-      ['rain', 'بارش', 'bārish'],
-      ['wind / air', 'ہوا', 'hawā'],
-      ['cloud', 'بادل', 'bādal'],
+      ['sun', 'سورج', 'sooraj'],
+      ['moon', 'چاند', 'chaand'],
+      ['star', 'ستارہ', 'sitaara'],
+      ['sky', 'آسمان', 'aasmaan'],
+      ['rain', 'بارش', 'baarish'],
+      ['wind / air', 'ہوا', 'hawa'],
+      ['cloud', 'بادل', 'baadal'],
       ['tree', 'درخت', 'darakht'],
-      ['flower', 'پھول', 'phūl'],
-      ['river', 'دریا', 'daryā'],
-      ['mountain', 'پہاڑ', 'pahāṛ'],
+      ['flower', 'پھول', 'phool'],
+      ['river', 'دریا', 'darya'],
+      ['mountain', 'پہاڑ', 'pahaar'],
       ['sea', 'سمندر', 'samundar'],
-      ['ground / land', 'زمین', 'zamīn'],
-      ['fire', 'آگ', 'āg'],
+      ['ground / land', 'زمین', 'zameen'],
+      ['fire', 'آگ', 'aag'],
       ['snow / ice', 'برف', 'barf'],
       ['weather / season', 'موسم', 'mausam']
     ]
@@ -701,42 +705,42 @@ const TOPICS = [
     id: 'animals', kind: 'word', name: 'Animals', gloss: 'جانور',
     blurb: 'Pets, farm animals and a few from the jungle.',
     items: [
-      ['dog', 'کتا', 'kuttā'],
-      ['cat', 'بلی', 'billī'],
-      ['cow', 'گائے', 'gāy'],
-      ['horse', 'گھوڑا', 'ghoṛā'],
-      ['goat', 'بکری', 'bakrī'],
-      ['sheep', 'بھیڑ', 'bheṛ'],
-      ['donkey', 'گدھا', 'gadhā'],
-      ['hen', 'مرغی', 'murghī'],
+      ['dog', 'کتا', 'kutta'],
+      ['cat', 'بلی', 'billi'],
+      ['cow', 'گائے', 'gaay'],
+      ['horse', 'گھوڑا', 'ghora'],
+      ['goat', 'بکری', 'bakri'],
+      ['sheep', 'بھیڑ', 'bher'],
+      ['donkey', 'گدھا', 'gadha'],
+      ['hen', 'مرغی', 'murghi'],
       ['bird', 'پرندہ', 'parinda'],
       ['lion', 'شیر', 'sher', 'The same word is used for “tiger” in everyday speech.'],
-      ['elephant', 'ہاتھی', 'hāthī'],
+      ['elephant', 'ہاتھی', 'haathi'],
       ['monkey', 'بندر', 'bandar'],
       ['rabbit', 'خرگوش', 'khargosh'],
-      ['mouse', 'چوہا', 'chūhā'],
-      ['snake', 'سانپ', 'sāṅp'],
-      ['fish', 'مچھلی', 'machhlī']
+      ['mouse', 'چوہا', 'chooha'],
+      ['snake', 'سانپ', 'saanp'],
+      ['fish', 'مچھلی', 'machhli']
     ]
   },
   {
     id: 'school', kind: 'word', name: 'At School', gloss: 'اسکول',
     blurb: 'Everything in the classroom and the school bag.',
     items: [
-      ['school', 'اسکول', 'skūl'],
-      ['student', 'طالب علم', 'tālib-e-ilm'],
-      ['teacher', 'استاد', 'ustād'],
-      ['book', 'کتاب', 'kitāb'],
-      ['notebook', 'کاپی', 'kāpī'],
+      ['school', 'اسکول', 'skool'],
+      ['student', 'طالب علم', 'taalib-e-ilm'],
+      ['teacher', 'استاد', 'ustaad'],
+      ['book', 'کتاب', 'kitaab'],
+      ['notebook', 'کاپی', 'kaapi'],
       ['pen', 'قلم', 'qalam'],
       ['pencil', 'پنسل', 'pinsil'],
-      ['paper', 'کاغذ', 'kāghaz'],
+      ['paper', 'کاغذ', 'kaaghaz'],
       ['school bag', 'بستہ', 'basta'],
       ['lesson', 'سبق', 'sabaq'],
-      ['question', 'سوال', 'sawāl'],
-      ['answer', 'جواب', 'jawāb'],
+      ['question', 'سوال', 'sawaal'],
+      ['answer', 'جواب', 'jawaab'],
       ['word', 'لفظ', 'lafz'],
-      ['language', 'زبان', 'zabān', 'Also means “tongue”.']
+      ['language', 'زبان', 'zabaan', 'Also means “tongue”.']
     ]
   },
   {
@@ -744,36 +748,36 @@ const TOPICS = [
     blurb: 'How you feel today — good for talking about the day.',
     items: [
       ['happy', 'خوش', 'khush'],
-      ['sad', 'اداس', 'udās'],
-      ['angry / upset', 'ناراض', 'nārāz'],
-      ['afraid', 'ڈرا ہوا', 'ḍarā huā', 'A girl says ڈری ہوئی ḍarī huī.'],
-      ['tired', 'تھکا ہوا', 'thakā huā'],
-      ['hungry', 'بھوکا', 'bhūkā'],
-      ['thirsty', 'پیاسا', 'pyāsā'],
-      ['surprised', 'حیران', 'hairān'],
+      ['sad', 'اداس', 'udaas'],
+      ['angry / upset', 'ناراض', 'naaraaz'],
+      ['afraid', 'ڈرا ہوا', 'dara hua', 'A girl says ڈری ہوئی dari hui.'],
+      ['tired', 'تھکا ہوا', 'thaka hua'],
+      ['hungry', 'بھوکا', 'bhooka'],
+      ['thirsty', 'پیاسا', 'pyaasa'],
+      ['surprised', 'حیران', 'hairaan'],
       ['bored', 'بور', 'bor'],
       ['love', 'محبت', 'muhabbat'],
-      ['to laugh', 'ہنسنا', 'haṅsnā'],
-      ['to cry', 'رونا', 'ronā']
+      ['to laugh', 'ہنسنا', 'hansna'],
+      ['to cry', 'رونا', 'rona']
     ]
   },
   {
     id: 'play', kind: 'word', name: 'Play & Sports', gloss: 'کھیل',
     blurb: 'Games, toys and things to do outside.',
     items: [
-      ['to play', 'کھیلنا', 'khelnā'],
+      ['to play', 'کھیلنا', 'khelna'],
       ['game', 'کھیل', 'khel'],
-      ['toy', 'کھلونا', 'khilaunā'],
+      ['toy', 'کھلونا', 'khilauna'],
       ['ball', 'گیند', 'gend'],
       ['kite', 'پتنگ', 'patang'],
       ['cricket', 'کرکٹ', 'kriket'],
-      ['football', 'فٹبال', 'fuṭbāl'],
-      ['swimming', 'تیراکی', 'terākī'],
-      ['park', 'پارک', 'pārk'],
-      ['to run', 'دوڑنا', 'dauṛnā'],
-      ['to jump', 'کودنا', 'kūdnā'],
-      ['to win', 'جیتنا', 'jītnā'],
-      ['to lose', 'ہارنا', 'hārnā']
+      ['football', 'فٹبال', 'futbaal'],
+      ['swimming', 'تیراکی', 'teraaki'],
+      ['park', 'پارک', 'paark'],
+      ['to run', 'دوڑنا', 'daurna'],
+      ['to jump', 'کودنا', 'koodna'],
+      ['to win', 'جیتنا', 'jeetna'],
+      ['to lose', 'ہارنا', 'haarna']
     ]
   },
 
@@ -782,54 +786,54 @@ const TOPICS = [
     id: 'intro', kind: 'phrase', name: 'Introducing Yourself', gloss: 'تعارف',
     blurb: 'Name, origin, and admitting you are still learning.',
     items: [
-      ['My name is …', 'میرا نام … ہے', 'merā nām … hai'],
-      ['What is your name?', 'آپ کا نام کیا ہے؟', 'āp kā nām kyā hai?'],
-      ['I am from Germany', 'میں جرمنی سے ہوں', 'maiṅ jarmanī se hūṅ'],
-      ['Where are you from?', 'آپ کہاں سے ہیں؟', 'āp kahāṅ se haiṅ?'],
-      ['Pleased to meet you', 'آپ سے مل کر خوشی ہوئی', 'āp se mil kar khushī huī'],
-      ['I am learning Urdu', 'میں اردو سیکھ رہا ہوں', 'maiṅ urdū sīkh rahā hūṅ', 'A woman says سیکھ رہی ہوں sīkh rahī hūṅ.'],
-      ['I do not speak Urdu well', 'میں اچھی اردو نہیں بولتا', 'maiṅ achchhī urdū nahīṅ boltā'],
-      ['Do you speak English?', 'کیا آپ انگریزی بولتے ہیں؟', 'kyā āp angrezī bolte haiṅ?'],
-      ['I do not understand', 'میں نہیں سمجھا', 'maiṅ nahīṅ samjhā'],
-      ['Please say that again', 'دوبارہ کہیے', 'dobāra kahiye'],
-      ['Please speak slowly', 'ذرا آہستہ بولیے', 'zarā āhista boliye'],
-      ['What does this mean?', 'اس کا کیا مطلب ہے؟', 'is kā kyā matlab hai?']
+      ['My name is …', 'میرا نام … ہے', 'mera naam … hai'],
+      ['What is your name?', 'آپ کا نام کیا ہے؟', 'aap ka naam kya hai?'],
+      ['I am from Germany', 'میں جرمنی سے ہوں', 'main jarmani se hoon'],
+      ['Where are you from?', 'آپ کہاں سے ہیں؟', 'aap kahaan se hain?'],
+      ['Pleased to meet you', 'آپ سے مل کر خوشی ہوئی', 'aap se mil kar khushi hui'],
+      ['I am learning Urdu', 'میں اردو سیکھ رہا ہوں', 'main urdoo seekh raha hoon', 'A woman says سیکھ رہی ہوں seekh rahi hoon.'],
+      ['I do not speak Urdu well', 'میں اچھی اردو نہیں بولتا', 'main achchhi urdoo naheen bolta'],
+      ['Do you speak English?', 'کیا آپ انگریزی بولتے ہیں؟', 'kya aap angrezi bolte hain?'],
+      ['I do not understand', 'میں نہیں سمجھا', 'main naheen samjha'],
+      ['Please say that again', 'دوبارہ کہیے', 'dobaara kahiye'],
+      ['Please speak slowly', 'ذرا آہستہ بولیے', 'zara aahista boliye'],
+      ['What does this mean?', 'اس کا کیا مطلب ہے؟', 'is ka kya matlab hai?']
     ]
   },
   {
     id: 'outabout', kind: 'phrase', name: 'Out & About', gloss: 'بازار میں',
     blurb: 'Shops, taxis, and finding the bathroom.',
     items: [
-      ['How much is this?', 'یہ کتنے کا ہے؟', 'yeh kitne kā hai?'],
-      ['That is too expensive', 'یہ بہت مہنگا ہے', 'yeh bahut mahngā hai'],
-      ['I would like this', 'مجھے یہ چاہیے', 'mujhe yeh chāhiye'],
-      ['Where is the bathroom?', 'باتھ روم کہاں ہے؟', 'bāth rūm kahāṅ hai?'],
-      ['Where is the station?', 'اسٹیشن کہاں ہے؟', 'sṭeshan kahāṅ hai?'],
-      ['Please help me', 'میری مدد کیجیے', 'merī madad kījiye'],
-      ['I am lost', 'میں راستہ بھول گیا ہوں', 'maiṅ rāsta bhūl gayā hūṅ'],
-      ['Water, please', 'پانی دیجیے', 'pānī dījiye'],
-      ['The bill, please', 'بل دیجیے', 'bil dījiye'],
-      ['What time is it?', 'کیا وقت ہوا ہے؟', 'kyā waqt huā hai?'],
-      ['Is it far?', 'کیا یہ دور ہے؟', 'kyā yeh dūr hai?'],
-      ['Take me here, please', 'مجھے یہاں لے چلیے', 'mujhe yahāṅ le chaliye']
+      ['How much is this?', 'یہ کتنے کا ہے؟', 'yeh kitne ka hai?'],
+      ['That is too expensive', 'یہ بہت مہنگا ہے', 'yeh bahut mahnga hai'],
+      ['I would like this', 'مجھے یہ چاہیے', 'mujhe yeh chaahiye'],
+      ['Where is the bathroom?', 'باتھ روم کہاں ہے؟', 'baath room kahaan hai?'],
+      ['Where is the station?', 'اسٹیشن کہاں ہے؟', 'steshan kahaan hai?'],
+      ['Please help me', 'میری مدد کیجیے', 'meri madad keejiye'],
+      ['I am lost', 'میں راستہ بھول گیا ہوں', 'main raasta bhool gaya hoon'],
+      ['Water, please', 'پانی دیجیے', 'paani deejiye'],
+      ['The bill, please', 'بل دیجیے', 'bil deejiye'],
+      ['What time is it?', 'کیا وقت ہوا ہے؟', 'kya waqt hua hai?'],
+      ['Is it far?', 'کیا یہ دور ہے؟', 'kya yeh door hai?'],
+      ['Take me here, please', 'مجھے یہاں لے چلیے', 'mujhe yahaan le chaliye']
     ]
   },
   {
     id: 'smalltalk', kind: 'phrase', name: 'Small Talk', gloss: 'گپ شپ',
     blurb: 'The filler that keeps a conversation alive.',
     items: [
-      ['What do you do?', 'آپ کیا کام کرتے ہیں؟', 'āp kyā kām karte haiṅ?'],
-      ['I work at a company', 'میں ایک کمپنی میں کام کرتا ہوں', 'maiṅ ek kampanī meṅ kām kartā hūṅ'],
-      ['The weather is lovely today', 'آج موسم بہت اچھا ہے', 'āj mausam bahut achchhā hai'],
+      ['What do you do?', 'آپ کیا کام کرتے ہیں؟', 'aap kya kaam karte hain?'],
+      ['I work at a company', 'میں ایک کمپنی میں کام کرتا ہوں', 'main ek kampani men kaam karta hoon'],
+      ['The weather is lovely today', 'آج موسم بہت اچھا ہے', 'aaj mausam bahut achchha hai'],
       ['I like this very much', 'مجھے یہ بہت پسند ہے', 'mujhe yeh bahut pasand hai'],
-      ['No problem', 'کوئی بات نہیں', 'koī bāt nahīṅ'],
-      ['Really?', 'واقعی؟', 'wāqaī?'],
-      ['Of course', 'ضرور', 'zarūr'],
-      ['Let’s go', 'چلیں', 'chaleṅ'],
-      ['One moment', 'ایک منٹ', 'ek minaṭ'],
-      ['I am tired', 'میں تھک گیا ہوں', 'maiṅ thak gayā hūṅ'],
-      ['Best wishes', 'نیک تمنائیں', 'nek tamannāeṅ'],
-      ['Take care', 'اپنا خیال رکھیے', 'apnā khayāl rakhiye']
+      ['No problem', 'کوئی بات نہیں', 'koi baat naheen'],
+      ['Really?', 'واقعی؟', 'waaqai?'],
+      ['Of course', 'ضرور', 'zaroor'],
+      ['Let’s go', 'چلیں', 'chalen'],
+      ['One moment', 'ایک منٹ', 'ek minat'],
+      ['I am tired', 'میں تھک گیا ہوں', 'main thak gaya hoon'],
+      ['Best wishes', 'نیک تمنائیں', 'nek tamannaaen'],
+      ['Take care', 'اپنا خیال رکھیے', 'apna khayaal rakhiye']
     ]
   }
 ];
@@ -837,108 +841,108 @@ const TOPICS = [
 /* ---- the Urdu alphabet ----
    [letter, name, sound, note?]  — joined forms are generated with ZWJ    */
 const ALPHABET = [
-  ['ا', 'alif', 'a / ā', 'Carries a long ā; آ with madda starts words.'],
+  ['ا', 'alif', 'a / a', 'Carries a long a; آ with madda starts words.'],
   ['ب', 'be', 'b'],
   ['پ', 'pe', 'p', 'Added for Indic sounds Arabic lacks.'],
   ['ت', 'te', 't', 'Soft, dental — tongue on the teeth.'],
-  ['ٹ', 'ṭe', 'ṭ', 'Retroflex — tongue curled back. The small ط above marks it.'],
+  ['ٹ', 'te', 't', 'Retroflex — tongue curled back. The small ط above marks it.'],
   ['ث', 'se', 's'],
-  ['ج', 'jīm', 'j'],
+  ['ج', 'jeem', 'j'],
   ['چ', 'che', 'ch'],
-  ['ح', 'baṛī he', 'h'],
+  ['ح', 'bari he', 'h'],
   ['خ', 'khe', 'kh', 'Like the ch in German “Bach”.'],
-  ['د', 'dāl', 'd', 'Never joins to the left.'],
-  ['ڈ', 'ḍāl', 'ḍ', 'Retroflex d.'],
-  ['ذ', 'zāl', 'z'],
+  ['د', 'daal', 'd', 'Never joins to the left.'],
+  ['ڈ', 'daal', 'd', 'Retroflex d.'],
+  ['ذ', 'zaal', 'z'],
   ['ر', 're', 'r'],
-  ['ڑ', 'ṛe', 'ṛ', 'A flapped retroflex — no English equivalent.'],
+  ['ڑ', 're', 'r', 'A flapped retroflex — no English equivalent.'],
   ['ز', 'ze', 'z'],
   ['ژ', 'zhe', 'zh', 'Rare; the s in “measure”.'],
-  ['س', 'sīn', 's'],
-  ['ش', 'shīn', 'sh'],
-  ['ص', 'su’ād', 's'],
-  ['ض', 'zu’ād', 'z'],
-  ['ط', 'to’e', 't'],
-  ['ظ', 'zo’e', 'z'],
-  ['ع', 'ain', '‘ (vowel carrier)', 'In Urdu it mostly carries the vowel beside it.'],
-  ['غ', 'ghain', 'gh', 'A throaty, French‑style r.'],
+  ['س', 'seen', 's'],
+  ['ش', 'sheen', 'sh'],
+  ['ص', 'suaad', 's'],
+  ['ض', 'zuaad', 'z'],
+  ['ط', 'toe', 't'],
+  ['ظ', 'zoe', 'z'],
+  ['ع', 'ain', '(vowel carrier)', 'In Urdu it mostly carries the vowel beside it.'],
+  ['غ', 'ghain', 'gh', 'A throaty, French-style r.'],
   ['ف', 'fe', 'f'],
-  ['ق', 'qāf', 'q', 'A k made far back in the throat.'],
-  ['ک', 'kāf', 'k'],
-  ['گ', 'gāf', 'g'],
-  ['ل', 'lām', 'l'],
-  ['م', 'mīm', 'm'],
-  ['ن', 'nūn', 'n'],
-  ['ں', 'nūn ghunna', 'nasal', 'Nasalises the vowel before it; only at word end.'],
-  ['و', 'wā’o', 'w / o / ū'],
-  ['ہ', 'choṭī he', 'h / a', 'Also spells the final ‑a of words like کمرہ kamra.'],
-  ['ھ', 'do‑chashmī he', 'aspiration', 'Pairs with another letter: ک + ھ = کھ kh.'],
-  ['ء', 'hamza', 'glottal stop', 'Separates two vowels, as in کوئی koī.'],
-  ['ی', 'choṭī ye', 'y / ī', ''],
-  ['ے', 'baṛī ye', 'e / ai', 'Word‑final only, as in ہے hai.']
+  ['ق', 'qaaf', 'q', 'A k made far back in the throat.'],
+  ['ک', 'kaaf', 'k'],
+  ['گ', 'gaaf', 'g'],
+  ['ل', 'laam', 'l'],
+  ['م', 'meem', 'm'],
+  ['ن', 'noon', 'n'],
+  ['ں', 'noon ghunna', 'nasal', 'Nasalises the vowel before it; only at word end.'],
+  ['و', 'wao', 'w / o / oo'],
+  ['ہ', 'choti he', 'h / a', 'Also spells the final -a of words like کمرہ kamra.'],
+  ['ھ', 'do-chashmi he', 'aspiration', 'Pairs with another letter: ک + ھ = کھ kh.'],
+  ['ء', 'hamza', 'glottal stop', 'Separates two vowels, as in کوئی koi.'],
+  ['ی', 'choti ye', 'y / i', ''],
+  ['ے', 'bari ye', 'e / ai', 'Word-final only, as in ہے hai.']
 ];
 
 /* ---- grammar notes ---- */
 const GRAMMAR = [
   {
     id: 'g1', title: 'The verb comes last',
-    body: 'Urdu builds a sentence subject → object → verb. English “I eat bread” is literally “I bread eat‑am”. Once you expect the verb at the end, long sentences stop being frightening.',
-    ex: [['میں روٹی کھاتا ہوں', 'maiṅ roṭī khātā hūṅ', 'I eat bread'],
-         ['وہ اردو سیکھتی ہے', 'woh urdū sīkhtī hai', 'She learns Urdu']]
+    body: 'Urdu builds a sentence subject → object → verb. English “I eat bread” is literally “I bread eat-am”. Once you expect the verb at the end, long sentences stop being frightening.',
+    ex: [['میں روٹی کھاتا ہوں', 'main roti khaata hoon', 'I eat bread'],
+         ['وہ اردو سیکھتی ہے', 'woh urdoo seekhti hai', 'She learns Urdu']]
   },
   {
     id: 'g2', title: 'Pronouns and three levels of “you”',
-    body: 'میں maiṅ (I), ہم ham (we), تُو tū (intimate, rare), تم tum (familiar), آپ āp (polite), یہ yeh (this / he / she near), وہ woh (that / he / she away). As a learner, use آپ with everyone until someone invites you to do otherwise.',
-    ex: [['آپ کہاں جا رہے ہیں؟', 'āp kahāṅ jā rahe haiṅ?', 'Where are you going?'],
-         ['ہم گھر جا رہے ہیں', 'ham ghar jā rahe haiṅ', 'We are going home']]
+    body: 'میں main (I), ہم ham (we), تُو too (intimate, rare), تم tum (familiar), آپ aap (polite), یہ yeh (this / he / she near), وہ woh (that / he / she away). As a learner, use آپ with everyone until someone invites you to do otherwise.',
+    ex: [['آپ کہاں جا رہے ہیں؟', 'aap kahaan ja rahe hain?', 'Where are you going?'],
+         ['ہم گھر جا رہے ہیں', 'ham ghar ja rahe hain', 'We are going home']]
   },
   {
-    id: 'g3', title: '“To be” — honā in the present',
-    body: 'میں … ہوں hūṅ · تم … ہو ho · یہ / وہ … ہے hai · ہم / آپ / وہ (plural) … ہیں haiṅ. This little verb closes most beginner sentences.',
-    ex: [['میں استاد ہوں', 'maiṅ ustād hūṅ', 'I am a teacher'],
-         ['یہ میری کتاب ہے', 'yeh merī kitāb hai', 'This is my book']]
+    id: 'g3', title: '“To be” — hona in the present',
+    body: 'میں … ہوں hoon · تم … ہو ho · یہ / وہ … ہے hai · ہم / آپ / وہ (plural) … ہیں hain. This little verb closes most beginner sentences.',
+    ex: [['میں استاد ہوں', 'main ustaad hoon', 'I am a teacher'],
+         ['یہ میری کتاب ہے', 'yeh meri kitaab hai', 'This is my book']]
   },
   {
     id: 'g4', title: 'Every noun has a gender',
-    body: 'Nouns are masculine or feminine, and adjectives ending in ‑ا ‑ā shift to ‑ی ‑ī for feminine nouns. Adjectives that do not end in ‑ā (خوبصورت, مشکل) never change.',
-    ex: [['اچھا لڑکا', 'achchhā laṛkā', 'a good boy'],
-         ['اچھی لڑکی', 'achchhī laṛkī', 'a good girl']]
+    body: 'Nouns are masculine or feminine, and adjectives ending in -ا -a shift to -ی -i for feminine nouns. Adjectives that do not end in -a (خوبصورت, مشکل) never change.',
+    ex: [['اچھا لڑکا', 'achchha larka', 'a good boy'],
+         ['اچھی لڑکی', 'achchhi larki', 'a good girl']]
   },
   {
     id: 'g5', title: 'Postpositions, not prepositions',
-    body: 'Urdu puts its little words after the noun: میں meṅ (in), پر par (on), سے se (from / with), کو ko (to), کے ساتھ ke sāth (together with), کے لیے ke liye (for).',
-    ex: [['گھر میں', 'ghar meṅ', 'in the house'],
-         ['دوست کے ساتھ', 'dost ke sāth', 'with a friend']]
+    body: 'Urdu puts its little words after the noun: میں men (in), پر par (on), سے se (from / with), کو ko (to), کے ساتھ ke saath (together with), کے لیے ke liye (for).',
+    ex: [['گھر میں', 'ghar men', 'in the house'],
+         ['دوست کے ساتھ', 'dost ke saath', 'with a friend']]
   },
   {
     id: 'g6', title: 'The verb agrees with you',
-    body: 'In the present habitual the verb stem takes ‑تا ‑tā for a masculine speaker and ‑تی ‑tī for a feminine one, then ہوں / ہے / ہیں follows. So the same sentence differs depending on who says it.',
-    ex: [['میں کام کرتا ہوں', 'maiṅ kām kartā hūṅ', 'I work (man speaking)'],
-         ['میں کام کرتی ہوں', 'maiṅ kām kartī hūṅ', 'I work (woman speaking)']]
+    body: 'In the present habitual the verb stem takes -تا -ta for a masculine speaker and -تی -ti for a feminine one, then ہوں / ہے / ہیں follows. So the same sentence differs depending on who says it.',
+    ex: [['میں کام کرتا ہوں', 'main kaam karta hoon', 'I work (man speaking)'],
+         ['میں کام کرتی ہوں', 'main kaam karti hoon', 'I work (woman speaking)']]
   },
   {
     id: 'g7', title: 'Saying no',
-    body: 'نہیں nahīṅ goes directly before the verb, and in the present tense the ہے / ہیں is often dropped after it.',
-    ex: [['میں نہیں جاتا', 'maiṅ nahīṅ jātā', 'I do not go'],
-         ['یہ مشکل نہیں', 'yeh mushkil nahīṅ', 'This is not difficult']]
+    body: 'نہیں naheen goes directly before the verb, and in the present tense the ہے / ہیں is often dropped after it.',
+    ex: [['میں نہیں جاتا', 'main naheen jaata', 'I do not go'],
+         ['یہ مشکل نہیں', 'yeh mushkil naheen', 'This is not difficult']]
   },
   {
     id: 'g8', title: 'Asking a question',
-    body: 'For yes/no questions put کیا kyā at the front — it is a spoken question mark. Otherwise use a question word in the middle: کون kaun (who), کیا kyā (what), کہاں kahāṅ (where), کب kab (when), کیوں kyoṅ (why), کیسے kaise (how), کتنا kitnā (how much).',
-    ex: [['کیا آپ ٹھیک ہیں؟', 'kyā āp ṭhīk haiṅ?', 'Are you well?'],
-         ['یہ کیا ہے؟', 'yeh kyā hai?', 'What is this?']]
+    body: 'For yes/no questions put کیا kya at the front — it is a spoken question mark. Otherwise use a question word in the middle: کون kaun (who), کیا kya (what), کہاں kahaan (where), کب kab (when), کیوں kyon (why), کیسے kaise (how), کتنا kitna (how much).',
+    ex: [['کیا آپ ٹھیک ہیں؟', 'kya aap theek hain?', 'Are you well?'],
+         ['یہ کیا ہے؟', 'yeh kya hai?', 'What is this?']]
   },
   {
     id: 'g9', title: 'Polite requests',
-    body: 'The ‑یے ‑iye ending turns a verb into a courteous request: کہنا → کہیے, بولنا → بولیے, دینا → دیجیے. With friends the familiar form ends in ‑و ‑o: کرو karo, بولو bolo.',
-    ex: [['ذرا سنیے', 'zarā suniye', 'Listen a moment, please'],
-         ['اندر آئیے', 'andar āiye', 'Please come in']]
+    body: 'The -یے -iye ending turns a verb into a courteous request: کہنا → کہیے, بولنا → بولیے, دینا → دیجیے. With friends the familiar form ends in -و -o: کرو karo, بولو bolo.',
+    ex: [['ذرا سنیے', 'zara suniye', 'Listen a moment, please'],
+         ['اندر آئیے', 'andar aaiye', 'Please come in']]
   },
   {
     id: 'g10', title: 'Reading the script',
     body: 'Urdu runs right to left in the flowing nastaliq style, where each word slopes down toward the left. Short vowels are usually not written — you supply them from knowing the word, exactly as you do with an abbreviation in English. Letters change shape depending on whether they start, sit inside, or end a word; the Script tab shows all four forms of each letter.',
-    ex: [['اردو', 'urdū', 'Urdu'],
-         ['روشنی', 'roshnī', 'light']]
+    ex: [['اردو', 'urdoo', 'Urdu'],
+         ['روشنی', 'roshni', 'light']]
   }
 ];
 
@@ -949,7 +953,7 @@ var KEY='roshni.v1';
 var INTERVALS=[0,1,3,7,16,35];
 var GOAL=20;
 
-function blank(){return{srs:{},streak:0,lastDay:null,today:null,todayCount:0,quiz:{},hintShown:false,voiceURI:null,slow:false};}
+function blank(){return{srs:{},streak:0,lastDay:null,today:null,todayCount:0,quiz:{},hintShown:false,voiceURI:null,slow:false,lang:"en"};}
 function load(){
   try{var r=localStorage.getItem(KEY);if(!r)return blank();
     var o=JSON.parse(r);var b=blank();for(var k in b)if(!(k in o))o[k]=b[k];return o;}
@@ -1128,6 +1132,10 @@ function paintChrome(){
   document.getElementById('streakChip').textContent=s===1?'1 day streak':s+' day streak';
   var d=dueNow();
   document.getElementById('dueChip').textContent=d===0?'nothing due':d+' due';
+  var lb=document.getElementById('langBtn');
+  if(lb){var de=S.lang==='de';
+    lb.innerHTML='<span class="fl'+(de?'':' on')+'">🇬🇧</span><span class="fl'+(de?' on':'')+'">🇩🇪</span>';
+    lb.title=de?'Meanings in German — tap for English':'Meanings in English — tap for German';}
 }
 
 /* ============================ views ============================ */
@@ -1169,7 +1177,7 @@ function viewHome(){
 
   h+='<div class="sec"><h2>Word of the day</h2><span class="ur">لفظِ روز</span></div>';
   h+='<div class="card"><div class="entry">'+spkBtn(wordOfDay.ur)+'<div class="grow">'+
-     '<div class="en">'+esc(wordOfDay.en)+'</div>'+
+     '<div class="en">'+esc(gloss(wordOfDay))+'</div>'+
      '<div class="ur">'+esc(wordOfDay.ur)+'</div>'+
      '<div class="tl">'+esc(wordOfDay.tl)+'</div>'+
      (wordOfDay.note?'<div class="note">'+esc(wordOfDay.note)+'</div>':'')+
@@ -1222,6 +1230,8 @@ var TOPIC_EMOJI={greet:'👋',people:'👨‍👩‍👧',numbers:'🔢',time:'�
 var TOPIC_ART = {"greet":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 120 72\"><rect width=\"120\" height=\"72\" rx=\"14\" fill=\"#fff7ef\"/><circle cx=\"60\" cy=\"30\" r=\"9\" fill=\"#ffd43b\"/><path d=\"M60 21v-4M60 43v4M51 30h-4M73 30h-4M53 23l-3-3M67 23l3-3M53 37l-3 3M67 37l3 3\" stroke=\"#f9820b\" stroke-width=\"2.5\" stroke-linecap=\"round\"/><g><rect x=\"14\" y=\"40\" width=\"26\" height=\"26\" rx=\"10\" fill=\"#4c6ef5\"/><circle cx=\"27\" cy=\"26\" r=\"12\" fill=\"#ffd9b8\"/><path d=\"M15 24a12 12 0 0124 0v3l-5-5-4 4-4-4-4 4-5-4z\" fill=\"#33285a\"/><circle cx=\"23\" cy=\"26\" r=\"2\" fill=\"#33285a\"/><circle cx=\"31\" cy=\"26\" r=\"2\" fill=\"#33285a\"/><path d=\"M23 31q4 4 8 0\" stroke=\"#33285a\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\"/><path d=\"M40 46l9-9\" stroke=\"#ffd9b8\" stroke-width=\"6\" stroke-linecap=\"round\"/><circle cx=\"50\" cy=\"36\" r=\"5\" fill=\"#ffd9b8\"/></g><g><rect x=\"80\" y=\"40\" width=\"26\" height=\"26\" rx=\"10\" fill=\"#ff5d8f\"/><circle cx=\"93\" cy=\"26\" r=\"12\" fill=\"#ffd9b8\"/><path d=\"M81 27a12 12 0 0124 0q-6-6-12-6t-12 6z\" fill=\"#12b886\"/><circle cx=\"89\" cy=\"26\" r=\"2\" fill=\"#33285a\"/><circle cx=\"97\" cy=\"26\" r=\"2\" fill=\"#33285a\"/><path d=\"M89 31q4 4 8 0\" stroke=\"#33285a\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\"/><path d=\"M80 46l-9-9\" stroke=\"#ffd9b8\" stroke-width=\"6\" stroke-linecap=\"round\"/><circle cx=\"70\" cy=\"36\" r=\"5\" fill=\"#ffd9b8\"/></g></svg>","people":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 120 72\"><rect x=\"2\" y=\"2\" width=\"116\" height=\"68\" rx=\"14\" fill=\"#fff7ef\"/><circle cx=\"98\" cy=\"18\" r=\"9\" fill=\"#ffd43b\"/><rect x=\"8\" y=\"52\" width=\"104\" height=\"12\" rx=\"6\" fill=\"#12b886\"/><g stroke=\"#33285a\" stroke-width=\"2\"><path d=\"M34 62V44a14 14 0 0 1 28 0v18Z\" fill=\"#4c6ef5\"/><circle cx=\"48\" cy=\"26\" r=\"11\" fill=\"#f9820b\"/><path d=\"M37 24a11 11 0 0 1 22 0Z\" fill=\"#33285a\"/><path d=\"M62 62V46a12 12 0 0 1 24 0v16Z\" fill=\"#ff5d8f\"/><circle cx=\"74\" cy=\"30\" r=\"10\" fill=\"#f9820b\"/><path d=\"M64 30a10 10 0 0 1 20 0Z\" fill=\"#9b5de5\"/><path d=\"M88 62V50a8 8 0 0 1 16 0v12Z\" fill=\"#ffd43b\"/><circle cx=\"96\" cy=\"38\" r=\"7\" fill=\"#f9820b\"/><path d=\"M89 37a7 7 0 0 1 14 0Z\" fill=\"#33285a\"/></g><g fill=\"#33285a\"><circle cx=\"44\" cy=\"26\" r=\"1.5\"/><circle cx=\"52\" cy=\"26\" r=\"1.5\"/><circle cx=\"70\" cy=\"30\" r=\"1.5\"/><circle cx=\"78\" cy=\"30\" r=\"1.5\"/><circle cx=\"93\" cy=\"38\" r=\"1.3\"/><circle cx=\"99\" cy=\"38\" r=\"1.3\"/></g><g fill=\"none\" stroke=\"#33285a\" stroke-width=\"1.5\" stroke-linecap=\"round\"><path d=\"M45 30a4 3 0 0 0 6 0\"/><path d=\"M71 34a4 3 0 0 0 6 0\"/><path d=\"M94 41a3 2 0 0 0 4 0\"/></g></svg>","numbers":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 120 72\"><rect width=\"120\" height=\"72\" rx=\"14\" fill=\"#fff7ef\"/><g stroke=\"#33285a\" stroke-width=\"2.5\" stroke-linejoin=\"round\"><rect x=\"12\" y=\"30\" width=\"30\" height=\"30\" rx=\"6\" fill=\"#4c6ef5\"/><rect x=\"45\" y=\"22\" width=\"30\" height=\"30\" rx=\"6\" fill=\"#ff5d8f\"/><rect x=\"78\" y=\"30\" width=\"30\" height=\"30\" rx=\"6\" fill=\"#12b886\"/></g><g fill=\"none\" stroke=\"#fff7ef\" stroke-width=\"4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M25 40l4-2v16\"/><path d=\"M56 32h8a4 4 0 0 1 0 8l-8 8h12\"/><path d=\"M91 40a4 4 0 1 1 7 3 4 4 0 1 1-7 3\"/></g><circle cx=\"27\" cy=\"22\" r=\"4\" fill=\"#ffd43b\" stroke=\"#33285a\" stroke-width=\"2\"/><circle cx=\"93\" cy=\"22\" r=\"4\" fill=\"#f9820b\" stroke=\"#33285a\" stroke-width=\"2\"/><circle cx=\"60\" cy=\"14\" r=\"4\" fill=\"#9b5de5\" stroke=\"#33285a\" stroke-width=\"2\"/></svg>","numbers100":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 120 72\"><rect x=\"2\" y=\"2\" width=\"116\" height=\"68\" rx=\"14\" fill=\"#fff7ef\"/><g fill=\"#ffd43b\" stroke=\"#33285a\" stroke-width=\"1\"><path d=\"M18 14l1.6 3.4L23 19l-3.4 1.6L18 24l-1.6-3.4L13 19l3.4-1.6z\"/><path d=\"M104 20l1.6 3.4L109 25l-3.4 1.6L104 30l-1.6-3.4L99 25l3.4-1.6z\"/><path d=\"M14 52l1.4 3L18 56.4l-2.6 1.4L14 61l-1.4-3.2L10 56.4l2.6-1.4z\"/><path d=\"M108 50l1.4 3 2.6 1.4-2.6 1.4L108 59l-1.4-3.2-2.6-1.4 2.6-1.4z\"/><path d=\"M60 8l1.4 3L64 12.4 61.4 13.8 60 17l-1.4-3.2L56 12.4l2.6-1.4z\"/></g><g stroke=\"#33285a\" stroke-width=\"3\" fill=\"none\" stroke-linecap=\"round\"><path d=\"M34 30v22\" stroke=\"#4c6ef5\"/><path d=\"M34 30l-5 4\" stroke=\"#4c6ef5\"/></g><ellipse cx=\"58\" cy=\"41\" rx=\"12\" ry=\"15\" fill=\"none\" stroke=\"#ff5d8f\" stroke-width=\"6\"/><ellipse cx=\"86\" cy=\"41\" rx=\"12\" ry=\"15\" fill=\"none\" stroke=\"#12b886\" stroke-width=\"6\"/><g fill=\"#f9820b\"><circle cx=\"26\" cy=\"60\" r=\"2.5\"/><circle cx=\"94\" cy=\"62\" r=\"2.5\"/></g></svg>","time":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 120 72\"><rect x=\"2\" y=\"2\" width=\"116\" height=\"68\" rx=\"14\" fill=\"#fff7ef\"/><g fill=\"#ffd43b\"><circle cx=\"20\" cy=\"30\" r=\"9\"/><g stroke=\"#ffd43b\" stroke-width=\"3\" stroke-linecap=\"round\"><path d=\"M20 15v-5M20 50v-5M5 30h-1M36 30h-1M9 19l-3-3M31 19l3-3M9 41l-3 3M31 41l3 3\"/></g></g><path d=\"M96 22a11 11 0 1 0 9 17 9 9 0 0 1-9-17z\" fill=\"#ffd43b\"/><circle cx=\"60\" cy=\"38\" r=\"26\" fill=\"#4c6ef5\"/><circle cx=\"60\" cy=\"38\" r=\"20\" fill=\"#fff7ef\"/><g stroke=\"#33285a\" stroke-width=\"2.4\" stroke-linecap=\"round\"><path d=\"M60 38V26M60 38l9 5\"/></g><circle cx=\"60\" cy=\"38\" r=\"2.6\" fill=\"#33285a\"/><g fill=\"#33285a\"><circle cx=\"52\" cy=\"33\" r=\"2\"/><circle cx=\"68\" cy=\"33\" r=\"2\"/></g><path d=\"M53 44a7 5 0 0 0 14 0\" fill=\"none\" stroke=\"#ff5d8f\" stroke-width=\"2.4\" stroke-linecap=\"round\"/><circle cx=\"60\" cy=\"12\" r=\"3\" fill=\"#12b886\"/></svg>","food":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 120 72\"><rect x=\"2\" y=\"2\" width=\"116\" height=\"68\" rx=\"12\" fill=\"#fff7ef\"/><g stroke=\"#33285a\" stroke-width=\"1.1\"><ellipse cx=\"26\" cy=\"52\" rx=\"20\" ry=\"6\" fill=\"#4c6ef5\"/><circle cx=\"26\" cy=\"42\" r=\"15\" fill=\"#ffd43b\"/><circle cx=\"26\" cy=\"42\" r=\"10.5\" fill=\"#f9820b\" stroke=\"none\"/><circle cx=\"21\" cy=\"41\" r=\"1.6\" fill=\"#33285a\" stroke=\"none\"/><circle cx=\"31\" cy=\"41\" r=\"1.6\" fill=\"#33285a\" stroke=\"none\"/><path d=\"M21 45q5 4 10 0\" fill=\"none\"/></g><g stroke=\"#33285a\" stroke-width=\"1.1\"><circle cx=\"60\" cy=\"44\" r=\"15\" fill=\"#ff5d8f\"/><path d=\"M60 30q6-8 12-4-6 4-12 4\" fill=\"#12b886\"/><path d=\"M60 30v-4\" stroke-width=\"1.6\"/><circle cx=\"55\" cy=\"43\" r=\"1.6\" fill=\"#33285a\" stroke=\"none\"/><circle cx=\"65\" cy=\"43\" r=\"1.6\" fill=\"#33285a\" stroke=\"none\"/><path d=\"M55 47q5 4 10 0\" fill=\"none\"/></g><g stroke=\"#12b886\" stroke-width=\"1.3\" fill=\"none\" stroke-linecap=\"round\"><path d=\"M92 20q-2 3 0 6\"/><path d=\"M98 18q-2 3 0 6\"/></g><g stroke=\"#33285a\" stroke-width=\"1.1\"><ellipse cx=\"95\" cy=\"56\" rx=\"16\" ry=\"4\" fill=\"#fff\" /><path d=\"M84 34h22l-2 16a4 4 0 0 1-4 3H90a4 4 0 0 1-4-3z\" fill=\"#fff\"/><path d=\"M106 37c6 0 6 9 0 9\" fill=\"none\"/><circle cx=\"92\" cy=\"42\" r=\"1.5\" fill=\"#33285a\" stroke=\"none\"/><circle cx=\"100\" cy=\"42\" r=\"1.5\" fill=\"#33285a\" stroke=\"none\"/><path d=\"M92 46q4 4 8 0\" fill=\"none\"/></g></svg>","colors":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 120 72\"><rect width=\"120\" height=\"72\" rx=\"14\" fill=\"#fff7ef\"/><g fill=\"none\" stroke-linecap=\"round\"><path d=\"M28 62a32 32 0 0 1 64 0\" stroke=\"#ff5d8f\" stroke-width=\"6\"/><path d=\"M35 62a25 25 0 0 1 50 0\" stroke=\"#f9820b\" stroke-width=\"6\"/><path d=\"M42 62a18 18 0 0 1 36 0\" stroke=\"#ffd43b\" stroke-width=\"6\"/><path d=\"M49 62a11 11 0 0 1 22 0\" stroke=\"#12b886\" stroke-width=\"6\"/></g><g stroke=\"#33285a\" stroke-width=\"1.5\"><circle cx=\"20\" cy=\"24\" r=\"8\" fill=\"#4c6ef5\"/><circle cx=\"16\" cy=\"34\" r=\"3\" fill=\"#4c6ef5\"/><circle cx=\"26\" cy=\"15\" r=\"2.5\" fill=\"#4c6ef5\"/><circle cx=\"100\" cy=\"26\" r=\"8\" fill=\"#9b5de5\"/><circle cx=\"105\" cy=\"36\" r=\"3\" fill=\"#9b5de5\"/><circle cx=\"94\" cy=\"16\" r=\"2.5\" fill=\"#9b5de5\"/></g><circle cx=\"60\" cy=\"66\" r=\"4\" fill=\"#ff5d8f\" stroke=\"#33285a\" stroke-width=\"1.5\"/></svg>","body":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 120 72\"><rect x=\"2\" y=\"2\" width=\"116\" height=\"68\" rx=\"14\" fill=\"#fff7ef\"/><circle cx=\"52\" cy=\"36\" r=\"26\" fill=\"#ffd43b\" stroke=\"#33285a\" stroke-width=\"2\"/><path d=\"M32 22q4-8 12-6\" fill=\"none\" stroke=\"#33285a\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M72 22q-4-8-12-6\" fill=\"none\" stroke=\"#33285a\" stroke-width=\"2\" stroke-linecap=\"round\"/><ellipse cx=\"44\" cy=\"33\" rx=\"6\" ry=\"7\" fill=\"#fff\"/><ellipse cx=\"60\" cy=\"33\" rx=\"6\" ry=\"7\" fill=\"#fff\"/><circle cx=\"45\" cy=\"34\" r=\"3.2\" fill=\"#33285a\"/><circle cx=\"61\" cy=\"34\" r=\"3.2\" fill=\"#33285a\"/><circle cx=\"46\" cy=\"33\" r=\"1\" fill=\"#fff\"/><circle cx=\"62\" cy=\"33\" r=\"1\" fill=\"#fff\"/><path d=\"M50 42q2 3 4 0\" fill=\"none\" stroke=\"#33285a\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M45 49q7 5 14 0\" fill=\"none\" stroke=\"#33285a\" stroke-width=\"2.5\" stroke-linecap=\"round\"/><circle cx=\"34\" cy=\"42\" r=\"4\" fill=\"#ff5d8f\" opacity=\".6\"/><circle cx=\"70\" cy=\"42\" r=\"4\" fill=\"#ff5d8f\" opacity=\".6\"/><g stroke=\"#33285a\" stroke-width=\"2\" stroke-linecap=\"round\"><rect x=\"90\" y=\"28\" width=\"14\" height=\"20\" rx=\"6\" fill=\"#f9820b\"/><rect x=\"88\" y=\"18\" width=\"4\" height=\"16\" rx=\"2\" fill=\"#f9820b\"/><rect x=\"93\" y=\"14\" width=\"4\" height=\"20\" rx=\"2\" fill=\"#f9820b\"/><rect x=\"98\" y=\"15\" width=\"4\" height=\"19\" rx=\"2\" fill=\"#f9820b\"/><rect x=\"103\" y=\"19\" width=\"4\" height=\"15\" rx=\"2\" fill=\"#f9820b\"/><path d=\"M90 30q-6 2-6 8\" fill=\"none\"/></g><path d=\"M100 8q3 2 0 4M104 10q2 2 0 4\" fill=\"none\" stroke=\"#12b886\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>","home":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 120 72\"><rect width=\"120\" height=\"72\" rx=\"12\" fill=\"#fff7ef\"/><rect x=\"4\" y=\"52\" width=\"112\" height=\"16\" rx=\"6\" fill=\"#12b886\"/><g stroke=\"#33285a\" stroke-width=\"1.6\"><rect x=\"88\" y=\"30\" width=\"8\" height=\"24\" rx=\"3\" fill=\"#f9820b\"/><circle cx=\"92\" cy=\"24\" r=\"14\" fill=\"#12b886\"/><circle cx=\"82\" cy=\"30\" r=\"9\" fill=\"#12b886\"/><circle cx=\"101\" cy=\"30\" r=\"9\" fill=\"#12b886\"/><rect x=\"20\" y=\"30\" width=\"48\" height=\"28\" rx=\"4\" fill=\"#ffd43b\"/><path d=\"M16 32 L44 12 L72 32 Z\" fill=\"#ff5d8f\"/><rect x=\"30\" y=\"40\" width=\"14\" height=\"18\" rx=\"3\" fill=\"#f9820b\"/><circle cx=\"41\" cy=\"49\" r=\"1.6\" fill=\"#ffd43b\" stroke=\"none\"/><rect x=\"50\" y=\"38\" width=\"12\" height=\"12\" rx=\"2\" fill=\"#4c6ef5\"/><line x1=\"56\" y1=\"38\" x2=\"56\" y2=\"50\"/><line x1=\"50\" y1=\"44\" x2=\"62\" y2=\"44\"/></g><circle cx=\"20\" cy=\"14\" r=\"7\" fill=\"#ffd43b\" stroke=\"#33285a\" stroke-width=\"1.6\"/></svg>","travel":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 120 72\"><rect width=\"120\" height=\"72\" rx=\"14\" fill=\"#fff7ef\"/><circle cx=\"98\" cy=\"20\" r=\"10\" fill=\"#ffd43b\"/><path d=\"M14 60h92\" stroke=\"#33285a\" stroke-width=\"6\" stroke-linecap=\"round\"/><path d=\"M22 60h14M50 60h14M78 60h14\" stroke=\"#ffd43b\" stroke-width=\"2\" stroke-linecap=\"round\"/><g transform=\"translate(70 22)\"><path d=\"M0 6 26-2 20 6 26 14z\" fill=\"#4c6ef5\" stroke=\"#33285a\" stroke-width=\"2\" stroke-linejoin=\"round\"/><path d=\"M8 6l-6-9 2 9-2 9z\" fill=\"#ff5d8f\" stroke=\"#33285a\" stroke-width=\"2\" stroke-linejoin=\"round\"/></g><g transform=\"translate(30 40)\"><rect x=\"0\" y=\"6\" width=\"42\" height=\"12\" rx=\"5\" fill=\"#ff5d8f\" stroke=\"#33285a\" stroke-width=\"2.5\"/><path d=\"M8 6c3-8 22-8 26 0z\" fill=\"#12b886\" stroke=\"#33285a\" stroke-width=\"2.5\" stroke-linejoin=\"round\"/><rect x=\"14\" y=\"-1\" width=\"12\" height=\"7\" rx=\"2\" fill=\"#cdeffb\" stroke=\"#33285a\" stroke-width=\"2\"/><circle cx=\"10\" cy=\"18\" r=\"5\" fill=\"#33285a\"/><circle cx=\"10\" cy=\"18\" r=\"2\" fill=\"#fff7ef\"/><circle cx=\"32\" cy=\"18\" r=\"5\" fill=\"#33285a\"/><circle cx=\"32\" cy=\"18\" r=\"2\" fill=\"#fff7ef\"/></g></svg>","verbs":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 120 72\"><rect width=\"120\" height=\"72\" rx=\"14\" fill=\"#fff7ef\"/><circle cx=\"98\" cy=\"18\" r=\"10\" fill=\"#ffd43b\"/><g stroke=\"#33285a\" stroke-width=\"2.5\" stroke-linecap=\"round\" fill=\"none\"><path d=\"M22 40h8\"/><path d=\"M18 50h8\"/><path d=\"M24 60h9\"/></g><g fill=\"#33285a\"><ellipse cx=\"46\" cy=\"66\" rx=\"16\" ry=\"3\"/></g><g stroke=\"#33285a\" stroke-width=\"4\" stroke-linecap=\"round\"><path d=\"M60 34l14-6\" stroke=\"#f9820b\"/><path d=\"M60 34l10 10\" stroke=\"#f9820b\"/><path d=\"M56 46l-4 14\" stroke=\"#4c6ef5\"/><path d=\"M56 46l14 6\" stroke=\"#4c6ef5\"/></g><circle cx=\"58\" cy=\"22\" r=\"9\" fill=\"#f9c8a0\"/><path d=\"M49 20a9 9 0 0 1 18-2l-4 3-4-3-4 3z\" fill=\"#33285a\"/><circle cx=\"61\" cy=\"22\" r=\"1.5\" fill=\"#33285a\"/><path d=\"M60 26q3 1 5-1\" stroke=\"#33285a\" stroke-width=\"1.5\" fill=\"none\" stroke-linecap=\"round\"/><rect x=\"49\" y=\"30\" width=\"18\" height=\"20\" rx=\"8\" fill=\"#ff5d8f\"/><circle cx=\"74\" cy=\"27\" r=\"3.5\" fill=\"#f9c8a0\"/><circle cx=\"70\" cy=\"45\" r=\"3.5\" fill=\"#f9c8a0\"/><path d=\"M50 60l4 2 3-3\" fill=\"none\" stroke=\"#12b886\" stroke-width=\"4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M63 55l6 2 1-4\" fill=\"none\" stroke=\"#12b886\" stroke-width=\"4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><g fill=\"#9b5de5\"><circle cx=\"88\" cy=\"40\" r=\"3\"/><circle cx=\"96\" cy=\"52\" r=\"2.5\"/><circle cx=\"84\" cy=\"58\" r=\"2\"/></g></svg>","adj":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 120 72\"><rect width=\"120\" height=\"72\" rx=\"14\" fill=\"#fff7ef\"/><path d=\"M40 40 Q40 58 45 62 L43 68\" fill=\"none\" stroke=\"#33285a\" stroke-width=\"1.5\"/><path d=\"M85 44 Q85 56 82 60 L84 64\" fill=\"none\" stroke=\"#33285a\" stroke-width=\"1.5\"/><ellipse cx=\"40\" cy=\"30\" rx=\"22\" ry=\"26\" fill=\"#4c6ef5\" stroke=\"#33285a\" stroke-width=\"2.5\"/><ellipse cx=\"33\" cy=\"20\" rx=\"6\" ry=\"8\" fill=\"#fff7ef\" opacity=\".5\"/><path d=\"M37 55 L43 55 L40 60 Z\" fill=\"#4c6ef5\" stroke=\"#33285a\" stroke-width=\"2\"/><ellipse cx=\"85\" cy=\"38\" rx=\"11\" ry=\"13\" fill=\"#ff5d8f\" stroke=\"#33285a\" stroke-width=\"2.5\"/><ellipse cx=\"81\" cy=\"33\" rx=\"3\" ry=\"4\" fill=\"#fff7ef\" opacity=\".5\"/><path d=\"M82 50 L88 50 L85 54 Z\" fill=\"#ff5d8f\" stroke=\"#33285a\" stroke-width=\"2\"/></svg>","nature":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 120 72\"><rect x=\"2\" y=\"2\" width=\"116\" height=\"68\" rx=\"14\" fill=\"#fff7ef\"/><circle cx=\"28\" cy=\"24\" r=\"12\" fill=\"#ffd43b\"/><g stroke=\"#ffd43b\" stroke-width=\"3\" stroke-linecap=\"round\"><path d=\"M28 6v-3\"/><path d=\"M28 45v3\"/><path d=\"M10 24H7\"/><path d=\"M46 24h3\"/><path d=\"M15 11l-2-2\"/><path d=\"M41 11l2-2\"/><path d=\"M15 37l-2 2\"/><path d=\"M41 37l2 2\"/></g><path d=\"M96 58 78 30l-18 28z\" fill=\"#12b886\"/><path d=\"M96 58 84 40l-6 18z\" fill=\"#0ca678\"/><path d=\"M60 58h58\" stroke=\"#9b5de5\" stroke-width=\"0\" fill=\"none\"/><rect x=\"38\" y=\"48\" width=\"6\" height=\"14\" rx=\"3\" fill=\"#f9820b\"/><circle cx=\"41\" cy=\"42\" r=\"12\" fill=\"#12b886\"/><circle cx=\"31\" cy=\"46\" r=\"8\" fill=\"#12b886\"/><circle cx=\"51\" cy=\"46\" r=\"8\" fill=\"#12b886\"/><circle cx=\"41\" cy=\"36\" r=\"8\" fill=\"#37cf9a\"/><g fill=\"#ffffff\"><circle cx=\"82\" cy=\"20\" r=\"9\"/><circle cx=\"94\" cy=\"20\" r=\"11\"/><circle cx=\"106\" cy=\"22\" r=\"8\"/><rect x=\"80\" y=\"20\" width=\"30\" height=\"11\" rx=\"5\"/></g><rect x=\"8\" y=\"60\" width=\"104\" height=\"6\" rx=\"3\" fill=\"#9b5de5\"/></svg>","animals":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 120 72\"><rect x=\"1\" y=\"1\" width=\"118\" height=\"70\" rx=\"12\" fill=\"#fff7ef\"/><g stroke=\"#33285a\" stroke-width=\"1\" stroke-linejoin=\"round\"><!--CAT--><g><path d=\"M18 30 l-5-9 8 3z\" fill=\"#f9820b\"/><path d=\"M42 30 l5-9-8 3z\" fill=\"#f9820b\"/><circle cx=\"30\" cy=\"40\" r=\"15\" fill=\"#f9820b\"/><path d=\"M45 55 q6 2 4 8\" fill=\"none\" stroke-width=\"1.4\"/><circle cx=\"25\" cy=\"38\" r=\"2.4\" fill=\"#33285a\" stroke=\"none\"/><circle cx=\"35\" cy=\"38\" r=\"2.4\" fill=\"#33285a\" stroke=\"none\"/><path d=\"M28 43 l2 2 2-2\" fill=\"none\" stroke-width=\"1.2\"/><path d=\"M30 45 q-4 3-8 1M30 45 q4 3 8 1\" fill=\"none\" stroke-width=\"0.8\"/></g><!--DOG--><g><path d=\"M46 36 q-4 2-3 9 4 0 5-4z\" fill=\"#b5651d\"/><path d=\"M74 36 q4 2 3 9-4 0-5-4z\" fill=\"#b5651d\"/><circle cx=\"60\" cy=\"40\" r=\"15\" fill=\"#b5651d\"/><circle cx=\"55\" cy=\"38\" r=\"2.4\" fill=\"#33285a\" stroke=\"none\"/><circle cx=\"65\" cy=\"38\" r=\"2.4\" fill=\"#33285a\" stroke=\"none\"/><ellipse cx=\"60\" cy=\"44\" rx=\"2.6\" ry=\"2\" fill=\"#33285a\" stroke=\"none\"/><path d=\"M60 46 v3\" fill=\"none\" stroke-width=\"1\"/><path d=\"M58 49 q2 4 4 0\" fill=\"#ff5d8f\"/></g><!--ELEPHANT--><g><circle cx=\"90\" cy=\"40\" r=\"15\" fill=\"#9aa7bd\"/><circle cx=\"78\" cy=\"38\" r=\"7\" fill=\"#9aa7bd\"/><circle cx=\"102\" cy=\"38\" r=\"7\" fill=\"#9aa7bd\"/><path d=\"M90 44 q-3 6 1 12 4 1 4-4\" fill=\"#9aa7bd\"/><circle cx=\"86\" cy=\"38\" r=\"2.2\" fill=\"#33285a\" stroke=\"none\"/><circle cx=\"94\" cy=\"38\" r=\"2.2\" fill=\"#33285a\" stroke=\"none\"/><path d=\"M87 54 l-2 4M93 54 l2 4\" stroke=\"#fff\" stroke-width=\"1.6\"/></g></g></svg>","school":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 120 72\"><rect width=\"120\" height=\"72\" rx=\"14\" fill=\"#fff7ef\"/><g stroke=\"#33285a\" stroke-width=\"2\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><rect x=\"14\" y=\"30\" width=\"34\" height=\"34\" rx=\"6\" fill=\"#12b886\"/><rect x=\"24\" y=\"24\" width=\"14\" height=\"9\" rx=\"2\" fill=\"#0ca678\"/><rect x=\"14\" y=\"42\" width=\"34\" height=\"6\" fill=\"#ffd43b\"/><circle cx=\"31\" cy=\"53\" r=\"4\" fill=\"#fff7ef\"/><path d=\"M60 22c-9-6-19-4-24 0v34c5-4 15-6 24 0z\" fill=\"#4c6ef5\"/><path d=\"M60 22c9-6 19-4 24 0v34c-5-4-15-6-24 0z\" fill=\"#5c7cfa\"/><path d=\"M60 22v34\" fill=\"none\"/><path d=\"M40 33h10M40 40h10M70 33h10M70 40h10\" stroke=\"#fff7ef\" stroke-width=\"2\"/><g transform=\"rotate(38 96 46)\"><rect x=\"90\" y=\"18\" width=\"9\" height=\"34\" rx=\"2\" fill=\"#ffd43b\"/><path d=\"M90 52h9l-4.5 8z\" fill=\"#f9820b\"/><path d=\"M92.5 57h4l-1.5 3z\" fill=\"#33285a\" stroke=\"none\"/><rect x=\"90\" y=\"18\" width=\"9\" height=\"6\" rx=\"2\" fill=\"#ff5d8f\"/></g></g></svg>","feelings":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 120 72\"><rect width=\"120\" height=\"72\" rx=\"14\" fill=\"#fff7ef\"/><circle cx=\"38\" cy=\"36\" r=\"24\" fill=\"#ffd43b\" stroke=\"#33285a\" stroke-width=\"3\"/><circle cx=\"30\" cy=\"30\" r=\"3.5\" fill=\"#33285a\"/><circle cx=\"46\" cy=\"30\" r=\"3.5\" fill=\"#33285a\"/><circle cx=\"24\" cy=\"38\" r=\"4\" fill=\"#ff5d8f\" opacity=\".6\"/><circle cx=\"52\" cy=\"38\" r=\"4\" fill=\"#ff5d8f\" opacity=\".6\"/><path d=\"M28 42a10 8 0 0 0 20 0z\" fill=\"#33285a\"/><circle cx=\"82\" cy=\"36\" r=\"24\" fill=\"#4c6ef5\" stroke=\"#33285a\" stroke-width=\"3\"/><circle cx=\"74\" cy=\"30\" r=\"3.5\" fill=\"#33285a\"/><circle cx=\"90\" cy=\"30\" r=\"3.5\" fill=\"#33285a\"/><path d=\"M72 49a10 8 0 0 1 20 0\" fill=\"none\" stroke=\"#33285a\" stroke-width=\"3.5\" stroke-linecap=\"round\"/><circle cx=\"72\" cy=\"40\" r=\"2.5\" fill=\"#8fb3ff\"/></svg>","play":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 120 72\"><rect width=\"120\" height=\"72\" rx=\"14\" fill=\"#fff7ef\"/><path d=\"M92 8 L104 26 L92 40 L80 26 Z\" fill=\"#ff5d8f\" stroke=\"#33285a\" stroke-width=\"2\" stroke-linejoin=\"round\"/><path d=\"M92 8 L92 40 M80 26 L104 26\" stroke=\"#33285a\" stroke-width=\"1.5\"/><path d=\"M92 40 q3 8 -3 12 q3 3 6 0 q-3 -8 0 -12\" fill=\"none\" stroke=\"#9b5de5\" stroke-width=\"2\" stroke-linecap=\"round\"/><g stroke=\"#33285a\" stroke-width=\"2\"><rect x=\"16\" y=\"44\" width=\"16\" height=\"16\" rx=\"3\" fill=\"#4c6ef5\"/><rect x=\"30\" y=\"34\" width=\"16\" height=\"16\" rx=\"3\" fill=\"#12b886\"/><rect x=\"20\" y=\"30\" width=\"14\" height=\"14\" rx=\"3\" fill=\"#ffd43b\"/></g><circle cx=\"60\" cy=\"52\" r=\"15\" fill=\"#fff\" stroke=\"#33285a\" stroke-width=\"2\"/><path d=\"M60 41 l6 5 -2.5 8 h-7 l-2.5 -8 z\" fill=\"#33285a\"/><path d=\"M48.5 48 l6 1 M71.5 48 l-6 1 M56 66 l1 -7 M64 66 l-1 -7\" stroke=\"#33285a\" stroke-width=\"2\" stroke-linecap=\"round\"/><circle cx=\"30\" cy=\"14\" r=\"4\" fill=\"#f9820b\"/><circle cx=\"102\" cy=\"56\" r=\"3\" fill=\"#12b886\"/></svg>","intro":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 120 72\"><rect width=\"120\" height=\"72\" rx=\"14\" fill=\"#fff7ef\"/><rect x=\"8\" y=\"8\" width=\"104\" height=\"56\" rx=\"12\" fill=\"#e9f0ff\"/><g stroke=\"#33285a\" stroke-width=\"2\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><path d=\"M40 66 V50 a20 20 0 0 1 40 0 V66Z\" fill=\"#4c6ef5\"/><circle cx=\"60\" cy=\"26\" r=\"14\" fill=\"#ffd43b\"/><path d=\"M46 22 a14 14 0 0 1 28 0 v-3 a14 14 0 0 0 -28 0Z\" fill=\"#9b5de5\"/><circle cx=\"54\" cy=\"27\" r=\"2\" fill=\"#33285a\"/><circle cx=\"66\" cy=\"27\" r=\"2\" fill=\"#33285a\"/><path d=\"M55 33 q5 4 10 0\" fill=\"none\"/><rect x=\"46\" y=\"50\" width=\"20\" height=\"14\" rx=\"3\" fill=\"#fff7ef\"/><rect x=\"53\" y=\"47\" width=\"6\" height=\"6\" rx=\"2\" fill=\"#ff5d8f\"/><path d=\"M50 55 h12 M50 59 h9\" stroke=\"#9b5de5\"/><path d=\"M80 52 l16 8\" fill=\"none\"/><circle cx=\"98\" cy=\"61\" r=\"4\" fill=\"#ffd43b\"/></g></svg>","outabout":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 120 72\"><rect width=\"120\" height=\"72\" rx=\"14\" fill=\"#fff7ef\"/><rect x=\"24\" y=\"30\" width=\"60\" height=\"30\" rx=\"4\" fill=\"#ffd43b\"/><rect x=\"24\" y=\"56\" width=\"60\" height=\"4\" fill=\"#33285a\"/><rect x=\"27\" y=\"33\" width=\"6\" height=\"24\" fill=\"#f9820b\"/><rect x=\"75\" y=\"33\" width=\"6\" height=\"24\" fill=\"#f9820b\"/><path d=\"M20 30h68l-6-10H26z\" fill=\"#4c6ef5\"/><path d=\"M20 30h68l-6-10H26z\" fill=\"none\" stroke=\"#33285a\" stroke-width=\"2\" stroke-linejoin=\"round\"/><path d=\"M26 20l-3 10h10l2-10zm12 0l-1 10h10l1-10zm12 0l1 10h10l-1-10zm12 0l2 10h10l-3-10z\" fill=\"#ff5d8f\"/><circle cx=\"36\" cy=\"46\" r=\"5\" fill=\"#ff5d8f\"/><circle cx=\"47\" cy=\"46\" r=\"5\" fill=\"#12b886\"/><circle cx=\"58\" cy=\"46\" r=\"5\" fill=\"#f9820b\"/><circle cx=\"69\" cy=\"46\" r=\"5\" fill=\"#9b5de5\"/><g><path d=\"M92 40h20l-3 22H95z\" fill=\"#12b886\"/><path d=\"M92 40h20l-3 22H95z\" fill=\"none\" stroke=\"#33285a\" stroke-width=\"2\" stroke-linejoin=\"round\"/><path d=\"M97 40a5 5 0 0110 0\" fill=\"none\" stroke=\"#33285a\" stroke-width=\"2\"/><circle cx=\"102\" cy=\"51\" r=\"4\" fill=\"#ffd43b\"/></g><circle cx=\"60\" cy=\"12\" r=\"4\" fill=\"#ffd43b\"/></svg>","smalltalk":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 120 72\"><rect width=\"120\" height=\"72\" rx=\"14\" fill=\"#fff7ef\"/><g stroke=\"#33285a\" stroke-width=\"2.4\" stroke-linejoin=\"round\"><path d=\"M22 16h50a10 10 0 0 1 10 10v14a10 10 0 0 1-10 10H40l-12 10 2-10h-8a10 10 0 0 1-10-10V26a10 10 0 0 1 10-10z\" fill=\"#4c6ef5\"/><circle cx=\"34\" cy=\"33\" r=\"3.5\" fill=\"#fff7ef\" stroke=\"none\"/><circle cx=\"47\" cy=\"33\" r=\"3.5\" fill=\"#fff7ef\" stroke=\"none\"/><circle cx=\"60\" cy=\"33\" r=\"3.5\" fill=\"#fff7ef\" stroke=\"none\"/><path d=\"M98 32h-42a9 9 0 0 0-9 9v12a9 9 0 0 0 9 9h26l11 9-2-9h7a9 9 0 0 0 9-9V41a9 9 0 0 0-9-9z\" fill=\"#ff5d8f\"/><circle cx=\"68\" cy=\"47\" r=\"3.2\" fill=\"#fff7ef\" stroke=\"none\"/><circle cx=\"80\" cy=\"47\" r=\"3.2\" fill=\"#fff7ef\" stroke=\"none\"/><circle cx=\"92\" cy=\"47\" r=\"3.2\" fill=\"#fff7ef\" stroke=\"none\"/></g></svg>"};
 function topicArt(id){return TOPIC_ART[id]?'<div class="topicart">'+TOPIC_ART[id]+'</div>':"";}
 function topicEmoji(id){return TOPIC_EMOJI[id]||'📚';}
+var DE = {"Peace be upon you (hello)":"Friede sei mit dir (Hallo)","And upon you peace (reply)":"Und auch mit dir sei Friede","Good morning":"Guten Morgen","Good night":"Gute Nacht","Welcome":"Willkommen","Thank you":"Danke","Many thanks":"Vielen Dank","Please":"Bitte","Sorry / excuse me":"Entschuldigung","Yes":"Ja","No":"Nein","Goodbye":"Auf Wiedersehen","How are you?":"Wie geht es dir?","I am well":"Mir geht es gut","See you again":"Bis bald","Congratulations":"Herzlichen Glückwunsch","mother":"die Mutter","father":"der Vater","parents":"die Eltern","brother":"der Bruder","sister":"die Schwester","son":"der Sohn","daughter":"die Tochter","husband":"der Ehemann","wife":"die Ehefrau","friend":"der Freund","child":"das Kind","man":"der Mann","woman":"die Frau","family":"die Familie","grandfather":"der Großvater","grandmother":"die Großmutter","teacher":"der Lehrer","neighbour":"der Nachbar","one":"eins","two":"zwei","three":"drei","four":"vier","five":"fünf","six":"sechs","seven":"sieben","eight":"acht","nine":"neun","ten":"zehn","eleven":"elf","twelve":"zwölf","thirteen":"dreizehn","fourteen":"vierzehn","fifteen":"fünfzehn","sixteen":"sechzehn","seventeen":"siebzehn","eighteen":"achtzehn","nineteen":"neunzehn","twenty":"zwanzig","hundred":"hundert","thousand":"tausend","how many / how much":"wie viele / wie viel","Monday":"der Montag","Tuesday":"der Dienstag","Wednesday":"der Mittwoch","Thursday":"der Donnerstag","Friday":"der Freitag","Saturday":"der Samstag","Sunday":"der Sonntag","today":"heute","tomorrow":"morgen","yesterday":"gestern","now":"jetzt","day":"der Tag","night":"die Nacht","morning":"der Morgen","evening":"der Abend","month":"der Monat","year":"das Jahr","hour":"die Stunde","minute":"die Minute","time":"die Zeit","water":"das Wasser","bread (flatbread)":"das Fladenbrot","rice":"der Reis","meat":"das Fleisch","chicken":"das Hähnchen","fish":"der Fisch","egg":"das Ei","milk":"die Milch","tea":"der Tee","vegetable":"das Gemüse","fruit":"das Obst","apple":"der Apfel","mango":"die Mango","salt":"das Salz","sugar":"der Zucker","oil":"das Öl","food / meal":"das Essen / die Mahlzeit","hungry":"hungrig","thirsty":"durstig","delicious":"lecker","colour":"die Farbe","red":"rot","blue":"blau","green":"grün","yellow":"gelb","black":"schwarz","white":"weiß","brown":"braun","orange":"orange","pink":"rosa","grey":"grau","purple":"lila","head":"der Kopf","hair":"das Haar","eye":"das Auge","ear":"das Ohr","nose":"die Nase","mouth":"der Mund","tooth":"der Zahn","hand / arm":"die Hand / der Arm","foot / leg":"der Fuß / das Bein","heart":"das Herz","stomach":"der Bauch","back":"der Rücken","finger":"der Finger","face":"das Gesicht","body":"der Körper","house / home":"das Haus / das Zuhause","door":"die Tür","window":"das Fenster","room":"das Zimmer","kitchen":"die Küche","table":"der Tisch","chair":"der Stuhl","bed":"das Bett","key":"der Schlüssel","book":"das Buch","pen":"der Stift","phone":"das Telefon","money":"das Geld","clothes":"die Kleidung","shoes":"die Schuhe","light":"das Licht","city":"die Stadt","village":"das Dorf","road / street":"die Straße / die Straße","station":"der Bahnhof","airport":"der Flughafen","train":"der Zug","bus":"der Bus","car":"das Auto","ticket":"die Fahrkarte","left":"links","right":"rechts","straight ahead":"geradeaus","near":"nah","far":"weit","here":"hier","there":"dort","market":"der Markt","hotel":"das Hotel","to go":"gehen","to come":"kommen","to eat":"essen","to drink":"trinken","to do / to make":"tun / machen","to see / to look":"sehen / schauen","to say":"sagen","to listen / to hear":"zuhören / hören","to read / to study":"lesen / lernen","to write":"schreiben","to sleep":"schlafen","to sit":"sitzen","to buy":"kaufen","to give":"geben","to take":"nehmen","to understand":"verstehen","to work":"arbeiten","to learn":"lernen","to speak":"sprechen","to want / to need":"wollen / brauchen","big":"groß","small":"klein","good":"gut","bad":"schlecht","new":"neu","old":"alt","hot":"heiß","cold":"kalt","easy":"einfach","difficult":"schwierig","beautiful":"schön","expensive":"teuer","cheap":"billig","fast":"schnell","slow":"langsam","a lot / very":"viel / sehr","a little":"ein bisschen","true":"wahr","sun":"die Sonne","moon":"der Mond","star":"der Stern","sky":"der Himmel","rain":"der Regen","wind / air":"der Wind / die Luft","cloud":"die Wolke","tree":"der Baum","flower":"die Blume","river":"der Fluss","mountain":"der Berg","sea":"das Meer","ground / land":"der Boden / das Land","fire":"das Feuer","snow / ice":"der Schnee / das Eis","weather / season":"das Wetter / die Jahreszeit","dog":"der Hund","cat":"die Katze","cow":"die Kuh","horse":"das Pferd","goat":"die Ziege","sheep":"das Schaf","donkey":"der Esel","hen":"das Huhn","bird":"der Vogel","lion":"der Löwe","elephant":"der Elefant","monkey":"der Affe","rabbit":"das Kaninchen","mouse":"die Maus","snake":"die Schlange","school":"die Schule","student":"der Schüler","notebook":"das Heft","pencil":"der Bleistift","paper":"das Papier","school bag":"die Schultasche","lesson":"die Lektion","question":"die Frage","answer":"die Antwort","word":"das Wort","language":"die Sprache","happy":"glücklich","sad":"traurig","angry / upset":"wütend / verärgert","afraid":"ängstlich","tired":"müde","surprised":"überrascht","bored":"gelangweilt","love":"die Liebe","to laugh":"lachen","to cry":"weinen","to play":"spielen","game":"das Spiel","toy":"das Spielzeug","ball":"der Ball","kite":"der Drachen","cricket":"das Cricket","football":"der Fußball","swimming":"das Schwimmen","park":"der Park","to run":"rennen","to jump":"springen","to win":"gewinnen","to lose":"verlieren","My name is …":"Ich heiße …","What is your name?":"Wie heißt du?","I am from Germany":"Ich komme aus Deutschland","Where are you from?":"Woher kommst du?","Pleased to meet you":"Schön, dich kennenzulernen","I am learning Urdu":"Ich lerne Urdu","I do not speak Urdu well":"Ich spreche nicht gut Urdu","Do you speak English?":"Sprichst du Englisch?","I do not understand":"Ich verstehe nicht","Please say that again":"Sag das bitte noch einmal","Please speak slowly":"Sprich bitte langsam","What does this mean?":"Was bedeutet das?","How much is this?":"Was kostet das?","That is too expensive":"Das ist zu teuer","I would like this":"Das möchte ich","Where is the bathroom?":"Wo ist die Toilette?","Where is the station?":"Wo ist der Bahnhof?","Please help me":"Bitte hilf mir","I am lost":"Ich habe mich verlaufen","Water, please":"Wasser, bitte","The bill, please":"Die Rechnung, bitte","What time is it?":"Wie spät ist es?","Is it far?":"Ist es weit?","Take me here, please":"Bring mich bitte hierhin","What do you do?":"Was machst du beruflich?","I work at a company":"Ich arbeite in einer Firma","The weather is lovely today":"Das Wetter ist heute schön","I like this very much":"Das gefällt mir sehr","No problem":"Kein Problem","Really?":"Wirklich?","Of course":"Natürlich","Let’s go":"Los geht's","One moment":"Einen Moment","I am tired":"Ich bin müde","Best wishes":"Alles Gute","Take care":"Pass auf dich auf"};
+function gloss(w){return (S.lang==="de"&&DE[w.en])?DE[w.en]:w.en;}
 function topicRow(t,attr){
   var m=mastery(t.id);
   return '<button class="row" '+(attr||'data-topic')+'="'+t.id+'">'+
@@ -1263,7 +1273,7 @@ function viewTopic(id){
   h+='<div class="card">';
   topicWords(id).forEach(function(w){
     h+='<div class="entry">'+spkBtn(w.ur)+'<div class="grow">'+
-       '<div class="en">'+esc(w.en)+'</div>'+
+       '<div class="en">'+esc(gloss(w))+'</div>'+
        '<div class="ur">'+esc(w.ur)+'</div>'+
        '<div class="tl">'+esc(w.tl)+'</div>'+
        (w.note?'<div class="note">'+esc(w.note)+'</div>':'')+
@@ -1316,9 +1326,9 @@ function viewCards(){
   var w=session.q[session.i];
   var r=S.srs[w.id];
   var reverse=r?(r.box%2===1):false;
-  var front=reverse?('<div class="ur">'+esc(w.ur)+'</div>'):('<div class="prompt">'+esc(w.en)+'</div>');
+  var front=reverse?('<div class="ur">'+esc(w.ur)+'</div>'):('<div class="prompt">'+esc(gloss(w))+'</div>');
   var back=reverse
-    ?('<div class="prompt">'+esc(w.en)+'</div><div class="tl">'+esc(w.tl)+'</div>')
+    ?('<div class="prompt">'+esc(gloss(w))+'</div><div class="tl">'+esc(w.tl)+'</div>')
     :('<div class="ur">'+esc(w.ur)+'</div><div class="tl">'+esc(w.tl)+'</div>');
   var pct=(session.i/session.q.length*100).toFixed(0);
   return '<div class="stack">'+
@@ -1361,7 +1371,7 @@ function buildQuiz(topicId){
 function viewQuiz(){
   if(!quiz){
     var h='<div class="stack"><div class="sec"><h2 style="font-size:1.35rem">Quiz</h2><span class="ur">امتحان</span></div>'+
-      '<p class="muted" style="margin:0 2px">Ten multiple‑choice questions, mixed in both directions.</p>'+
+      '<p class="muted" style="margin:0 2px">Ten multiple-choice questions, mixed in both directions.</p>'+
       '<button class="btn" data-quiz="all">Mixed quiz — everything</button>'+
       '<div class="sec"><h2>By topic</h2></div><div class="card rowlist">';
     TOPICS.forEach(function(t){
@@ -1389,7 +1399,7 @@ function viewQuiz(){
   }
   var q=quiz.qs[quiz.i],w=q.w;
   var prompt=q.dir==='en2ur'
-    ? '<div class="prompt" style="font-family:Newsreader,Georgia,serif;font-size:1.6rem">'+esc(w.en)+'</div>'
+    ? '<div class="prompt" style="font-family:Newsreader,Georgia,serif;font-size:1.6rem">'+esc(gloss(w))+'</div>'
     : '<div class="ur" style="font-size:2rem">'+esc(w.ur)+'</div>';
   var h='<div class="stack">'+
     '<div class="qhead"><span>'+(quiz.i+1)+' / '+quiz.qs.length+'</span>'+
@@ -1407,7 +1417,7 @@ function viewQuiz(){
     }
     var body=q.dir==='en2ur'
       ? '<div><div class="ur">'+esc(o.ur)+'</div><div class="tl">'+esc(o.tl)+'</div></div>'
-      : '<div><div style="font-weight:600">'+esc(o.en)+'</div></div>';
+      : '<div><div style="font-weight:600">'+esc(gloss(o))+'</div></div>';
     var mark=quiz.picked?(o.id===w.id?'<span class="mark" style="color:var(--jade)">correct</span>':(o.id===quiz.picked?'<span class="mark" style="color:var(--gulnar)">no</span>':'')):'';
     h+='<button class="'+cls+'" data-opt="'+o.id+'"'+(quiz.picked?' disabled':'')+'>'+body+mark+'</button>';
   });
@@ -1416,7 +1426,7 @@ function viewQuiz(){
     var right=quiz.picked===w.id;
     h+='<div class="fb '+(right?'fb-ok':'fb-no')+'">'+(right?praise():tryAgainMsg())+'</div>';
     h+='<div class="card pad" style="text-align:center"><div class="ur" style="font-size:1.6rem">'+esc(w.ur)+'</div>'+
-       '<div class="tl">'+esc(w.tl)+'</div><div class="muted">'+esc(w.en)+'</div>'+
+       '<div class="tl">'+esc(w.tl)+'</div><div class="muted">'+esc(gloss(w))+'</div>'+
        '<div style="margin-top:10px" class="split"><button class="btn ghost slim" data-speak="'+esc(w.ur)+'">Hear it</button>'+
        '<button class="btn slim" data-next="1">Next</button></div></div>';
   }
@@ -1450,7 +1460,7 @@ function viewScript(){
     if(ex.length){
       h+='<div class="sec"><h2>Words using it</h2></div><div class="card">';
       ex.forEach(function(w){
-        h+='<div class="entry">'+spkBtn(w.ur)+'<div class="grow"><div class="ur">'+esc(w.ur)+'</div><div class="tl">'+esc(w.tl)+' · '+esc(w.en)+'</div></div></div>';
+        h+='<div class="entry">'+spkBtn(w.ur)+'<div class="grow"><div class="ur">'+esc(w.ur)+'</div><div class="tl">'+esc(w.tl)+' · '+esc(gloss(w))+'</div></div></div>';
       });
       h+='</div>';
     }
@@ -1474,7 +1484,7 @@ function viewScript0(){
   });
   h+='</div>';
   h+='<div class="card pad"><div class="eyebrow">Reading tip</div><p class="muted" style="margin:6px 0 0">'+
-     'Short vowels are normally left out. کتاب is written k‑t‑ā‑b and read <i>kitāb</i> — you supply the vowels from knowing the word, the way you read “Dr” as “doctor”.</p></div>';
+     'Short vowels are normally left out. کتاب is written k-t-a-b and read <i>kitaab</i> — you supply the vowels from knowing the word, the way you read “Dr” as “doctor”.</p></div>';
   return h+'</div>';
 }
 
@@ -1522,7 +1532,7 @@ function viewGame(){
     var isUp=game.up.indexOf(i)>=0, isDone=game.matched[i];
     var cls='mcard'+(isUp?' up':'')+(isDone?' done':'');
     var face=isDone||isUp
-      ? (c.type==='ur'?'<span class="ur">'+esc(c.w.ur)+'</span>':'<span class="men">'+esc(c.w.en)+'</span>')
+      ? (c.type==='ur'?'<span class="ur">'+esc(c.w.ur)+'</span>':'<span class="men">'+esc(gloss(c.w))+'</span>')
       : '<span class="mback">؟</span>';
     h+='<button class="'+cls+'" data-mcard="'+i+'"'+(isDone?' disabled':'')+'>'+face+'</button>';
   });
@@ -1557,6 +1567,7 @@ function onClick(e){
   var el;
   if((el=t.closest('[data-speak]'))){speak(el.dataset.speak);return;}
   if((el=t.closest('[data-slow]'))){S.slow=!S.slow;save();render();if(S.slow)speak('شکریہ');return;}
+  if((el=t.closest('[data-lang]'))){S.lang=(S.lang==='de')?'en':'de';save();render();return;}
   if((el=t.closest('[data-go]'))){go(el.dataset.go);return;}
   if((el=t.closest('[data-topic]'))){go('learn','topic',el.dataset.topic);return;}
   if((el=t.closest('[data-grammar]'))){go('learn','grammar');return;}
@@ -1631,6 +1642,8 @@ function boot(){
     var s=e.target.closest('#voiceSel');
     if(s){S.voiceURI=s.value||null;save();speak('شکریہ');}
   });
+  var lb=document.getElementById('langBtn');   /* header sits outside #view */
+  if(lb)lb.addEventListener('click',function(){S.lang=(S.lang==='de')?'en':'de';save();render();});
   paintTabs();render();
   installPwa();
 }
