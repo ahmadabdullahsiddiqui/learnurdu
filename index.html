@@ -223,6 +223,9 @@ nav.tabs{
 .sel{width:100%;padding:11px 12px;border-radius:11px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;-webkit-appearance:none;appearance:none}
 .toggle{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:11px 16px;border-radius:11px;font-weight:600;font-size:.92rem;background:var(--surface);color:var(--ink);border:1px solid var(--line);width:100%}
 .toggle[aria-pressed="true"]{background:var(--lapis-wash);color:var(--lapis-ink);border-color:color-mix(in srgb,var(--lapis) 35%,var(--line))}
+.pstat{font-size:.8rem;padding:8px 11px;border-radius:10px;border:1px solid var(--line)}
+.pstat.ok{background:var(--jade-wash);color:var(--jade);border-color:color-mix(in srgb,var(--jade) 30%,var(--line))}
+.pstat.warn{background:var(--gold-wash);color:var(--gold);border-color:color-mix(in srgb,var(--gold) 30%,var(--line))}
 </style>
 
 <header class="bar">
@@ -787,30 +790,25 @@ function chosenVoice(){
   }
   return urduVoice();
 }
-/* iOS/Safari only starts the speech engine inside a user gesture; warm it
-   up once on the first tap so the first word is not swallowed. */
-var speechReady=false;
-function unlockSpeech(){
-  if(speechReady||!window.speechSynthesis)return;
-  speechReady=true;
-  try{var u=new SpeechSynthesisUtterance(' ');u.volume=0;speechSynthesis.speak(u);}catch(e){}
-}
+/* How to enable a spoken voice, shown when none is installed. */
+var NOVOICE_TIP='No Urdu voice is installed on this device, so there is no sound. '+
+  'On Windows the quickest fix is to open this page in Microsoft Edge, which has built-in online Urdu voices. '+
+  'Or install a voice — Windows: Settings › Time & language › Language & region › add Urdu (with the speech option); '+
+  'Android: Settings › System › Languages & input › Text-to-speech; '+
+  'iPhone: Settings › Accessibility › Spoken Content › Voices.';
 function speak(text){
   if(!window.speechSynthesis){toast('This browser has no speech engine.');return;}
   try{
-    unlockSpeech();
     if(!VOICES.length)refreshVoices();
     speechSynthesis.cancel();
+    speechSynthesis.resume(); /* Chrome can leave the queue paused; nudge it */
     var u=new SpeechSynthesisUtterance(text);
     var v=chosenVoice();
     u.lang=v?v.lang:'ur-PK';
     u.rate=S.slow?0.55:0.8;u.pitch=1;
     if(v)u.voice=v;
-    else if(!S.hintShown){
-      S.hintShown=true;save();
-      toast('No Urdu voice on this device yet. Install one for spoken pronunciation — Android: Settings › System › Languages & input › Text-to-speech; iPhone: Settings › Accessibility › Spoken Content › Voices.');
-    }
     speechSynthesis.speak(u);
+    if(!v)toast(NOVOICE_TIP);          /* no usable voice — explain the silence */
   }catch(e){toast('Speech is unavailable here.');}
 }
 var toastTimer;
@@ -917,13 +915,18 @@ function pronCard(){
   vs.forEach(function(v){
     opts+='<option value="'+esc(v.voiceURI)+'"'+(S.voiceURI===v.voiceURI?' selected':'')+'>'+esc(v.name)+' — '+esc(v.lang)+'</option>';
   });
+  var v=chosenVoice();
+  var status=v
+    ? '<div class="pstat ok">Ready — using <b>'+esc(v.name)+'</b> ('+esc(v.lang)+')</div>'
+    : '<div class="pstat warn">No Urdu voice found on this device — pronunciation will be silent until you add one.</div>';
   var h='<div class="card pad stack" style="gap:12px">';
+  h+=status;
   h+='<div><div class="eyebrow">Voice</div><select id="voiceSel" class="sel" aria-label="Pronunciation voice" style="margin-top:6px">'+opts+'</select></div>';
   h+='<div class="split">'+
      '<button class="toggle" data-slow="1" aria-pressed="'+(S.slow?'true':'false')+'">'+(S.slow?'Slow speed · on':'Slow speed')+'</button>'+
      '<button class="btn slim" data-speak="شکریہ">Test — <span class="ur" style="font-size:1.1rem">شکریہ</span></button></div>';
-  if(!vs.length)
-    h+='<p class="tiny" style="margin:0">No Urdu voice is installed yet. Tap <b>Test</b> to try the system default; if it is silent, install a voice — Android: Settings › System › Languages &amp; input › Text-to-speech; iPhone: Settings › Accessibility › Spoken Content › Voices.</p>';
+  if(!v)
+    h+='<p class="tiny" style="margin:0">On Windows the quickest fix is to open the app in <b>Microsoft Edge</b> — it has built-in online Urdu voices. To install a voice instead — Windows: Settings › Time &amp; language › Language &amp; region › add <b>Urdu</b> (with the speech option); Android: Settings › System › Languages &amp; input › Text-to-speech; iPhone: Settings › Accessibility › Spoken Content › Voices.</p>';
   return h+'</div>';
 }
 function spkBtn(text){
