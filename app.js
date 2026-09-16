@@ -771,7 +771,7 @@ const GRAMMAR = [
 /* ============================ state ============================ */
 var ZWJ='‍';
 var KEY='urdu.ahmadabdullah';
-var APP_VERSION='1.5.4';
+var APP_VERSION='1.5.5';
 var INTERVALS=[0,1,3,7,16,35];
 var GOAL=20;
 
@@ -1514,8 +1514,8 @@ function checkWrite(){
   if(!maskTotal){el.className='';return;}
   if(userTotal<maskTotal*0.10){ el.className='fb fb-no'; el.textContent=de?'Zeichne zuerst den Buchstaben ✍️':'Draw the letter first ✍️'; return; }
   var coverage=hit/maskTotal, onShape=userTotal?hit/userTotal:0;   /* onShape = share of the drawing that lands on the letter */
-  if(coverage>=0.4&&onShape>=0.45){ el.className='fb fb-ok'; el.textContent=de?'Super gemacht! ✓ 🎉':'Well done! ✓ 🎉'; try{celebrate();}catch(_){} }
-  else if(onShape<0.45){ el.className='fb fb-no'; el.textContent=de?'Fast! Zeichne den Buchstaben nach 💪':'Almost! Trace the letter shown 💪'; }
+  if(coverage>=0.18&&onShape>=0.4){ el.className='fb fb-ok'; el.textContent=de?'Super gemacht! ✓ 🎉':'Well done! ✓ 🎉'; try{celebrate();}catch(_){} }
+  else if(onShape<0.4){ el.className='fb fb-no'; el.textContent=de?'Fast! Zeichne den Buchstaben nach 💪':'Almost! Trace the letter shown 💪'; }
   else { el.className='fb fb-no'; el.textContent=de?'Fast! Schreib den ganzen Buchstaben 💪':'Almost! Write the whole letter 💪'; }
 }
 
