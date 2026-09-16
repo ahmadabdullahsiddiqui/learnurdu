@@ -1,7 +1,7 @@
 /* Ustad - The Urdu Teacher — offline service worker.
    HTML is network-first so a new version lands on the next online visit;
    everything else is cache-first so the app opens with no connection.     */
-const CACHE = 'ustad-v19';
+const CACHE = 'ustad-v20';
 const ASSETS = [
   "./",
   "./index.html",
@@ -48,9 +48,9 @@ const ASSETS = [
 ];
 
 self.addEventListener('install', (e) => {
-  // Precache, then take over immediately so a new deploy activates on the next
-  // load (paired with clients.claim + the page's reload-on-controllerchange,
-  // this makes a normal refresh always land on the latest version).
+  // Precache, then activate immediately (skipWaiting + clients.claim) so the new
+  // version is ready. The page detects the update and shows an "Update" bar so
+  // the user reloads when they choose, instead of a surprise refresh.
   e.waitUntil(
     caches.open(CACHE)
       .then((c) => Promise.allSettled(ASSETS.map((u) => c.add(u))))

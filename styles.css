@@ -247,6 +247,21 @@ nav.tabs{
   opacity:0;pointer-events:none;transition:opacity .25s
 }
 .toast.show{opacity:.97}
+.updbar{
+  position:fixed;left:50%;transform:translateX(-50%);
+  bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:70;
+  display:flex;align-items:center;gap:10px;
+  max-width:min(94vw,440px);padding:10px 12px 10px 16px;border-radius:14px;
+  background:var(--primary,#0e7d3e);color:#fff;box-shadow:var(--shadow);
+  animation:updpop .28s ease
+}
+@keyframes updpop{from{opacity:0;transform:translate(-50%,12px)}to{opacity:1;transform:translate(-50%,0)}}
+.updmsg{font-size:.86rem;font-weight:600;flex:1}
+.updbtn{background:#fff;color:var(--primary,#0e7d3e);border:0;border-radius:10px;
+  padding:7px 14px;font-weight:800;font-size:.84rem;cursor:pointer}
+.updbtn:hover{filter:brightness(.96)}
+.updx{background:transparent;border:0;color:#fff;opacity:.85;font-size:.9rem;cursor:pointer;padding:4px 6px;line-height:1}
+.updx:hover{opacity:1}
 .muted{color:var(--ink2);font-size:.86rem}
 .back-link{display:inline-flex;align-items:center;gap:6px;color:var(--ink3);font-size:.8rem;font-weight:500;padding:2px 0}
 .tiny{font-size:.74rem;color:var(--ink3)}

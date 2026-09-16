@@ -771,7 +771,7 @@ const GRAMMAR = [
 /* ============================ state ============================ */
 var ZWJ='‍';
 var KEY='urdu.ahmadabdullah';
-var APP_VERSION='1.5.6';
+var APP_VERSION='1.5.7';
 var INTERVALS=[0,1,3,7,16,35];
 var GOAL=20;
 
@@ -1616,20 +1616,47 @@ function boot(){
   paintTabs();render();
   installPwa();
 }
-/* Register the service worker in AUTO-UPDATE mode: a new deploy activates
-   immediately (skipWaiting + clients.claim), and the page reloads once when
-   the new worker takes control — so a normal refresh always shows the latest
-   version. The one-time reload is skipped on the very first install. */
+/* Show a gentle, dismissible "update available" bar instead of reloading behind
+   the child's back. Reload only when they tap Update. */
+function showUpdateBar(onUpdate){
+  if(document.getElementById('updbar'))return;
+  var de=(typeof S!=='undefined'&&S&&S.lang==='de');
+  var bar=document.createElement('div'); bar.id='updbar'; bar.className='updbar'; bar.setAttribute('role','status');
+  var msg=document.createElement('span'); msg.className='updmsg';
+  msg.textContent=de?'🆕 Neue Version verfügbar':'🆕 A new version is available';
+  var btn=document.createElement('button'); btn.className='updbtn'; btn.type='button';
+  btn.textContent=de?'Aktualisieren':'Update';
+  btn.addEventListener('click',function(){onUpdate();});
+  var x=document.createElement('button'); x.className='updx'; x.type='button';
+  x.setAttribute('aria-label',de?'Schließen':'Dismiss'); x.textContent='✕';
+  x.addEventListener('click',function(){bar.remove();});
+  bar.appendChild(msg); bar.appendChild(btn); bar.appendChild(x);
+  document.body.appendChild(bar);
+}
+/* Register the service worker and, when a NEW version is installed over an old
+   one already in the browser, offer an "Update" bar (no surprise reloads). The
+   very first install shows nothing. */
 function installPwa(){
   if(!('serviceWorker' in navigator))return;
   try{
-    var hadController=!!navigator.serviceWorker.controller;
-    var reloaded=false;
-    navigator.serviceWorker.addEventListener('controllerchange',function(){
-      if(reloaded||!hadController)return;   /* don't reload on first-ever install */
-      reloaded=true; location.reload();
-    });
     navigator.serviceWorker.register('sw.js',{scope:'./'}).then(function(reg){
+      var offered=false;
+      function offer(){
+        if(offered)return; offered=true;
+        showUpdateBar(function(){
+          try{if(reg.waiting)reg.waiting.postMessage({type:'SKIP_WAITING'});}catch(e){}
+          location.reload();
+        });
+      }
+      /* An update was already waiting when the page opened. */
+      if(reg.waiting && navigator.serviceWorker.controller) offer();
+      /* A new worker started installing while the page is open. */
+      reg.addEventListener('updatefound',function(){
+        var nw=reg.installing; if(!nw)return;
+        nw.addEventListener('statechange',function(){
+          if(nw.state==='installed' && navigator.serviceWorker.controller) offer();
+        });
+      });
       try{reg.update();}catch(e){}          /* check for a new version now… */
       document.addEventListener('visibilitychange',function(){
         if(document.visibilityState==='visible'){ try{reg.update();}catch(e){} }  /* …and on refocus */
