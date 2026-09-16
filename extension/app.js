@@ -627,6 +627,7 @@ const GRAMMAR = [
 /* ============================ state ============================ */
 var ZWJ='‍';
 var KEY='roshni.v1';
+var APP_VERSION='1.2.0';
 var INTERVALS=[0,1,3,7,16,35];
 var GOAL=20;
 
@@ -875,7 +876,7 @@ function viewHome(){
 
   h+='<p class="tiny" style="text-align:center;margin:6px 0 0">Progress is saved on this device only.</p>';
   h+='<p class="credit">Made and Designed with <span class="hh">❤</span> by Ahmad Abdullah</p>';
-  h+='<p class="tiny" style="text-align:center;margin:4px 0 0"><a href="privacy.html" target="_blank" rel="noopener" style="color:var(--ink3)">'+(S.lang==='de'?'Datenschutz':'Privacy')+'</a></p>';
+  h+='<p class="tiny" style="text-align:center;margin:4px 0 0"><a href="privacy.html" target="_blank" rel="noopener" style="color:var(--ink3)">'+(S.lang==='de'?'Datenschutz':'Privacy')+'</a> · v'+APP_VERSION+'</p>';
   return h+'</div>';
 }
 function pronCard(){
