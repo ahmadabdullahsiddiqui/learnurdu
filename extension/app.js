@@ -771,7 +771,7 @@ const GRAMMAR = [
 /* ============================ state ============================ */
 var ZWJ='‍';
 var KEY='urdu.ahmadabdullah';
-var APP_VERSION='1.5.1';
+var APP_VERSION='1.5.2';
 var INTERVALS=[0,1,3,7,16,35];
 var GOAL=20;
 
@@ -1450,10 +1450,10 @@ function viewWrite(){
     '</div>'+
     '<div id="writeFb"></div>'+
     '<div class="split">'+
-      '<button class="btn" data-writecheck="1">Check ✓</button>'+
+      '<button class="toggle" data-writeguide="1" aria-pressed="'+(writeState.guide?'true':'false')+'">'+(writeState.guide?'Hide guide':'Show guide')+'</button>'+
       '<button class="btn ghost" data-writeclear="1">Clear</button></div>'+
     '<div class="split">'+
-      '<button class="toggle" data-writeguide="1" aria-pressed="'+(writeState.guide?'true':'false')+'">'+(writeState.guide?'Hide guide':'Show guide')+'</button>'+
+      '<button class="btn" data-writecheck="1">Check ✓</button>'+
       (writeState.i<n-1?'<button class="btn" data-writenav="1">Next →</button>':'<button class="btn" data-writemenu="1">Done</button>')+
     '</div>'+
     (writeState.i>0?'<button class="btn ghost" data-writenav="-1">← Previous</button>':'')+
@@ -1480,7 +1480,11 @@ function initWrite(){
   function fit(cv,cx){var r=cv.getBoundingClientRect();cv.width=Math.max(1,Math.round(r.width*dpr));cv.height=Math.max(1,Math.round(r.height*dpr));cx.setTransform(dpr,0,0,dpr,0,0);return {w:r.width,h:r.height};}
   var dim=fit(c,ctx); fit(gc,gctx); writeDim={w:dim.w,h:dim.h,dpr:dpr};
   ctx.lineCap='round';ctx.lineJoin='round';ctx.lineWidth=9;ctx.strokeStyle='#0e7d3e';
-  drawGlyph(gctx,it.ur,dim.w,dim.h,'rgba(20,32,28,0.14)',0);
+  var drawGuide=function(){gctx.clearRect(0,0,gc.width,gc.height);drawGlyph(gctx,it.ur,dim.w,dim.h,'rgba(15,125,62,0.22)',0);};
+  drawGuide();
+  /* Canvas text does not wait for @font-face; draw once now, then redraw when
+     Noto Nastaliq is actually ready so the guide isn't blank/fallback. */
+  try{if(document.fonts&&document.fonts.load){document.fonts.load('700 '+Math.round(dim.h*0.5)+'px "Noto Nastaliq Urdu"',it.ur).then(drawGuide,function(){});document.fonts.ready.then(drawGuide,function(){});}}catch(_){}
   var pos=function(ev){var r=c.getBoundingClientRect();return {x:ev.clientX-r.left,y:ev.clientY-r.top};};
   c.addEventListener('pointerdown',function(ev){wdrawing=true;if(c.setPointerCapture)try{c.setPointerCapture(ev.pointerId);}catch(_){}
     var fb=document.getElementById('writeFb');if(fb){fb.textContent='';fb.className='';}
