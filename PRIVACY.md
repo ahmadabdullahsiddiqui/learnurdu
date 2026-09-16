@@ -22,13 +22,6 @@ analytics, no advertising, no tracking. The app does not send your data anywhere
 ## Cookies & tracking
 None. No cookies, analytics, fingerprinting, or third‑party scripts.
 
-## Live "learners online" count (optional)
-Ustad can show how many people have the app open at once. When enabled by the
-operator, the app opens a WebSocket to a small presence service that reports only a
-single number (the current count) — no cookies, identifiers, learning data or history
-are sent or stored, and it does not record who connected. **Currently disabled**; while
-disabled the app makes no such connection.
-
 ## Children
 Designed to be safe for children: it collects no personal data and has no social, chat,
 purchase, or external‑link features.

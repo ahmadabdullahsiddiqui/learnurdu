@@ -772,28 +772,6 @@ const GRAMMAR = [
 var ZWJ='‍';
 var KEY='roshni.v1';
 var APP_VERSION='1.4.0';
-/* Live "learners online now" counter. OFF until a presence server is deployed
-   (see server/README.md) and this points at its wss://…/ws endpoint. Empty =
-   no runtime connection at all. */
-var PRESENCE_URL='';
-var presenceCount=0, presenceWS=null;
-function connectPresence(){
-  if(!PRESENCE_URL||typeof WebSocket==='undefined')return;
-  try{
-    presenceWS=new WebSocket(PRESENCE_URL);
-    presenceWS.onmessage=function(e){ try{var d=JSON.parse(e.data); if(typeof d.count==='number'){presenceCount=d.count; paintPresence();}}catch(_){} };
-    presenceWS.onclose=function(){ presenceWS=null; setTimeout(connectPresence,8000); };  /* auto-reconnect */
-    presenceWS.onerror=function(){ try{presenceWS.close();}catch(_){} };
-  }catch(e){}
-}
-function paintPresence(){
-  var el=document.getElementById('liveBadge');
-  if(!el)return;
-  if(PRESENCE_URL&&presenceCount>0){
-    el.textContent='🟢 '+presenceCount+' '+(S.lang==='de'?(presenceCount===1?'lernt gerade':'lernen gerade'):(presenceCount===1?'learning now':'learning now'));
-    el.style.display='';
-  }else{ el.style.display='none'; }
-}
 var INTERVALS=[0,1,3,7,16,35];
 var GOAL=20;
 
@@ -996,7 +974,6 @@ function paintChrome(){
   if(lb){var de2=S.lang==='de';
     lb.innerHTML='<span class="fl'+(de2?'':' on')+'">🇬🇧</span><span class="fl'+(de2?' on':'')+'">🇩🇪</span>';
     lb.title=de2?'Meanings in German — tap for English':'Meanings in English — tap for German';}
-  paintPresence();
 }
 
 /* ============================ views ============================ */
@@ -1526,7 +1503,6 @@ function boot(){
   if(lb)lb.addEventListener('click',function(){S.lang=(S.lang==='de')?'en':'de';save();render();});
   paintTabs();render();
   installPwa();
-  connectPresence();   /* live "learners online" — no-op unless PRESENCE_URL is set */
 }
 /* Register the service worker in AUTO-UPDATE mode: a new deploy activates
    immediately (skipWaiting + clients.claim), and the page reloads once when

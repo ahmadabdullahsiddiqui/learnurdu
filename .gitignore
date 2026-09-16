@@ -12,6 +12,3 @@ Thumbs.db
 # Build artifacts (extension packages)
 /dist/
 
-# Cloudflare Worker dev artifacts
-server/node_modules/
-server/.wrangler/
