@@ -222,6 +222,10 @@ nav.tabs{
 .mcard .men{font-weight:600;font-size:.82rem;line-height:1.1;word-break:break-word}
 .mcard:active{transform:scale(.95)}
 @media (max-width:380px){.mcard .men{font-size:.72rem}}
+.writepad{position:relative;border:2px solid var(--line);border-radius:18px;background:var(--surface);height:280px;overflow:hidden;box-shadow:var(--shadow)}
+.writeguide{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:color-mix(in srgb,var(--ink) 13%,transparent);font-size:6.5rem;line-height:1.2;pointer-events:none;user-select:none;padding:0 12px}
+.writeguide.off{visibility:hidden}
+.writecanvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:crosshair}
 .credit{text-align:center;color:var(--ink3);font-size:.8rem;padding:14px 8px 2px;line-height:1.5}
 .credit .hh{color:var(--gulnar)}
 .forms{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;text-align:center}
