@@ -1,10 +1,11 @@
 # Ustad — The Urdu Teacher · استاد
 
-A colourful, kid-friendly English → Urdu learning app: vocabulary, phrases, the
-nastaliq script and grammar, with spaced‑repetition flashcards and quizzes. It's
-a single‑file PWA that runs from disk, installs to a phone or desktop, and works
-fully offline. **Every word has built-in spoken audio** that plays offline on
-any device — including iPhone/iPad, which have no built-in Urdu voice.
+A colourful, kid-friendly Urdu learning app for **English *and* German speakers**:
+vocabulary, phrases, the nastaliq script and grammar, with spaced‑repetition
+flashcards, quizzes, a memory game and handwriting practice. It's a PWA that runs
+from disk, installs to a phone or desktop, and works **fully offline**. **Every
+word has built-in spoken audio** that plays offline on any device — including
+iPhone/iPad, which have no built-in Urdu voice.
 
 ## ▶ Try it
 
@@ -17,17 +18,27 @@ offline app:
 
 ## Features
 
-- **Learn** — 15 vocabulary & phrase topics (~250 words) plus 10 grammar notes
+- **Learn** — 28 topics (21 vocabulary + 7 phrase sets), ~485 words and full
+  sentences, plus 10 grammar notes
 - **Cards** — Leitner spaced repetition; hard cards return in minutes, known
   cards drift out to 35 days
-- **Quiz** — 10 multiple‑choice questions in both directions (EN→UR, UR→EN)
-- **Script** — all 39 letters with isolated / initial / medial / final forms
-- **Pronunciation** — built‑in text‑to‑speech with a voice picker, a slow‑speed
-  toggle, and a test button
-- **Offline** — fonts are bundled locally and a service worker caches the app,
-  so it works with no connection
+- **Quiz** — 10 multiple‑choice questions in both directions (EN→UR, UR→EN),
+  with a celebration when you ace it
+- **Script** — the full nastaliq alphabet, each letter in its isolated / initial
+  / medial / final forms
+- **Write** — trace letters and words on a canvas with a fade‑in guide, then tap
+  **Check** for kid‑friendly feedback
+- **Game** — Memory Match: flip and pair each Urdu word with its meaning
+- **Pronunciation** — 500+ bundled offline audio clips, plus an optional
+  “use my device’s voice” mode, a slow‑speed toggle and a test button
+- **English / German** — switch the entire UI (labels, blurbs, grammar notes and
+  word meanings) between 🇬🇧 English and 🇩🇪 German from the header
+- **Offline & installable** — fonts and audio are bundled locally and a service
+  worker caches the app, so it works with no connection
+- **Auto‑update** — when a new version is deployed, an open app shows a gentle
+  “update available” bar so you can reload when you choose
 - Progress (streaks, card scheduling, quiz scores) is stored in `localStorage`
-  on the device only, and never sent anywhere.
+  on the device only (`urdu.ahmadabdullah`), and never sent anywhere.
 
 ## Run it
 
@@ -49,28 +60,37 @@ over HTTPS (or `localhost`).
 ## Project layout
 
 ```
-index.html            the whole app — content, styles and logic
+index.html            HTML shell (header, CSP) — loads app.js + styles.css
+app.js                the whole app — content, views and logic
+styles.css            all styles
 fonts.css, fonts/     self‑hosted fonts, bundled for offline use
+audio/                pre‑generated offline pronunciation clips (.mp3)
 manifest.json, sw.js  PWA manifest and offline service worker
 icon-*.png            app icons
 assets/qr.png         QR code for the live site
-build-extension.mjs   regenerates extension/ from index.html
+build-extension.mjs   regenerates extension/ from the app files
+build-audio.mjs       regenerates audio/ clips from the words in app.js
+privacy.html          privacy policy (no data is collected)
 extension/            Manifest V3 browser extension
 ```
 
 ## Editing content
 
 All words, phrases, letters and grammar notes live in the `TOPICS`, `ALPHABET`
-and `GRAMMAR` arrays near the top of the `<script>` block in `index.html`. Each
-vocabulary item is `[english, urdu, transliteration, optional note]` — add or
-edit rows and the flashcards, quizzes and progress bars pick them up
-automatically.
+and `GRAMMAR` arrays near the top of `app.js`. Each vocabulary item is
+`[english, urdu, transliteration, optional note]` — add or edit rows and the
+flashcards, quizzes, game, writing practice and progress bars pick them up
+automatically. German meanings live in the `DE` map and UI labels in the `UI`
+map further down.
 
-After editing, rebuild the extension and bump the service‑worker cache:
+After editing, regenerate audio and the extension, then bump the version so
+installed copies update:
 
 ```
+node build-audio.mjs              # regenerate audio/ for any new/changed words
 node build-extension.mjs          # regenerate extension/
-# then bump CACHE in sw.js (e.g. 'ustad-v2') so installed copies update
+# then bump APP_VERSION in app.js and CACHE in sw.js (e.g. 'ustad-v26')
 ```
 
-Pushing to `main` redeploys the live site automatically via GitHub Pages.
+Pushing to `main` redeploys the live site automatically via GitHub Pages. An
+already‑open app detects the new version and offers the update bar within ~30s.
