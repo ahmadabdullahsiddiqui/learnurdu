@@ -771,7 +771,7 @@ const GRAMMAR = [
 /* ============================ state ============================ */
 var ZWJ='‍';
 var KEY='urdu.ahmadabdullah';
-var APP_VERSION='1.5.7';
+var APP_VERSION='1.5.8';
 var INTERVALS=[0,1,3,7,16,35];
 var GOAL=20;
 
@@ -1058,7 +1058,7 @@ function pronCard(){
      '<button class="toggle" data-slow="1" aria-pressed="'+(S.slow?'true':'false')+'">'+(S.slow?'Slow speed · on':'Slow speed')+'</button></div>';
   if(speech){
     var opts='<option value=""'+(!S.voiceURI?' selected':'')+'>Built-in audio (recommended)</option>';
-    opts+='<option value="device"'+(S.voiceURI==='device'?' selected':'')+'>Use my device’s voice (internet needed)</option>';
+    opts+='<option value="device"'+(S.voiceURI==='device'?' selected':'')+'>Use my device’s voice</option>';
     vs.forEach(function(v){
       opts+='<option value="'+esc(v.voiceURI)+'"'+(S.voiceURI===v.voiceURI?' selected':'')+'>'+esc(v.name)+' — '+esc(v.lang)+'</option>';
     });
