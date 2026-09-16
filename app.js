@@ -771,7 +771,7 @@ const GRAMMAR = [
 /* ============================ state ============================ */
 var ZWJ='‍';
 var KEY='urdu.ahmadabdullah';
-var APP_VERSION='1.4.0';
+var APP_VERSION='1.4.1';
 var INTERVALS=[0,1,3,7,16,35];
 var GOAL=20;
 
