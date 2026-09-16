@@ -771,7 +771,7 @@ const GRAMMAR = [
 /* ============================ state ============================ */
 var ZWJ='‍';
 var KEY='urdu.ahmadabdullah';
-var APP_VERSION='1.5.2';
+var APP_VERSION='1.5.3';
 var INTERVALS=[0,1,3,7,16,35];
 var GOAL=20;
 
@@ -1497,25 +1497,16 @@ function clearWrite(){
   if(wctx&&wcanvas)wctx.clearRect(0,0,wcanvas.width,wcanvas.height);
   var fb=document.getElementById('writeFb'); if(fb){fb.textContent='';fb.className='';}
 }
-/* Offline "check": compare the drawing to a mask of the target glyph. Not
-   handwriting recognition — it scores how well the trace covers the letter. */
+/* Kid-friendly check: it only confirms the child actually wrote something, then
+   celebrates. No accuracy score — the goal is to encourage, not to grade. */
 function checkWrite(){
   if(!wcanvas||!wctx||!writeState||!writeDim)return;
   var el=document.getElementById('writeFb'); if(!el)return;
-  var de=S.lang==='de', W=wcanvas.width, H=wcanvas.height, dpr=writeDim.dpr, user;
+  var de=S.lang==='de', W=wcanvas.width, H=wcanvas.height, user, drawn=0;
   try{user=wctx.getImageData(0,0,W,H).data;}catch(e){return;}
-  var off=document.createElement('canvas'); off.width=W; off.height=H;
-  var octx=off.getContext('2d'); if(!octx)return; octx.setTransform(dpr,0,0,dpr,0,0);
-  drawGlyph(octx,writeText,writeDim.w,writeDim.h,'#000',24);   /* thickened target */
-  var mask=octx.getImageData(0,0,W,H).data;
-  var maskTotal=0,userTotal=0,hit=0,stray=0;
-  for(var i=3;i<mask.length;i+=4){ var mOn=mask[i]>20,uOn=user[i]>20; if(mOn)maskTotal++; if(uOn){userTotal++; if(mOn)hit++; else stray++;} }
-  if(!maskTotal){el.className='';return;}
-  if(userTotal<maskTotal*0.08){ el.className='fb fb-no'; el.textContent=de?'Zeichne zuerst den Buchstaben ✍️':'Draw the letter first ✍️'; return; }
-  var coverage=hit/maskTotal, strayFrac=userTotal?stray/userTotal:1, pct=Math.round(coverage*100);
-  if(coverage>=0.5&&strayFrac<=0.6){ el.className='fb fb-ok'; el.textContent=(de?'Super geschrieben! ✓ ':'Great writing! ✓ ')+pct+'%'; try{celebrate();}catch(_){} }
-  else if(strayFrac>0.6){ el.className='fb fb-no'; el.textContent=de?'Bleib auf den Linien 🤔':'Try to stay on the lines 🤔'; }
-  else { el.className='fb fb-no'; el.textContent=(de?'Fast! Zieh den ganzen Buchstaben nach 💪 ':'Almost! Trace the whole letter 💪 ')+pct+'%'; }
+  for(var i=3;i<user.length;i+=4){ if(user[i]>20){ drawn++; if(drawn>150)break; } }
+  if(drawn<=150){ el.className='fb fb-no'; el.textContent=de?'Zeichne zuerst den Buchstaben ✍️':'Draw the letter first ✍️'; return; }
+  el.className='fb fb-ok'; el.textContent=de?'Super gemacht! ✓ 🎉':'Well done! ✓ 🎉'; try{celebrate();}catch(_){}
 }
 
 /* ============================ events ============================ */
