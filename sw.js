@@ -1,7 +1,7 @@
 /* Ustad - The Urdu Teacher — offline service worker.
    HTML is network-first so a new version lands on the next online visit;
    everything else is cache-first so the app opens with no connection.     */
-const CACHE = 'ustad-v22';
+const CACHE = 'ustad-v23';
 const ASSETS = [
   "./",
   "./index.html",
