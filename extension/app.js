@@ -627,7 +627,7 @@ const GRAMMAR = [
 /* ============================ state ============================ */
 var ZWJ='‍';
 var KEY='roshni.v1';
-var APP_VERSION='1.2.0';
+var APP_VERSION='1.2.1';
 var INTERVALS=[0,1,3,7,16,35];
 var GOAL=20;
 
