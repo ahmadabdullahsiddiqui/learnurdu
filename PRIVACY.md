@@ -8,7 +8,7 @@ analytics, no advertising, no tracking. The app does not send your data anywhere
 ## What the app processes
 - **Learning state only, stored on your device** — progress, streak, spaced‑repetition
   schedule, quiz scores, chosen language and playback settings live in your browser's
-  `localStorage` (key `roshni.v1`). It never leaves your device.
+  `localStorage` (key `urdu.ahmadabdullah`). It never leaves your device.
 - **No personal data** (name, email, location, contacts, identifiers) is requested,
   collected, or stored.
 

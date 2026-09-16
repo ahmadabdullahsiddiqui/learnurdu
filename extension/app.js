@@ -770,14 +770,21 @@ const GRAMMAR = [
 
 /* ============================ state ============================ */
 var ZWJ='‍';
-var KEY='roshni.v1';
+var KEY='urdu.ahmadabdullah';
+var OLD_KEY='roshni.v1';          /* migrate progress from the previous key */
 var APP_VERSION='1.4.0';
 var INTERVALS=[0,1,3,7,16,35];
 var GOAL=20;
 
 function blank(){return{srs:{},streak:0,lastDay:null,today:null,todayCount:0,quiz:{},hintShown:false,voiceURI:null,slow:false,lang:"en"};}
 function load(){
-  try{var r=localStorage.getItem(KEY);if(!r)return blank();
+  try{
+    var r=localStorage.getItem(KEY);
+    if(!r){                                      /* one-time migration from OLD_KEY */
+      var old=localStorage.getItem(OLD_KEY);
+      if(old){ try{localStorage.setItem(KEY,old);localStorage.removeItem(OLD_KEY);}catch(e){} r=old; }
+    }
+    if(!r)return blank();
     var o=JSON.parse(r);var b=blank();for(var k in b)if(!(k in o))o[k]=b[k];return o;}
   catch(e){return blank();}
 }
