@@ -34,7 +34,7 @@ the app/extension, to erase everything.
 Requests **no permissions**. It only opens the same offline app.
 
 ## Contact
-abdullah@powerfolder.com
+ahmadabdullah@gmx.de
 
 The canonical, hosted version is at
 <https://ahmadabdullahsiddiqui.github.io/ustad/privacy.html>.

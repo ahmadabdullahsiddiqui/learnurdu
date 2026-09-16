@@ -35,5 +35,5 @@ available on this host. Framing risk is low for a static, credential‑free app.
 - Do not commit tokens, keys or passwords. Rotate any credential if exposed.
 
 ## Reporting a vulnerability
-Please email **abdullah@powerfolder.com**. Do not open a public issue for
+Please email **ahmadabdullah@gmx.de**. Do not open a public issue for
 security reports.
