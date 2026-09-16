@@ -716,9 +716,10 @@ function urduVoice(){
   for(var i=0;i<VOICES.length;i++)if(/^ur(-|_|$)/i.test(VOICES[i].lang||''))return VOICES[i];
   return null;
 }
-/* Voices worth listing in the picker: any Urdu or Hindi voice installed. */
+/* Voices worth listing in the picker: only real Urdu voices (Hindi is a
+   different language and is intentionally excluded). */
 function pronVoices(){
-  return VOICES.filter(function(v){return /^(ur|hi)(-|_|$)/i.test(v.lang||'');});
+  return VOICES.filter(function(v){return /^ur(-|_|$)/i.test(v.lang||'');});
 }
 function chosenVoice(){
   if(S.voiceURI){
