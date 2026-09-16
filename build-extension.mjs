@@ -22,7 +22,9 @@ appHtml = appHtml.includes("</head>")
 writeFileSync(join(ext, "app.html"), appHtml, "utf8");
 
 // Flat files copied verbatim.
-for (const f of ["app.js", "styles.css", "fonts.css", "icon-192.png", "icon-512.png"]) {
+for (const f of ["app.js", "styles.css", "fonts.css", "privacy.html",
+                 "icon-16.png", "icon-32.png", "icon-48.png", "icon-128.png",
+                 "icon-192.png", "icon-512.png"]) {
   copyFileSync(join(root, f), join(ext, f));
 }
 

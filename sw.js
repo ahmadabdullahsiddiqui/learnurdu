@@ -1,14 +1,19 @@
 /* Ustad - The Urdu Teacher — offline service worker.
    HTML is network-first so a new version lands on the next online visit;
    everything else is cache-first so the app opens with no connection.     */
-const CACHE = 'ustad-v6';
+const CACHE = 'ustad-v7';
 const ASSETS = [
   "./",
   "./index.html",
   "./app.js",
   "./styles.css",
+  "./privacy.html",
   "./manifest.json",
   "./fonts.css",
+  "./icon-16.png",
+  "./icon-32.png",
+  "./icon-48.png",
+  "./icon-128.png",
   "./icon-192.png",
   "./icon-512.png",
   "./icon-maskable.png",
@@ -43,11 +48,16 @@ const ASSETS = [
 ];
 
 self.addEventListener('install', (e) => {
+  // Precache, then WAIT (no auto-skipWaiting) so the app can prompt the user
+  // before a new version takes over mid-session.
   e.waitUntil(
-    caches.open(CACHE)
-      .then((c) => Promise.allSettled(ASSETS.map((u) => c.add(u))))
-      .then(() => self.skipWaiting())
+    caches.open(CACHE).then((c) => Promise.allSettled(ASSETS.map((u) => c.add(u))))
   );
+});
+
+// The page asks us to activate the new version when the user taps "Update".
+self.addEventListener('message', (e) => {
+  if (e.data && e.data.type === 'SKIP_WAITING') self.skipWaiting();
 });
 
 self.addEventListener('activate', (e) => {

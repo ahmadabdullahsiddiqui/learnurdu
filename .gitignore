@@ -8,3 +8,6 @@
 Thumbs.db
 .DS_Store
 *~
+
+# Build artifacts (extension packages)
+/dist/

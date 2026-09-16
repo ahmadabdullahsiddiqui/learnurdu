@@ -2,23 +2,31 @@
   "manifest_version": 3,
   "name": "Ustad - The Urdu Teacher",
   "version": "1.1.0",
-  "description": "Learn Urdu from English — vocabulary, phrases, the script and grammar, with flashcards and quizzes. Works offline.",
+  "description": "Learn Urdu from English or German — alphabet, vocabulary, phrases, grammar, flashcards, quiz and a memory game. Works fully offline.",
   "default_locale": "en",
+  "author": "Ahmad Abdullah",
+  "homepage_url": "https://ahmadabdullahsiddiqui.github.io/ustad/",
   "action": {
     "default_title": "Open Ustad - The Urdu Teacher",
     "default_popup": "app.html",
     "default_icon": {
-      "192": "icon-192.png",
-      "512": "icon-512.png"
+      "16": "icon-16.png",
+      "32": "icon-32.png",
+      "48": "icon-48.png",
+      "128": "icon-128.png"
     }
   },
   "icons": {
+    "16": "icon-16.png",
+    "32": "icon-32.png",
+    "48": "icon-48.png",
+    "128": "icon-128.png",
     "192": "icon-192.png",
     "512": "icon-512.png"
   },
   "browser_specific_settings": {
     "gecko": {
-      "id": "roshni-urdu@powerfolder.com",
+      "id": "ustad-urdu@powerfolder.com",
       "strict_min_version": "115.0"
     }
   }
