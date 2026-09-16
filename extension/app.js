@@ -1337,36 +1337,23 @@ function boot(){
   paintTabs();render();
   installPwa();
 }
-/* Register the service worker and offer a gentle "update available" prompt
-   instead of silently swapping versions mid-session. */
-var swUpdateShown=false;
-function showUpdatePrompt(reg){
-  if(swUpdateShown)return; swUpdateShown=true;
-  var el=document.getElementById('toast'); if(!el)return;
-  var de=S.lang==='de';
-  el.innerHTML=(de?'Neue Version verfügbar. ':'A new version is available. ')+
-    '<button id="swUpdateBtn" class="btn slim" style="width:auto;display:inline-flex;margin-inline-start:8px;padding:6px 12px">'+(de?'Aktualisieren':'Update')+'</button>';
-  el.classList.add('show');
-  clearTimeout(toastTimer);                    /* keep it visible until acted on */
-  var b=document.getElementById('swUpdateBtn');
-  if(b)b.addEventListener('click',function(){ if(reg.waiting)reg.waiting.postMessage({type:'SKIP_WAITING'}); });
-}
+/* Register the service worker in AUTO-UPDATE mode: a new deploy activates
+   immediately (skipWaiting + clients.claim), and the page reloads once when
+   the new worker takes control — so a normal refresh always shows the latest
+   version. The one-time reload is skipped on the very first install. */
 function installPwa(){
   if(!('serviceWorker' in navigator))return;
   try{
+    var hadController=!!navigator.serviceWorker.controller;
     var reloaded=false;
     navigator.serviceWorker.addEventListener('controllerchange',function(){
-      if(reloaded)return; reloaded=true; location.reload();   /* new SW took over */
+      if(reloaded||!hadController)return;   /* don't reload on first-ever install */
+      reloaded=true; location.reload();
     });
     navigator.serviceWorker.register('sw.js',{scope:'./'}).then(function(reg){
-      function track(w){ if(!w)return; w.addEventListener('statechange',function(){
-        if(w.state==='installed'&&navigator.serviceWorker.controller)showUpdatePrompt(reg);
-      });}
-      if(reg.waiting&&navigator.serviceWorker.controller)showUpdatePrompt(reg);
-      reg.addEventListener('updatefound',function(){ track(reg.installing); });
-      /* check for a new version whenever the app is brought back to the foreground */
+      try{reg.update();}catch(e){}          /* check for a new version now… */
       document.addEventListener('visibilitychange',function(){
-        if(document.visibilityState==='visible'){ try{reg.update();}catch(e){} }
+        if(document.visibilityState==='visible'){ try{reg.update();}catch(e){} }  /* …and on refocus */
       });
     }).catch(function(){});
   }catch(e){}
