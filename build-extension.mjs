@@ -40,4 +40,17 @@ const copyDir = (name) => {
 const nFonts = copyDir("fonts");
 const nAudio = copyDir("audio");
 
+// Keep the extension version in step with the app's APP_VERSION so it never
+// goes stale. (manifest.json is a hand-maintained source file, not copied.)
+const appVer = (readFileSync(join(root, "app.js"), "utf8").match(/APP_VERSION\s*=\s*['"]([0-9.]+)['"]/) || [])[1];
+const manifestPath = join(ext, "manifest.json");
+if (appVer && existsSync(manifestPath)) {
+  const m = JSON.parse(readFileSync(manifestPath, "utf8"));
+  if (m.version !== appVer) {
+    m.version = appVer;
+    writeFileSync(manifestPath, JSON.stringify(m, null, 2) + "\n", "utf8");
+    console.log(`Synced extension version → ${appVer}`);
+  }
+}
+
 console.log(`Built extension/ → app.html, app.js, styles.css, fonts.css, icons, ${nFonts} fonts, ${nAudio} audio clips`);
