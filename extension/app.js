@@ -771,7 +771,7 @@ const GRAMMAR = [
 /* ============================ state ============================ */
 var ZWJ='‍';
 var KEY='urdu.ahmadabdullah';
-var APP_VERSION='1.5.8';
+var APP_VERSION='1.5.9';
 var INTERVALS=[0,1,3,7,16,35];
 var GOAL=20;
 
@@ -1639,28 +1639,39 @@ function showUpdateBar(onUpdate){
 function installPwa(){
   if(!('serviceWorker' in navigator))return;
   try{
+    var hadController=!!navigator.serviceWorker.controller;
+    var offered=false, doReload=false;
+    function offer(reg){
+      if(offered)return; offered=true;
+      showUpdateBar(function(){
+        doReload=true;
+        try{if(reg&&reg.waiting)reg.waiting.postMessage({type:'SKIP_WAITING'});}catch(e){}
+        location.reload();
+      });
+    }
+    /* A new worker took control (skipWaiting + clients.claim). Only a real
+       update, never the first-ever install. */
+    navigator.serviceWorker.addEventListener('controllerchange',function(){
+      if(doReload){location.reload();return;}
+      if(hadController) offer(null);
+    });
     navigator.serviceWorker.register('sw.js',{scope:'./'}).then(function(reg){
-      var offered=false;
-      function offer(){
-        if(offered)return; offered=true;
-        showUpdateBar(function(){
-          try{if(reg.waiting)reg.waiting.postMessage({type:'SKIP_WAITING'});}catch(e){}
-          location.reload();
-        });
-      }
-      /* An update was already waiting when the page opened. */
-      if(reg.waiting && navigator.serviceWorker.controller) offer();
-      /* A new worker started installing while the page is open. */
+      /* An update was already waiting/installing when the page opened. */
+      if(reg.waiting && navigator.serviceWorker.controller) offer(reg);
+      /* A new worker starts installing while the page is open. */
       reg.addEventListener('updatefound',function(){
         var nw=reg.installing; if(!nw)return;
         nw.addEventListener('statechange',function(){
-          if(nw.state==='installed' && navigator.serviceWorker.controller) offer();
+          if(nw.state==='installed' && navigator.serviceWorker.controller) offer(reg);
         });
       });
-      try{reg.update();}catch(e){}          /* check for a new version now… */
+      try{reg.update();}catch(e){}          /* check now… */
+      /* …on refocus… */
       document.addEventListener('visibilitychange',function(){
-        if(document.visibilityState==='visible'){ try{reg.update();}catch(e){} }  /* …and on refocus */
+        if(document.visibilityState==='visible'){ try{reg.update();}catch(e){} }
       });
+      /* …and keep polling so an always-open tab still notices a new deploy. */
+      setInterval(function(){ try{reg.update();}catch(e){} },30000);
     }).catch(function(){});
   }catch(e){}
 }
