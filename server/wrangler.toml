@@ -1,0 +1,12 @@
+name = "ustad-presence"
+main = "worker.js"
+compatibility_date = "2024-09-01"
+workers_dev = true
+
+[[durable_objects.bindings]]
+name = "PRESENCE"
+class_name = "Presence"
+
+[[migrations]]
+tag = "v1"
+new_classes = ["Presence"]
