@@ -33,7 +33,7 @@ function cyrb53(str) {
 // Extract the Urdu (2nd) string of every ['en','urdu','tl'...] vocab item.
 // Keep only strings containing Arabic-script chars → excludes alphabet names,
 // transliterations and grammar examples (none of which are spoken).
-const html = readFileSync(join(root, "index.html"), "utf8");
+const html = readFileSync(join(root, "app.js"), "utf8");
 const re = /\[\s*'((?:[^'\\]|\\.)*)'\s*,\s*'((?:[^'\\]|\\.)*)'/g;
 const hasArabic = (s) => /[؀-ۿ]/.test(s);
 const set = new Set();
