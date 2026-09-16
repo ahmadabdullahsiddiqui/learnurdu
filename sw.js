@@ -1,7 +1,7 @@
 /* Ustad - The Urdu Teacher — offline service worker.
    HTML is network-first so a new version lands on the next online visit;
    everything else is cache-first so the app opens with no connection.     */
-const CACHE = 'ustad-v7';
+const CACHE = 'ustad-v8';
 const ASSETS = [
   "./",
   "./index.html",
@@ -72,17 +72,26 @@ self.addEventListener('fetch', (e) => {
   const req = e.request;
   if (req.method !== 'GET') return;
 
+  const url = new URL(req.url);
   const isDoc = req.mode === 'navigate' || (req.headers.get('accept') || '').includes('text/html');
+  // The app "shell" — the HTML page and the code that runs it. Served
+  // network-first with revalidation so a normal refresh always loads the
+  // latest version online (fonts/audio below stay cache-first).
+  const isShell = isDoc || /\/(app\.js|styles\.css)$/.test(url.pathname);
 
-  if (isDoc) {
+  if (isShell) {
     e.respondWith(
-      fetch(req)
+      // {cache:'no-cache'} bypasses the browser HTTP cache and revalidates,
+      // so GitHub Pages' 10-minute caching can't serve a stale build.
+      fetch(url.href, { cache: 'no-cache' })
         .then((res) => {
-          const copy = res.clone();
-          caches.open(CACHE).then((c) => c.put('./index.html', copy)).catch(() => {});
+          if (res && res.status === 200 && url.origin === self.location.origin) {
+            const copy = res.clone();
+            caches.open(CACHE).then((c) => c.put(isDoc ? './index.html' : req, copy)).catch(() => {});
+          }
           return res;
         })
-        .catch(() => caches.match('./index.html').then((r) => r || caches.match('./')))
+        .catch(() => caches.match(isDoc ? './index.html' : req).then((r) => r || caches.match('./')))
     );
     return;
   }
