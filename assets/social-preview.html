@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<style>
+  /* App's own bundled fonts, so the card matches the product. */
+  @font-face{font-family:'Fredoka';font-weight:700;src:url(../fonts/fredoka-700-latin.woff2) format('woff2');font-display:block}
+  @font-face{font-family:'Fredoka';font-weight:600;src:url(../fonts/fredoka-600-latin.woff2) format('woff2');font-display:block}
+  @font-face{font-family:'Fredoka';font-weight:500;src:url(../fonts/fredoka-500-latin.woff2) format('woff2');font-display:block}
+  @font-face{font-family:'Nastaliq';font-weight:700;src:url(../fonts/noto-nastaliq-urdu-700-arabic.woff2) format('woff2');font-display:block}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{width:1280px;height:640px;overflow:hidden;background:#0e7d3e}
+  .card{
+    position:absolute;inset:0;width:1280px;height:640px;
+    background:
+      radial-gradient(1100px 700px at 88% -10%, rgba(255,255,255,.16), transparent 60%),
+      linear-gradient(135deg,#0a5c2e 0%,#0e7d3e 52%,#13a552 100%);
+    font-family:'Fredoka',system-ui,sans-serif;color:#fff;overflow:hidden;
+    display:flex;align-items:center;
+  }
+  /* soft dotted texture */
+  .card{align-items:flex-start}
+  .card::before{content:"";position:absolute;inset:0;
+    background-image:radial-gradient(rgba(255,255,255,.10) 2px, transparent 2px);
+    background-size:38px 38px;opacity:.5}
+  .left{position:relative;z-index:2;padding:56px 0 0 82px;max-width:740px}
+  .eyebrow{font-weight:600;font-size:26px;letter-spacing:.12em;text-transform:uppercase;
+    color:#eafff1;opacity:.92;margin-bottom:14px}
+  h1{font-weight:700;font-size:120px;line-height:.98;letter-spacing:-.01em;
+    text-shadow:0 6px 26px rgba(0,0,0,.22)}
+  .sub{font-weight:600;font-size:40px;margin-top:8px;color:#eafff1}
+  .tag{font-weight:500;font-size:27px;margin-top:16px;color:#d9f7e5;line-height:1.34;max-width:640px}
+  .chips{margin-top:28px;display:flex;flex-wrap:nowrap;gap:11px}
+  .chip{background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.35);
+    border-radius:999px;padding:9px 17px;font-weight:600;font-size:22px;white-space:nowrap}
+  .url{position:absolute;left:82px;bottom:48px;z-index:2;font-weight:600;font-size:25px;color:#f3fff8;opacity:.95}
+  /* Right: big nastaliq word on a soft disc */
+  .right{position:absolute;right:110px;top:50%;transform:translateY(-50%);z-index:2}
+  .disc{width:380px;height:380px;border-radius:50%;
+    background:radial-gradient(circle at 38% 32%, rgba(255,255,255,.98), #f4fff9 70%);
+    box-shadow:0 30px 70px rgba(0,0,0,.28), inset 0 0 0 10px rgba(14,125,62,.10);
+    display:flex;align-items:center;justify-content:center}
+  .ur{font-family:'Nastaliq',serif;direction:rtl;color:#0c6d36;font-weight:700;
+    font-size:178px;line-height:1;padding-bottom:34px}
+  /* crescent + star accent, top-right */
+  .moon{position:absolute;right:150px;top:70px;z-index:3;width:92px;height:92px}
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="left">
+      <div class="eyebrow">استاد · The Urdu Teacher</div>
+      <h1>Ustad</h1>
+      <div class="sub">Learn Urdu — for English &amp; German speakers</div>
+      <div class="tag">Alphabet, vocabulary, phrases &amp; grammar.<br>Colourful, kid‑friendly, and fully offline.</div>
+      <div class="chips">
+        <div class="chip">✍️ Script</div>
+        <div class="chip">🔊 Audio</div>
+        <div class="chip">🎴 Cards</div>
+        <div class="chip">🎮 Game</div>
+        <div class="chip">📴 Offline</div>
+      </div>
+    </div>
+    <div class="right"><div class="disc"><div class="ur">اُستاد</div></div></div>
+    <svg class="moon" viewBox="0 0 100 100" fill="#ffffff" opacity="0.95">
+      <path d="M63 12a38 38 0 1 0 0 76 30 30 0 1 1 0-76z"/>
+      <path d="M86 40l4.4 9.4 10.3 1.2-7.6 7 2 10.2L86 72l-9.1 4.9 2-10.2-7.6-7 10.3-1.2z" transform="translate(-8 -8) scale(.9)"/>
+    </svg>
+    <div class="url">ahmadabdullahsiddiqui.github.io/ustad</div>
+  </div>
+</body>
+</html>
