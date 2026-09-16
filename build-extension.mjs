@@ -1,9 +1,9 @@
-/* Build the browser-extension copy of the app from index.html.
+/* Build the browser-extension copy of the app from the website sources.
  *
- * Extension pages forbid inline <script> (Manifest V3 CSP: script-src 'self'),
- * so we lift the single inline <script> block out of index.html into app.js
- * and point app.html at it. index.html stays the one source of truth — re-run
- * `node build-extension.mjs` after any change to it.
+ * The website is now already split into external app.js + styles.css (so its
+ * CSP can use script-src 'self'), which is exactly what Manifest V3 requires.
+ * So the extension is just a copy of the site files, with app.html = index.html
+ * plus a small popup min-size. Re-run `node build-extension.mjs` after changes.
  */
 import { readFileSync, writeFileSync, copyFileSync, mkdirSync, readdirSync, existsSync } from "fs";
 import { fileURLToPath } from "url";
@@ -11,56 +11,31 @@ import { dirname, join } from "path";
 
 const root = dirname(fileURLToPath(import.meta.url));
 const ext = join(root, "extension");
+mkdirSync(ext, { recursive: true });
 
-const html = readFileSync(join(root, "index.html"), "utf8");
-
-// Grab the inline (src-less) <script> … </script> block.
-const m = html.match(/<script>([\s\S]*?)<\/script>/);
-if (!m) {
-  console.error("No inline <script> block found in index.html");
-  process.exit(1);
-}
-const js = m[1];
-
-// app.html = index.html with the inline script replaced by an external ref,
-// plus a small min-size so the toolbar popup opens at a comfortable width.
-let appHtml = html.replace(m[0], '<script src="app.js"></script>');
-// Give the toolbar popup a comfortable minimum size. The source omits the
-// optional </head>, so inject just before the <header> that opens the body.
+// app.html = index.html, with a comfortable minimum size for the toolbar popup.
+let appHtml = readFileSync(join(root, "index.html"), "utf8");
 const popupStyle = "<style>html,body{min-width:390px;min-height:540px}</style>\n";
 appHtml = appHtml.includes("</head>")
   ? appHtml.replace("</head>", popupStyle + "</head>")
   : appHtml.replace(/<header/, popupStyle + "<header");
-
-writeFileSync(join(ext, "app.js"), js.trimStart() + "\n", "utf8");
 writeFileSync(join(ext, "app.html"), appHtml, "utf8");
 
-// Icons the manifest points at.
-for (const f of ["icon-192.png", "icon-512.png"]) {
+// Flat files copied verbatim.
+for (const f of ["app.js", "styles.css", "fonts.css", "icon-192.png", "icon-512.png"]) {
   copyFileSync(join(root, f), join(ext, f));
 }
 
-// Bundled fonts (fonts.css + fonts/*.woff2) so the extension is fully offline.
-copyFileSync(join(root, "fonts.css"), join(ext, "fonts.css"));
-const fontsSrc = join(root, "fonts");
-const fontsDst = join(ext, "fonts");
-mkdirSync(fontsDst, { recursive: true });
-let n = 0;
-for (const f of readdirSync(fontsSrc)) {
-  copyFileSync(join(fontsSrc, f), join(fontsDst, f));
-  n++;
-}
+// Copy a whole directory of assets.
+const copyDir = (name) => {
+  const src = join(root, name), dst = join(ext, name);
+  if (!existsSync(src)) return 0;
+  mkdirSync(dst, { recursive: true });
+  let n = 0;
+  for (const f of readdirSync(src)) { copyFileSync(join(src, f), join(dst, f)); n++; }
+  return n;
+};
+const nFonts = copyDir("fonts");
+const nAudio = copyDir("audio");
 
-// Bundled pronunciation audio so the extension speaks offline too.
-const audioSrc = join(root, "audio");
-const audioDst = join(ext, "audio");
-let a = 0;
-if (existsSync(audioSrc)) {
-  mkdirSync(audioDst, { recursive: true });
-  for (const f of readdirSync(audioSrc)) {
-    copyFileSync(join(audioSrc, f), join(audioDst, f));
-    a++;
-  }
-}
-
-console.log(`Built extension/ → app.html, app.js, icons, fonts.css, ${n} font files, ${a} audio clips`);
+console.log(`Built extension/ → app.html, app.js, styles.css, fonts.css, icons, ${nFonts} fonts, ${nAudio} audio clips`);

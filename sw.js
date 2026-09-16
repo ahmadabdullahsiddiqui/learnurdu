@@ -1,10 +1,12 @@
 /* Ustad - The Urdu Teacher — offline service worker.
    HTML is network-first so a new version lands on the next online visit;
    everything else is cache-first so the app opens with no connection.     */
-const CACHE = 'ustad-v5';
+const CACHE = 'ustad-v6';
 const ASSETS = [
   "./",
   "./index.html",
+  "./app.js",
+  "./styles.css",
   "./manifest.json",
   "./fonts.css",
   "./icon-192.png",
@@ -79,7 +81,9 @@ self.addEventListener('fetch', (e) => {
     caches.match(req).then((hit) => {
       if (hit) return hit;
       return fetch(req).then((res) => {
-        if (res && res.status === 200 && (res.type === 'basic' || res.type === 'cors')) {
+        // Only cache our OWN same-origin, successful, non-opaque responses.
+        if (res && res.status === 200 && res.type === 'basic' &&
+            new URL(req.url).origin === self.location.origin) {
           const copy = res.clone();
           caches.open(CACHE).then((c) => c.put(req, copy)).catch(() => {});
         }
